@@ -1,8 +1,12 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
 import "./App.css";
+import 'rsuite/dist/rsuite.min.css';
 import HomePage from "./pages/HomePage"
 import AboutPage from "./pages/AboutPage"
+import { Routes, Route } from "react-router-dom";
+
+import NavbarComponent from "./components/NavbarComponent";
+
 
 class App extends React.Component {
   constructor(props) {
@@ -18,14 +22,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <h1>Welcome to React Router!</h1>
-        <h1>CURRENTLY USER AUTH IS {String(this.state.isAuth)}</h1>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="about" element={<AboutPage />} />
-        </Routes>
-      </React.Fragment>
+      <>
+        <NavbarComponent />
+        <React.Fragment>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="about" element={<AboutPage />} />
+            </Routes>
+        </React.Fragment>
+      </>
+
     )
   }
 }
