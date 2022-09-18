@@ -5,6 +5,7 @@ import { Navbar, Nav } from 'rsuite';
 
 import HomePage from "../pages/HomePage"
 import AboutPage from "../pages/AboutPage"
+import LoginPage from "../pages/LoginPage"
 
 class NavbarComponent extends React.Component {
   render() {
@@ -17,6 +18,9 @@ class NavbarComponent extends React.Component {
             </Nav.Item>
             <Nav.Item as={Link} to="/about" element={<AboutPage />}>
                 About
+            </Nav.Item>
+            <Nav.Item as={Link} to="/login" element={<LoginPage />}>
+                Login
             </Nav.Item>
         </Nav>
     </Navbar>

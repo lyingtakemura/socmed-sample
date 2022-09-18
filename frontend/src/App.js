@@ -3,6 +3,8 @@ import "./App.css";
 import 'rsuite/dist/rsuite.min.css';
 import HomePage from "./pages/HomePage"
 import AboutPage from "./pages/AboutPage"
+import LoginPage from "./pages/LoginPage"
+
 import { Routes, Route } from "react-router-dom";
 
 import NavbarComponent from "./components/NavbarComponent";
@@ -28,6 +30,8 @@ class App extends React.Component {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="about" element={<AboutPage />} />
+                <Route path="login" element={<LoginPage />} />
+
             </Routes>
         </React.Fragment>
       </>
