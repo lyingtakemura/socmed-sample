@@ -1,42 +1,51 @@
 import React from "react";
-import {
-    Content,
-    Form,
-    ButtonToolbar,
-    Button,
-    Panel,
-    FlexboxGrid
-  } from 'rsuite';
+import axios from "axios";
 
 class LoginPage extends React.Component {
-    render() {
-        return (
-            <Content>
-            <FlexboxGrid justify="center">
-              <FlexboxGrid.Item colspan={12}>
-                <Panel header={<h3>Login</h3>} bordered>
-                  <Form fluid>
-                    <Form.Group>
-                      <Form.ControlLabel>Username or email address</Form.ControlLabel>
-                      <Form.Control name="name" />
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.ControlLabel>Password</Form.ControlLabel>
-                      <Form.Control name="password" type="password" autoComplete="off" />
-                    </Form.Group>
-                    <Form.Group>
-                      <ButtonToolbar>
-                        <Button appearance="primary">Sign in</Button>
-                        <Button appearance="link">Forgot password?</Button>
-                      </ButtonToolbar>
-                    </Form.Group>
-                  </Form>
-                </Panel>
-              </FlexboxGrid.Item>
-            </FlexboxGrid>
-          </Content>
-        )
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: ''
+    };
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+    console.log(event.target.name)
+    console.log(event.target.value)
+
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    axios.post('http://127.0.0.1:8000/auth/token/login/',
+      {
+        "username": this.state.username,
+        "password": this.state.password
+      },
+    )
+    .then((response) => {
+      console.log(response)
+      localStorage.setItem("auth_token", response.data["auth_token"])
+      console.log("TOKEN:", localStorage.getItem("auth_token"))
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  render() {
+    return (
+      <form>
+        <input type="text" name="username" value={this.state.username} onChange={this.handleChange.bind(this)} />
+        <input type="password" name="password" value={this.state.password} onChange={this.handleChange.bind(this)} />
+        <input type="submit" value="Submit" onClick={this.handleSubmit.bind(this)} />
+      </form>
+    )
+  }
 }
 
 export default LoginPage;
