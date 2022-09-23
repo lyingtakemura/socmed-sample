@@ -5,39 +5,29 @@ import HomePage from "./pages/HomePage"
 import AboutPage from "./pages/AboutPage"
 import LoginPage from "./pages/LoginPage"
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 
 import NavbarComponent from "./components/NavbarComponent";
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAuth: false
-    }
-  }
+const App = () => (
+  <Routes>
+    <Route path="/" element={<LayoutsWithNavbar />}>
+      <Route path="login" element={<LoginPage />} />
+      <Route path="about" element={<AboutPage />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="*" element={<h1>404</h1>} />
+    </Route>
+  </Routes>
+)
 
-  componentDidMount() {
-    console.log("TEST")
-  }
-
-  render() {
-    return (
-      <>
-        <NavbarComponent />
-        <React.Fragment>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="about" element={<AboutPage />} />
-                <Route path="login" element={<LoginPage />} />
-
-            </Routes>
-        </React.Fragment>
-      </>
-
-    )
-  }
+function LayoutsWithNavbar() {
+  return (
+    <>
+      <NavbarComponent />
+      <Outlet /> 
+    </>
+  );
 }
 
 export default App;
