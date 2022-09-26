@@ -1,7 +1,7 @@
 import React from "react";
-import "./App.css";
+import "./css/App.css";
 import 'rsuite/dist/rsuite.min.css';
-import HomePage from "./pages/HomePage"
+import Feed from "./pages/Feed"
 import AboutPage from "./pages/AboutPage"
 import LoginPage from "./pages/LoginPage"
 
@@ -13,9 +13,9 @@ import NavbarComponent from "./components/NavbarComponent";
 const App = () => (
   <Routes>
     <Route path="/" element={<LayoutsWithNavbar />}>
+      <Route path="/" element={<Feed />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="about" element={<AboutPage />} />
-      <Route path="/" element={<HomePage />} />
       <Route path="*" element={<h1>404</h1>} />
     </Route>
   </Routes>
