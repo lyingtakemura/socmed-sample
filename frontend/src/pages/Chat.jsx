@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 
-const Feed = () => {
+const Feed = (props) => {
   // const [posts, setPosts] = useState()
   const [input, setInput] = useState("")
+  const ws = props.ws
 
   useEffect(() => {
 
@@ -13,7 +14,7 @@ const Feed = () => {
   const handleSendMessage = e => {
     e.preventDefault()
     console.log(input)
-    // ws.send(input)
+    ws.send(JSON.stringify({'message': input}))
   }
 
   return (

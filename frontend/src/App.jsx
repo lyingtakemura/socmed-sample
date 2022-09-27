@@ -10,10 +10,10 @@ import { Routes, Route, Outlet } from "react-router-dom";
 
 import NavbarComponent from "./components/NavbarComponent";
 
+const ws = new WebSocket('ws://127.0.0.1:8000/ws/test/');
 
 const App = () => {
   useEffect(() => {
-    const ws = new WebSocket('ws://127.0.0.1:8000/ws/test/');
 
     ws.onopen = () => {
       console.log("WS_INIT");
@@ -37,7 +37,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<LayoutsWithNavbar />}>
         <Route path="/" element={<Feed />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat" element={<Chat ws={ws} />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="*" element={<h1>404</h1>} />
