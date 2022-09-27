@@ -7,6 +7,7 @@ import { logout } from '../redux/usersSlice'
 import { Navbar, Nav } from 'rsuite';
 
 import Feed from "../pages/Feed"
+import Chat from "../pages/Chat"
 import AboutPage from "../pages/AboutPage"
 import LoginPage from "../pages/LoginPage"
 
@@ -25,6 +26,9 @@ export function NavbarComponent() {
 
                 <Nav.Item as={Link} to="/" element={<Feed />}>
                     Feed
+                </Nav.Item>
+                <Nav.Item as={Link} to="/chat" element={<Chat />}>
+                    Chat
                 </Nav.Item>
                 <Nav.Item as={Link} to="/about" element={<AboutPage />}>
                     About
