@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from 'react-redux'
 import { login } from '../redux/usersSlice'
+import { Form, ButtonToolbar, Button, FlexboxGrid } from 'rsuite';
 
 
 const LoginPage = () => {
@@ -9,9 +10,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
-      event.preventDefault();
-      
+  const handleSubmit = () => {
       axios.post('http://127.0.0.1:8000/auth/token/login/',
       {
         "username": username,
@@ -29,10 +28,7 @@ const LoginPage = () => {
         }
       })
       .then((response) => {
-        details =  response.data
-
-        console.log(details)
-
+        details = response.data
         const currentUser = {
           id: details.id,
           token: token,
@@ -40,7 +36,8 @@ const LoginPage = () => {
           email: details.email,
         }
         dispatch(login(currentUser))
-
+        setUsername('')
+        setPassword('')
       })
     })
     .catch((error) => {
@@ -50,11 +47,26 @@ const LoginPage = () => {
 
   return (
     <>
-    <form onSubmit={event => { handleSubmit(event) }}>
-      <input type="text" name="username" value={username} onChange={event => setUsername(event.target.value)} />
-      <input type="password" name="password" value={password} onChange={event => setPassword(event.target.value)} />
-      <input type="submit" value="Submit" />
-    </form>
+      <h1 style={{textAlign: "center"}}>Login</h1>
+      <FlexboxGrid justify="center">
+        <FlexboxGrid.Item colspan={12}>
+          <Form onSubmit={handleSubmit} fluid >
+            <Form.Group controlId="username">
+              <Form.ControlLabel>Username</Form.ControlLabel>
+              <Form.Control name="name" value={username} onChange={event => setUsername(event)} required />
+            </Form.Group>
+            <Form.Group controlId="password">
+              <Form.ControlLabel>Password</Form.ControlLabel>
+              <Form.Control name="password" value={password} type="password" autoComplete="off" onChange={event => setPassword(event)} required />
+            </Form.Group>
+            <Form.Group>
+              <ButtonToolbar>
+                <Button appearance="primary" color="green" type="submit" block>Submit</Button>
+              </ButtonToolbar>
+            </Form.Group>
+          </Form>
+        </FlexboxGrid.Item>
+      </FlexboxGrid>
     </>
   )
 }
