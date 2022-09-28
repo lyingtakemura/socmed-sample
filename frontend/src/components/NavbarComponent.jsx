@@ -20,9 +20,13 @@ export function NavbarComponent() {
         <Navbar>
             <Navbar.Brand href="#">SOCMED-SAMPLE </Navbar.Brand>
             <Nav>
-                <Nav.Item as={Link} to="/login" element={<LoginPage />} >
-                    Login
-                </Nav.Item>
+                {
+                    !currentUser &&
+                    <Nav.Item as={Link} to="/login" element={<LoginPage />} >
+                        Login
+                    </Nav.Item>
+                }
+
 
                 <Nav.Item as={Link} to="/" element={<Feed />}>
                     Feed
@@ -33,10 +37,19 @@ export function NavbarComponent() {
                 <Nav.Item as={Link} to="/about" element={<AboutPage />}>
                     About
                 </Nav.Item>
-                <Nav.Item href="#" onClick={() => dispatch(logout())}>
-                    Logout
-                </Nav.Item>
-                <Nav.Item>USERNAME: {currentUser.username} | TOKEN: {currentUser.token}</Nav.Item>
+
+                {
+                    currentUser &&
+                    <>
+                        <Nav.Item>
+                            USERNAME: {currentUser.username} | TOKEN: {currentUser.token}
+                        </Nav.Item>
+                        <Nav.Item href="#" onClick={() => dispatch(logout())}>
+                            Logout
+                        </Nav.Item>
+                    </>
+
+                }
             </Nav>
         </Navbar>
     )
