@@ -7,11 +7,9 @@ import { login } from '../redux/usersSlice'
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const getUser = () => {
     axios.post('http://127.0.0.1:8000/auth/token/login/',
       {
         "username": username,
@@ -19,11 +17,38 @@ const LoginPage = () => {
       },
     )
     .then((response) => {
-        dispatch(login(response.data["auth_token"]))
+      console.log(response.data)
+      const token = response.data["auth_token"]
+      let details;
+
+      axios.get('http://127.0.0.1:8000/auth/users/me/', {
+        headers: {
+          'Authorization': 'Token ' + token
+        }
+      })
+      .then((response) => {
+        details =  response.data
+
+        console.log(details)
+
+        const currentUser = {
+          id: details.id,
+          token: token,
+          username: details.username,
+          email: details.email,
+        }
+        dispatch(login(currentUser))
+
+      })
     })
     .catch((error) => {
       console.log(error)
     })
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    getUser()
   }
 
   return (

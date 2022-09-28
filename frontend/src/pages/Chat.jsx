@@ -14,7 +14,9 @@ const Feed = (props) => {
   const handleSendMessage = e => {
     e.preventDefault()
     console.log(input)
-    ws.send(JSON.stringify({'message': input}))
+    ws.send(JSON.stringify({
+      'message': input
+    }))
   }
 
   return (

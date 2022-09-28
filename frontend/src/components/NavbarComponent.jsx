@@ -13,7 +13,7 @@ import LoginPage from "../pages/LoginPage"
 
 
 export function NavbarComponent() {
-    const token = useSelector((state) => state.users.user.token)
+    let currentUser = useSelector((state) => state.users.currentUser)
     const dispatch = useDispatch();
 
     return (
@@ -36,7 +36,7 @@ export function NavbarComponent() {
                 <Nav.Item href="#" onClick={() => dispatch(logout())}>
                     Logout
                 </Nav.Item>
-                <Nav.Item>TOKEN:{token}</Nav.Item>
+                <Nav.Item>USERNAME: {currentUser.username} | TOKEN: {currentUser.token}</Nav.Item>
             </Nav>
         </Navbar>
     )
