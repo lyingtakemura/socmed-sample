@@ -9,8 +9,10 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  const getUser = () => {
-    axios.post('http://127.0.0.1:8000/auth/token/login/',
+  const handleSubmit = (event) => {
+      event.preventDefault();
+      
+      axios.post('http://127.0.0.1:8000/auth/token/login/',
       {
         "username": username,
         "password": password
@@ -44,11 +46,6 @@ const LoginPage = () => {
     .catch((error) => {
       console.log(error)
     })
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    getUser()
   }
 
   return (
