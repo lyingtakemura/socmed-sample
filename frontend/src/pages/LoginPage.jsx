@@ -18,7 +18,6 @@ const LoginPage = () => {
       },
     )
     .then((response) => {
-      console.log(response.data)
       const token = response.data["auth_token"]
       let details;
 
@@ -49,7 +48,7 @@ const LoginPage = () => {
     <>
       <h1 style={{textAlign: "center"}}>Login</h1>
       <FlexboxGrid justify="center">
-        <FlexboxGrid.Item colspan={12}>
+        <FlexboxGrid.Item colspan={8}>
           <Form onSubmit={handleSubmit} fluid >
             <Form.Group controlId="username">
               <Form.ControlLabel>Username</Form.ControlLabel>
