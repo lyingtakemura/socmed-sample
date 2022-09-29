@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from chat.views import MessageViewSet
 from django.contrib import admin
 from django.urls import include, path, re_path
 from posts.views import CommentViewSet, PostViewSet
@@ -21,6 +22,7 @@ from rest_framework import routers
 router = routers.SimpleRouter()
 router.register(r'posts', PostViewSet)
 router.register(r'comments', CommentViewSet)
+router.register(r'messages', MessageViewSet)
 
 
 urlpatterns = [
