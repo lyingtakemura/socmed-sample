@@ -8,13 +8,15 @@ const Feed = (props) => {
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState("")
   const [contacts, setContacts] = useState("")
+  const [currentChat, setCurrentChat] = useState("")
+
   let currentUser = useSelector((state) => state.users.currentUser)
   const ws = props.ws
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/contacts/", { 
       headers: {
-        'Authorization': 'Token ' + '38df272f7e163527f4cb3594f8f381b957547dd6' //currentUser.token
+        'Authorization': 'Token ' + currentUser.token
       }
     })
     .then((response) => {
@@ -28,6 +30,20 @@ const Feed = (props) => {
 
   const sendMessage = () => {
     console.log(input)
+    axios.post("http://127.0.0.1:8000/messages/", {
+        "body": input,
+        "receiver": currentChat
+      }, { 
+        headers: {
+          'Authorization': 'Token ' + currentUser.token
+        }
+    })
+    .then((response) => {
+      console.log(response.data)
+    }).catch((error) => {
+      console.log(error)
+    })
+
     ws.send(JSON.stringify({
       'message': input
     }))
@@ -35,6 +51,7 @@ const Feed = (props) => {
   }
 
   const getMessages = (event, receiverId) => {
+    setCurrentChat(receiverId)
     console.log(receiverId)
     axios.get("http://127.0.0.1:8000/messages?receiver=" + receiverId,  { 
       headers: {
