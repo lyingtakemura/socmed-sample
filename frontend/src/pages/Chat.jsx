@@ -14,7 +14,7 @@ const Feed = (props) => {
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/contacts/", { 
       headers: {
-        'Authorization': 'Token ' + currentUser.token
+        'Authorization': 'Token ' + '38df272f7e163527f4cb3594f8f381b957547dd6' //currentUser.token
       }
     })
     .then((response) => {
@@ -34,13 +34,26 @@ const Feed = (props) => {
     setInput("")
   }
 
+  const getMessages = (event, receiverId) => {
+    console.log(receiverId)
+    axios.get("http://127.0.0.1:8000/messages?receiver=" + receiverId,  { 
+      headers: {
+        'Authorization': 'Token ' + currentUser.token
+      }
+    })
+    .then((response) => {
+      console.log(response.data)
+      setMessages(response.data)
+    })
+  }
+
   return (
   <> 
     <FlexboxGrid justify="center" style={{marginTop: "0.5rem"}}>
       <FlexboxGrid.Item colspan={6}>
         <Panel header="{CHATS_LIST}" bordered style={{ height: "80vh"}}>
           { contacts && contacts.map((contact) => 
-              <Panel bordered style={{marginBottom: "0.5rem"}} key={contact.id} >
+              <Panel bordered style={{marginBottom: "0.5rem"}} key={contact.id} onClick={event => getMessages(event, contact.id)}>
                 {contact.username}
               </Panel>
             )
@@ -50,9 +63,12 @@ const Feed = (props) => {
       &nbsp;
       <FlexboxGrid.Item colspan={12}>
         <Panel header="{CURRENT_CHAT_NAME}" bordered style={{ height: "80vh"}}>
-          <Panel bordered>
-            {messages}
-          </Panel>
+          {messages && messages.map((message) => 
+            <Panel bordered key={message.id} style={{ marginBottom: "0.5rem" }}  align={message.sender === currentUser.id ? 'right' : ''}>
+              {message.body} | {message.created_at}
+            </Panel>
+          )}
+
 
           {/* <form onSubmit={event => sendMessage(event)}>
             <input placeholder='type message' value={input} onChange={event => setInput(event.target.value)} />
