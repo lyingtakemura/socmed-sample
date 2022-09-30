@@ -20,7 +20,11 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         print(json.loads(text_data))
         message = text_data_json['message']
+        sender = text_data_json['sender']
+        receiver = text_data_json['receiver']
 
         self.send(json.dumps({
-            'message': message
+            'message': message,
+            'sender': sender,
+            'receiver': receiver
         }))

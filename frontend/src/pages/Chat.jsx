@@ -29,6 +29,7 @@ const Feed = (props) => {
 
 
   const sendMessage = () => {
+    console.log(ws)
     console.log(input)
     axios.post("http://127.0.0.1:8000/messages/", {
         "body": input,
@@ -45,7 +46,9 @@ const Feed = (props) => {
     })
 
     ws.send(JSON.stringify({
-      'message': input
+      'message': input,
+      'sender': currentUser.id,
+      'receiver': currentChat
     }))
     setInput("")
   }
