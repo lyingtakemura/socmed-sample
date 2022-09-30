@@ -106,7 +106,7 @@ const Feed = (props) => {
                     <Panel
                         header="{CURRENT_CHAT_NAME}"
                         bordered
-                        style={{ height: "80vh" }}
+                        style={{ height: "80vh", overflowY: "scroll" }}
                     >
                         {messages &&
                             messages.map((message) => (
@@ -128,22 +128,22 @@ const Feed = (props) => {
             <input placeholder='type message' value={input} onChange={event => setInput(event.target.value)} />
             <input type="submit" value="send" />
           </form> */}
-
-                        <Form
-                            onSubmit={sendMessage}
-                            style={{ marginTop: "1rem" }}
-                        >
-                            <InputGroup size="lg">
-                                <Input
-                                    value={input}
-                                    onChange={(event) => setInput(event)}
-                                />
-                                <InputGroup.Button type="submit">
-                                    <SendIcon />
-                                </InputGroup.Button>
-                            </InputGroup>
-                        </Form>
                     </Panel>
+                    <Form
+                        onSubmit={sendMessage}
+                        style={{ marginTop: "0.5rem" }}
+                    >
+                        <InputGroup size="lg">
+                            <Input
+                                value={input}
+                                onChange={(event) => setInput(event)}
+                                required
+                            />
+                            <InputGroup.Button type="submit">
+                                <SendIcon />
+                            </InputGroup.Button>
+                        </InputGroup>
+                    </Form>
                 </FlexboxGrid.Item>
             </FlexboxGrid>
         </>
