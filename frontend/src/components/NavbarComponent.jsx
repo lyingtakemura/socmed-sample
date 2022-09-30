@@ -1,19 +1,18 @@
 import { React } from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 
-import { logout } from '../redux/usersSlice'
+import { logout } from "../redux/usersSlice";
 
-import { Navbar, Nav } from 'rsuite';
+import { Navbar, Nav } from "rsuite";
 
-import Feed from "../pages/Feed"
-import Chat from "../pages/Chat"
-import AboutPage from "../pages/AboutPage"
-import LoginPage from "../pages/LoginPage"
-
+import Feed from "../pages/Feed";
+import Chat from "../pages/Chat";
+import AboutPage from "../pages/AboutPage";
+import LoginPage from "../pages/LoginPage";
 
 export function NavbarComponent() {
-    let currentUser = useSelector((state) => state.users.currentUser)
+    let currentUser = useSelector((state) => state.users.currentUser);
     const dispatch = useDispatch();
 
     return (
@@ -31,27 +30,26 @@ export function NavbarComponent() {
                 </Nav.Item>
             </Nav>
             <Nav pullRight>
-                {
-                    !currentUser &&
-                    <Nav.Item as={Link} to="/login" element={<LoginPage />} >
+                {!currentUser && (
+                    <Nav.Item as={Link} to="/login" element={<LoginPage />}>
                         Login
                     </Nav.Item>
-                }
+                )}
 
-                {
-                    currentUser &&
+                {currentUser && (
                     <>
                         <Nav.Item>
-                            USERNAME: {currentUser.username} | TOKEN: {currentUser.token}
+                            USERNAME: {currentUser.username} | TOKEN:{" "}
+                            {currentUser.token}
                         </Nav.Item>
                         <Nav.Item href="#" onClick={() => dispatch(logout())}>
                             Logout
                         </Nav.Item>
                     </>
-                }
+                )}
             </Nav>
         </Navbar>
-    )
+    );
 }
 
 export default NavbarComponent;
