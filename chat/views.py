@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from users.models import User
 
 from chat.models import Message
-from chat.serializers import MessageSerializer
+from chat.serializers import ContactSerializer, MessageSerializer
 
 
 class MessageViewSet(
@@ -25,7 +25,7 @@ class MessageViewSet(
 
         GET /messages/?receiver=int
         '''
-        sender=self.request.user
+        sender = self.request.user
         receiver = User.objects.filter(id=request.GET['receiver']).first()
 
         queryset = Message.objects.filter(
@@ -46,3 +46,11 @@ class MessageViewSet(
         '''
         receiver = User.objects.filter(id=self.request.data['receiver']).first()
         serializer.save(sender=self.request.user, receiver=receiver)
+
+
+class ContactViewSet(
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin
+):
+    queryset = User.objects.all()
+    serializer_class = ContactSerializer

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from chat.models import Message
+from users.models import User
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -10,3 +11,9 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = "__all__"
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "username")
