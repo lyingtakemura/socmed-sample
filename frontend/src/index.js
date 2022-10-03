@@ -10,13 +10,20 @@ import { store } from "./redux/store";
 
 import { CustomProvider } from "rsuite";
 
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+
+let persistor = persistStore(store);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <BrowserRouter>
         <Provider store={store}>
-            <CustomProvider theme="dark">
-                <App />
-            </CustomProvider>
+            <PersistGate loading={null} persistor={persistor}>
+                <CustomProvider theme="dark">
+                    <App />
+                </CustomProvider>
+            </PersistGate>
         </Provider>
     </BrowserRouter>
 );
