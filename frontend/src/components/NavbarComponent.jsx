@@ -36,12 +36,13 @@ export function NavbarComponent() {
                     </Nav.Item>
                 )}
 
-
-
                 {currentUser && (
                     <>
                         <Nav.Menu title={currentUser.username}>
-                            <Nav.Item href="#" onClick={() => dispatch(logout())}>
+                            <Nav.Item
+                                href="#"
+                                onClick={() => dispatch(logout())}
+                            >
                                 Logout
                             </Nav.Item>
                         </Nav.Menu>
