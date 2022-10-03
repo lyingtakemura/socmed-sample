@@ -4,7 +4,7 @@ import SendIcon from "@rsuite/icons/Send";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const Feed = (props) => {
+const Chat = (props) => {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState("");
     const [contacts, setContacts] = useState("");
@@ -12,6 +12,13 @@ const Feed = (props) => {
 
     let currentUser = useSelector((state) => state.users.currentUser);
     const ws = props.ws;
+
+    ws.onmessage = (e) => {
+        let ws_event = JSON.parse(e.data).message;
+        let messages_temp = [...messages];
+        messages_temp.push(ws_event);
+        setMessages(messages_temp);
+    };
 
     useEffect(() => {
         axios
@@ -22,7 +29,7 @@ const Feed = (props) => {
             })
             .then((response) => {
                 setContacts(response.data);
-                console.log(response.data);
+                // console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -30,8 +37,8 @@ const Feed = (props) => {
     }, []); // without second param useEffect will stuck in update loop
 
     const sendMessage = () => {
-        console.log(ws);
-        console.log(input);
+        // console.log(ws);
+        // console.log(input);
         axios
             .post(
                 "http://127.0.0.1:8000/messages/",
@@ -47,24 +54,21 @@ const Feed = (props) => {
             )
             .then((response) => {
                 console.log(response.data);
+                ws.send(
+                    JSON.stringify({
+                        message: response.data,
+                    })
+                );
             })
             .catch((error) => {
                 console.log(error);
             });
-
-        ws.send(
-            JSON.stringify({
-                message: input,
-                sender: currentUser.id,
-                receiver: currentChat,
-            })
-        );
         setInput("");
     };
 
     const getMessages = (event, receiverId) => {
         setCurrentChat(receiverId);
-        console.log(receiverId);
+        // console.log(receiverId);
         axios
             .get("http://127.0.0.1:8000/messages?receiver=" + receiverId, {
                 headers: {
@@ -150,4 +154,4 @@ const Feed = (props) => {
     );
 };
 
-export default Feed;
+export default Chat;
