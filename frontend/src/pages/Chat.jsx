@@ -29,12 +29,11 @@ const Chat = (props) => {
             })
             .then((response) => {
                 setContacts(response.data);
-                // console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []); // without second param useEffect will stuck in update loop
+    }, [currentUser]); // useEffect will re-run whenever object in it's dependency array changes
 
     const sendMessage = () => {
         // console.log(ws);
