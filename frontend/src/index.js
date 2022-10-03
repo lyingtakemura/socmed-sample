@@ -8,11 +8,15 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 
+import { CustomProvider } from "rsuite";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <BrowserRouter>
         <Provider store={store}>
-            <App />
+            <CustomProvider theme="dark">
+                <App />
+            </CustomProvider>
         </Provider>
     </BrowserRouter>
 );
