@@ -4,11 +4,11 @@ import SendIcon from "@rsuite/icons/Send";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const Chat = (props) => {
+const Messenger = (props) => {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState("");
-    const [contacts, setContacts] = useState("");
-    const [currentChat, setCurrentChat] = useState("");
+    const [threads, setThreads] = useState("");
+    const [selectedThread, setSelectedThread] = useState("");
 
     let currentUser = useSelector((state) => state.users.currentUser);
     const ws = props.ws;
@@ -22,13 +22,13 @@ const Chat = (props) => {
 
     useEffect(() => {
         axios
-            .get("http://127.0.0.1:8000/contacts/", {
+            .get("http://127.0.0.1:8000/threads/", {
                 headers: {
                     Authorization: "Token " + currentUser.token,
                 },
             })
             .then((response) => {
-                setContacts(response.data);
+                setThreads(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -36,14 +36,12 @@ const Chat = (props) => {
     }, [currentUser]); // useEffect will re-run whenever object in it's dependency array changes
 
     const sendMessage = () => {
-        // console.log(ws);
-        // console.log(input);
         axios
             .post(
                 "http://127.0.0.1:8000/messages/",
                 {
                     body: input,
-                    receiver: currentChat,
+                    thread: selectedThread,
                 },
                 {
                     headers: {
@@ -65,11 +63,10 @@ const Chat = (props) => {
         setInput("");
     };
 
-    const getMessages = (event, receiverId) => {
-        setCurrentChat(receiverId);
-        // console.log(receiverId);
+    const getThread = (event, id) => {
+        setSelectedThread(id);
         axios
-            .get("http://127.0.0.1:8000/messages?receiver=" + receiverId, {
+            .get("http://127.0.0.1:8000/threads/" + id, {
                 headers: {
                     Authorization: "Token " + currentUser.token,
                 },
@@ -89,17 +86,17 @@ const Chat = (props) => {
                         bordered
                         style={{ height: "80vh" }}
                     >
-                        {contacts &&
-                            contacts.map((contact) => (
+                        {threads &&
+                            threads.map((thread) => (
                                 <Panel
                                     bordered
                                     style={{ marginBottom: "0.5rem" }}
-                                    key={contact.id}
+                                    key={thread.id}
                                     onClick={(event) =>
-                                        getMessages(event, contact.id)
+                                        getThread(event, thread.id)
                                     }
                                 >
-                                    {contact.username}
+                                    {thread.users}
                                 </Panel>
                             ))}
                     </Panel>
@@ -153,4 +150,4 @@ const Chat = (props) => {
     );
 };
 
-export default Chat;
+export default Messenger;

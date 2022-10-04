@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./css/App.css";
 import "rsuite/dist/rsuite.min.css";
 import Feed from "./pages/Feed";
-import Chat from "./pages/Chat";
+import Messenger from "./pages/Messenger";
 import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 
@@ -36,7 +36,7 @@ const App = () => {
         <Routes>
             <Route path="/" element={<LayoutsWithNavbar />}>
                 <Route path="/" element={<Feed />} />
-                <Route path="/chat" element={<Chat ws={ws} />} />
+                <Route path="messenger" element={<Messenger ws={ws} />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="*" element={<h1>404</h1>} />
