@@ -3,36 +3,51 @@ from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 from users.models import User
 
-from chat.models import Message
-from chat.serializers import ContactSerializer, MessageSerializer
+from chat.models import Message, Thread
+from chat.serializers import MessageSerializer, ThreadSerializer
 
+
+class ThreadViewSet(
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+):
+    queryset = Thread.objects.all()
+    serializer_class = ThreadSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        thread = Thread.objects.get(id=self.kwargs['pk'])
+        queryset = thread.message_set.all()
+        serializer = MessageSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 class MessageViewSet(
     viewsets.GenericViewSet,
-    mixins.ListModelMixin,
     mixins.CreateModelMixin,
 ):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
 
-    def list(self, request):
-        '''
-        To serialize a queryset or list of objects instead of a single object
-        instance, you should set many=True flag when instantiating serializer.
+    # def list(self, request):
+    #     '''
+    #     To serialize a queryset or list of objects instead of a single object
+    #     instance, you should set many=True flag when instantiating serializer.
 
-        Get receiver id from url param, filter and return in response only
-        messages related to convesation between auth user and receiver
+    #     Get receiver id from url param, filter and return in response only
+    #     messages related to convesation between auth user and receiver
 
-        GET /messages/?receiver=int
-        '''
-        sender = self.request.user
-        receiver = User.objects.filter(id=request.GET['receiver']).first()
+    #     GET /messages/?receiver=int
+    #     '''
+    #     queryset = Thread.objects.filter(id=request.data['thread']).first()
+    #     # sender = self.request.user
+    #     # receiver = User.objects.filter(id=request.GET['receiver']).first()
 
-        queryset = Message.objects.filter(
-            Q(sender=sender, receiver=receiver) | Q(sender=receiver, receiver=sender)
-        ).order_by("created_at")
-        serializer = MessageSerializer(queryset, many=True)
-        return Response(serializer.data)
+    #     # queryset = Message.objects.filter(
+    #     #     Q(sender=sender, receiver=receiver) | Q(sender=receiver, receiver=sender)
+    #     # ).order_by("created_at")
+    #     serializer = MessageSerializer(queryset, many=True)
+    #     return Response(serializer.data)
 
     def perform_create(self, serializer):
         '''
@@ -42,15 +57,9 @@ class MessageViewSet(
         serializer.save(), adding in any additional arguments as required.
         They may also perform any custom pre-save or post-save behavior.
 
-        POST /messages {"body": string, "receiver": int}
+        POST /messages {"body": string, "thread": int}
         '''
-        receiver = User.objects.filter(id=self.request.data['receiver']).first()
-        serializer.save(sender=self.request.user, receiver=receiver)
+        thread = Thread.objects.get(id=self.request.data['thread'])
+        serializer.save(sender=self.request.user, thread=thread)
 
 
-class ContactViewSet(
-    viewsets.GenericViewSet,
-    mixins.ListModelMixin
-):
-    queryset = User.objects.all()
-    serializer_class = ContactSerializer

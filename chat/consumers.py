@@ -1,7 +1,6 @@
 import json
-# from random import randint
-# from time import sleep
 
+from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
 
@@ -9,22 +8,22 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.accept()
 
-        # for i in range(3):
-        #     self.send(json.dumps({'message': randint(1, 300)}))
-        #     sleep(2)
+        print(self.channel_name)
+        me = self.scope['user']
+        print(me)
+        async_to_sync(self.channel_layer.group_add)("chat", self.channel_name)
 
     def disconnect(self, close_code):
-        pass
+        async_to_sync(self.channel_layer.group_discard)("chat", self.channel_name)
 
     def receive(self, text_data=None):
-        text_data_json = json.loads(text_data)
-        print(json.loads(text_data))
-        message = text_data_json['message']
-        sender = text_data_json['sender']
-        receiver = text_data_json['receiver']
+        async_to_sync(self.channel_layer.group_send)(
+            "chat",
+            {
+                "type": "chat.message",
+                "text": text_data,
+            },
+        )
 
-        self.send(json.dumps({
-            'message': message,
-            'sender': sender,
-            'receiver': receiver
-        }))
+    def chat_message(self, event):
+        self.send(text_data=event["text"])
