@@ -15,7 +15,6 @@ class Thread(models.Model):
 class Message(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
-    # receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="receiver")
     body = models.CharField(max_length=255, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

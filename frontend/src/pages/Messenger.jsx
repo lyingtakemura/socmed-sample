@@ -25,8 +25,8 @@ const Messenger = (props) => {
 
     ws.onmessage = (e) => {
         let ws_event = JSON.parse(e.data).message;
-        let messages_temp = [...messages];
-        messages_temp.push(ws_event);
+        console.log(ws_event);
+        let messages_temp = [...messages, ws_event];
         setMessages(messages_temp);
     };
 
@@ -60,7 +60,7 @@ const Messenger = (props) => {
                 }
             )
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 ws.send(
                     JSON.stringify({
                         message: response.data,
@@ -110,7 +110,7 @@ const Messenger = (props) => {
                                                 getThread(event, thread.id)
                                             }
                                         >
-                                            {thread.users}
+                                            {thread.id}
                                         </Panel>
                                     ))}
                             </Panel>
