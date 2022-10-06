@@ -16,7 +16,6 @@ import { useSelector } from "react-redux";
 
 const Messenger = (props) => {
     const [input, setInput] = useState("");
-    const [messages, setMessages] = useState("");
     const [threads, setThreads] = useState("");
     const [selectedThread, setSelectedThread] = useState("");
 
@@ -25,9 +24,9 @@ const Messenger = (props) => {
 
     ws.onmessage = (e) => {
         let ws_event = JSON.parse(e.data).message;
-        console.log(ws_event);
-        let messages_temp = [...messages, ws_event];
-        setMessages(messages_temp);
+        let temp_thread = { ...selectedThread };
+        temp_thread.messages = [...temp_thread.messages, ws_event];
+        setSelectedThread(temp_thread);
     };
 
     useEffect(() => {
@@ -51,7 +50,7 @@ const Messenger = (props) => {
                 "http://127.0.0.1:8000/messages/",
                 {
                     body: input,
-                    thread: selectedThread,
+                    thread: selectedThread.id,
                 },
                 {
                     headers: {
@@ -60,7 +59,6 @@ const Messenger = (props) => {
                 }
             )
             .then((response) => {
-                // console.log(response.data);
                 ws.send(
                     JSON.stringify({
                         message: response.data,
@@ -73,116 +71,106 @@ const Messenger = (props) => {
         setInput("");
     };
 
-    const getThread = (event, id) => {
-        setSelectedThread(id);
+    const getThread = (event, thread) => {
         axios
-            .get("http://127.0.0.1:8000/threads/" + id, {
+            .get("http://127.0.0.1:8000/threads/" + thread.id, {
                 headers: {
                     Authorization: "Token " + currentUser.token,
                 },
             })
             .then((response) => {
-                console.log(response.data);
-                setMessages(response.data);
+                setSelectedThread(response.data);
             });
     };
 
     return (
-        <>
-            <FlexboxGrid justify="center" style={{ marginTop: "0.5rem" }}>
-                <FlexboxGrid.Item colspan={4}>
-                    <Container>
-                        <Header>
-                            <Panel bordered>SEARCH_INPUT</Panel>
-                        </Header>
-                        <Content>
-                            <Panel
-                                bordered
-                                style={{ height: "75vh", marginTop: "0.5rem" }}
-                            >
-                                {threads &&
-                                    threads.map((thread) => (
-                                        <Panel
-                                            bordered
-                                            style={{ marginBottom: "0.5rem" }}
-                                            key={thread.id}
-                                            onClick={(event) =>
-                                                getThread(event, thread.id)
-                                            }
-                                        >
-                                            {thread.id}
-                                        </Panel>
-                                    ))}
-                            </Panel>
-                            <Footer>
-                                <Panel bordered style={{ marginTop: "0.5rem" }}>
-                                    -
-                                </Panel>
-                            </Footer>
-                        </Content>
-                    </Container>
-                </FlexboxGrid.Item>
-                &nbsp;
-                <FlexboxGrid.Item colspan={10}>
-                    <Container>
-                        <Header>
-                            <Panel bordered>THREAD_NAME</Panel>
-                        </Header>
-                        <Content>
-                            <Panel
-                                bordered
-                                style={{
-                                    height: "75vh",
-                                    overflowY: "scroll",
-                                    marginTop: "0.5rem",
-                                }}
-                            >
-                                {messages &&
-                                    messages.map((message) => (
-                                        <Panel
-                                            bordered
-                                            key={message.id}
-                                            style={{ marginBottom: "0.5rem" }}
-                                            align={
-                                                message.sender ===
-                                                currentUser.id
-                                                    ? "right"
-                                                    : ""
-                                            }
-                                        >
-                                            {message.body} |{" "}
-                                            {message.created_at}
-                                        </Panel>
-                                    ))}
-
-                                {/* <form onSubmit={event => sendMessage(event)}>
-                <input placeholder='type message' value={input} onChange={event => setInput(event.target.value)} />
-                <input type="submit" value="send" />
-            </form> */}
-                            </Panel>
-                        </Content>
+        <FlexboxGrid justify="center" style={{ marginTop: "0.5rem" }}>
+            <FlexboxGrid.Item colspan={4}>
+                <Container>
+                    <Header>
+                        <Panel bordered>SEARCH_INPUT</Panel>
+                    </Header>
+                    <Content>
+                        <Panel
+                            bordered
+                            style={{ height: "75vh", marginTop: "0.5rem" }}
+                        >
+                            {threads &&
+                                threads.map((thread) => (
+                                    <Panel
+                                        bordered
+                                        style={{ marginBottom: "0.5rem" }}
+                                        key={thread.id}
+                                        onClick={(event) =>
+                                            getThread(event, thread)
+                                        }
+                                    >
+                                        {thread.type +
+                                            " with: " +
+                                            thread.users.length +
+                                            " users"}
+                                    </Panel>
+                                ))}
+                        </Panel>
                         <Footer>
                             <Panel bordered style={{ marginTop: "0.5rem" }}>
-                                <Form onSubmit={sendMessage}>
-                                    <InputGroup size="lg">
-                                        <Input
-                                            value={input}
-                                            onChange={(event) =>
-                                                setInput(event)
-                                            }
-                                            required
-                                        />
-                                        <InputGroup.Button type="submit">
-                                            <SendIcon />
-                                        </InputGroup.Button>
-                                    </InputGroup>
-                                </Form>
+                                -
                             </Panel>
                         </Footer>
-                    </Container>
-                </FlexboxGrid.Item>
-            </FlexboxGrid>
-        </>
+                    </Content>
+                </Container>
+            </FlexboxGrid.Item>
+            &nbsp;
+            <FlexboxGrid.Item colspan={10}>
+                <Container>
+                    <Header>
+                        <Panel bordered>THREAD_NAME</Panel>
+                    </Header>
+                    <Content>
+                        <Panel
+                            bordered
+                            style={{
+                                height: "75vh",
+                                overflowY: "scroll",
+                                marginTop: "0.5rem",
+                            }}
+                        >
+                            {selectedThread["messages"] &&
+                                selectedThread["messages"].map((message) => (
+                                    <Panel
+                                        bordered
+                                        key={message.id}
+                                        style={{ marginBottom: "0.5rem" }}
+                                        align={
+                                            message.sender === currentUser.id
+                                                ? "right"
+                                                : ""
+                                        }
+                                    >
+                                        {message.body} | {message.created_at}
+                                    </Panel>
+                                ))}
+                        </Panel>
+                    </Content>
+                    <Footer>
+                        <Panel bordered style={{ marginTop: "0.5rem" }}>
+                            <Form onSubmit={sendMessage}>
+                                <InputGroup size="lg">
+                                    <Input
+                                        value={input}
+                                        onChange={(event) => setInput(event)}
+                                        required
+                                    />
+                                    <InputGroup.Button type="submit">
+                                        <SendIcon />
+                                    </InputGroup.Button>
+                                </InputGroup>
+                            </Form>
+                        </Panel>
+                    </Footer>
+                </Container>
+            </FlexboxGrid.Item>
+        </FlexboxGrid>
     );
 };
 

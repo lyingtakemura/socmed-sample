@@ -21,12 +21,12 @@ const Feed = () => {
             .get("http://127.0.0.1:8000/posts/")
             .then((response) => {
                 setPosts(response.data);
-                console.log(response);
+                // console.log(response);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, [posts]);
+    }, []); // posts in useEffect dependency causes infinite axios request loop
 
     const sendPost = () => {
         axios
