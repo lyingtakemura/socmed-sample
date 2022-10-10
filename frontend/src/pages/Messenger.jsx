@@ -24,9 +24,11 @@ const Messenger = (props) => {
 
     ws.onmessage = (e) => {
         let ws_event = JSON.parse(e.data).message;
-        let temp_thread = { ...selectedThread };
-        temp_thread.messages = [...temp_thread.messages, ws_event];
-        setSelectedThread(temp_thread);
+        if (ws_event.thread === selectedThread.id) {
+            let temp_thread = { ...selectedThread };
+            temp_thread.messages = [...temp_thread.messages, ws_event];
+            setSelectedThread(temp_thread);
+        }
     };
 
     useEffect(() => {
