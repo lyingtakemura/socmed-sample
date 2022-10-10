@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/usersSlice";
-import { Form, ButtonToolbar, Button, FlexboxGrid } from "rsuite";
+import { Form, ButtonToolbar, Button, FlexboxGrid, Message } from "rsuite";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
@@ -42,27 +43,55 @@ const LoginPage = () => {
                     });
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error.response);
+                setError(error.response.data["non_field_errors"]);
             });
     };
 
     return (
         <>
-            <h1 style={{ textAlign: "center" }}>Login</h1>
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item colspan={8}>
+            {error && (
+                <FlexboxGrid
+                    justify="center"
+                    style={{ margin: "0.5rem", justify: "center" }}
+                >
+                    <FlexboxGrid.Item colspan={12}>
+                        <Message
+                            closable
+                            showIcon
+                            type="warning"
+                            onClose={(event) => setError("")}
+                        >
+                            {error}
+                        </Message>
+                    </FlexboxGrid.Item>
+                </FlexboxGrid>
+            )}
+            <FlexboxGrid
+                justify="center"
+                style={{
+                    position: "absolute",
+                    left: "0",
+                    right: "0",
+                    top: "50%",
+                    bottom: "0",
+                    margin: "auto",
+                }}
+            >
+                <FlexboxGrid.Item colspan={10}>
                     <Form onSubmit={handleSubmit} fluid>
                         <Form.Group controlId="username">
-                            <Form.ControlLabel>Username</Form.ControlLabel>
+                            {/* <Form.ControlLabel>Username</Form.ControlLabel> */}
                             <Form.Control
                                 name="name"
                                 value={username}
                                 onChange={(event) => setUsername(event)}
                                 required
+                                placeholder="Username"
                             />
                         </Form.Group>
                         <Form.Group controlId="password">
-                            <Form.ControlLabel>Password</Form.ControlLabel>
+                            {/* <Form.ControlLabel>Password</Form.ControlLabel> */}
                             <Form.Control
                                 name="password"
                                 value={password}
@@ -70,6 +99,7 @@ const LoginPage = () => {
                                 autoComplete="off"
                                 onChange={(event) => setPassword(event)}
                                 required
+                                placeholder="Password"
                             />
                         </Form.Group>
                         <Form.Group>
@@ -80,7 +110,7 @@ const LoginPage = () => {
                                     type="submit"
                                     block
                                 >
-                                    Submit
+                                    Login
                                 </Button>
                             </ButtonToolbar>
                         </Form.Group>
