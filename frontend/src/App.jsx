@@ -6,7 +6,7 @@ import Messenger from "./pages/Messenger";
 import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import NavbarComponent from "./components/NavbarComponent";
@@ -38,15 +38,15 @@ const App = () => {
                 console.log(e);
             };
         }
-    }, []); // without second param useEffect will stuck in update loop
+    }, [currentUser, ws]); // without second param useEffect will stuck in update loop
 
     return (
         <Routes>
             <Route path="/" element={<LayoutsWithNavbar />}>
-                <Route path="/" element={<Feed />} />
-                <Route path="messenger" element={<Messenger ws={ws} />} />
+                <Route path="/" element={!currentUser ? <Navigate to="/login" /> : <Feed />} />
+                <Route path="messenger" element={!currentUser ? <Navigate to="/login" /> : <Messenger ws={ws} />} />
+                <Route path="about" element={!currentUser ? <Navigate to="/login" /> : <AboutPage />} />
                 <Route path="login" element={<LoginPage />} />
-                <Route path="about" element={<AboutPage />} />
                 <Route path="*" element={<h1>404</h1>} />
             </Route>
         </Routes>
