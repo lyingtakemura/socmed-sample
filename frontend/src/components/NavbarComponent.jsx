@@ -18,6 +18,8 @@ export function NavbarComponent() {
     return (
         <Navbar>
             <Navbar.Brand href="#">SOCMED-SAMPLE </Navbar.Brand>
+            {currentUser && (
+
             <Nav>
                 <Nav.Item as={Link} to="/" element={<Feed />}>
                     Feed
@@ -29,6 +31,8 @@ export function NavbarComponent() {
                     About
                 </Nav.Item>
             </Nav>
+            )}
+            
             <Nav pullRight>
                 {!currentUser && (
                     <Nav.Item as={Link} to="/login" element={<LoginPage />}>
