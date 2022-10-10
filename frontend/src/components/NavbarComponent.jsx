@@ -19,20 +19,19 @@ export function NavbarComponent() {
         <Navbar>
             <Navbar.Brand href="#">SOCMED-SAMPLE </Navbar.Brand>
             {currentUser && (
-
-            <Nav>
-                <Nav.Item as={Link} to="/" element={<Feed />}>
-                    Feed
-                </Nav.Item>
-                <Nav.Item as={Link} to="/messenger" element={<Messenger />}>
-                    Messenger
-                </Nav.Item>
-                <Nav.Item as={Link} to="/about" element={<AboutPage />}>
-                    About
-                </Nav.Item>
-            </Nav>
+                <Nav>
+                    <Nav.Item as={Link} to="/" element={<Feed />}>
+                        Feed
+                    </Nav.Item>
+                    <Nav.Item as={Link} to="/messenger" element={<Messenger />}>
+                        Messenger
+                    </Nav.Item>
+                    <Nav.Item as={Link} to="/about" element={<AboutPage />}>
+                        About
+                    </Nav.Item>
+                </Nav>
             )}
-            
+
             <Nav pullRight>
                 {!currentUser && (
                     <Nav.Item as={Link} to="/login" element={<LoginPage />}>

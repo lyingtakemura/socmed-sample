@@ -43,9 +43,26 @@ const App = () => {
     return (
         <Routes>
             <Route path="/" element={<LayoutsWithNavbar />}>
-                <Route path="/" element={!currentUser ? <Navigate to="/login" /> : <Feed />} />
-                <Route path="messenger" element={!currentUser ? <Navigate to="/login" /> : <Messenger ws={ws} />} />
-                <Route path="about" element={!currentUser ? <Navigate to="/login" /> : <AboutPage />} />
+                <Route
+                    path="/"
+                    element={!currentUser ? <Navigate to="/login" /> : <Feed />}
+                />
+                <Route
+                    path="messenger"
+                    element={
+                        !currentUser ? (
+                            <Navigate to="/login" />
+                        ) : (
+                            <Messenger ws={ws} />
+                        )
+                    }
+                />
+                <Route
+                    path="about"
+                    element={
+                        !currentUser ? <Navigate to="/login" /> : <AboutPage />
+                    }
+                />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="*" element={<h1>404</h1>} />
             </Route>

@@ -3,11 +3,13 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/usersSlice";
 import { Form, ButtonToolbar, Button, FlexboxGrid } from "rsuite";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
+    let navigate = useNavigate();
 
     const handleSubmit = () => {
         axios
@@ -36,6 +38,7 @@ const LoginPage = () => {
                         dispatch(login(currentUser));
                         setUsername("");
                         setPassword("");
+                        navigate("/");
                     });
             })
             .catch((error) => {
