@@ -40,6 +40,7 @@ const Messenger = (props) => {
             })
             .then((response) => {
                 setThreads(response.data);
+                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -95,7 +96,7 @@ const Messenger = (props) => {
                     <Content>
                         <Panel
                             bordered
-                            style={{ height: "75vh", marginTop: "0.5rem" }}
+                            style={{ height: "85vh", marginTop: "0.5rem" }}
                         >
                             {threads &&
                                 threads.map((thread) => (
@@ -107,18 +108,31 @@ const Messenger = (props) => {
                                             getThread(event, thread)
                                         }
                                     >
-                                        {thread.type +
-                                            " with: " +
-                                            thread.users.length +
-                                            " users"}
+                                        <FlexboxGrid.Item colspan={24}>
+                                            {thread.type === "group" &&
+                                                thread.type + ": "}
+                                            {thread.users
+                                                .filter(
+                                                    (user) =>
+                                                        user.id !==
+                                                        currentUser.id
+                                                )
+                                                .map((user) => user.username)}
+                                        </FlexboxGrid.Item>
+
+                                        <FlexboxGrid.Item
+                                            colspan={24}
+                                            style={{ overflow: "hidden" }}
+                                        >
+                                            {
+                                                thread.messages[
+                                                    thread.messages.length - 1
+                                                ].body
+                                            }
+                                        </FlexboxGrid.Item>
                                     </Panel>
                                 ))}
                         </Panel>
-                        <Footer>
-                            <Panel bordered style={{ marginTop: "0.5rem" }}>
-                                -
-                            </Panel>
-                        </Footer>
                     </Content>
                 </Container>
             </FlexboxGrid.Item>
@@ -126,50 +140,73 @@ const Messenger = (props) => {
             <FlexboxGrid.Item colspan={10}>
                 <Container>
                     <Header>
-                        <Panel bordered>THREAD_NAME</Panel>
+                        <Panel bordered>
+                            {selectedThread
+                                ? selectedThread.users
+                                      .filter(
+                                          (user) => user.id !== currentUser.id
+                                      )
+                                      .map((user) => user.username)
+                                : "Select Thread"}
+                        </Panel>
                     </Header>
                     <Content>
                         <Panel
                             bordered
                             style={{
-                                height: "75vh",
+                                height: "85vh",
                                 overflowY: "scroll",
                                 marginTop: "0.5rem",
                             }}
                         >
-                            {selectedThread["messages"] &&
-                                selectedThread["messages"].map((message) => (
-                                    <Panel
-                                        bordered
-                                        key={message.id}
-                                        style={{ marginBottom: "0.5rem" }}
-                                        align={
-                                            message.sender === currentUser.id
-                                                ? "right"
-                                                : ""
-                                        }
+                            <Container>
+                                <Container style={{ minHeight: "100vh" }}>
+                                    {selectedThread["messages"] &&
+                                        selectedThread["messages"].map(
+                                            (message) => (
+                                                <Panel
+                                                    bordered
+                                                    key={message.id}
+                                                    style={{
+                                                        marginBottom: "0.5rem",
+                                                    }}
+                                                    align={
+                                                        message.sender ===
+                                                        currentUser.id
+                                                            ? "right"
+                                                            : ""
+                                                    }
+                                                >
+                                                    {message.body} |{" "}
+                                                    {message.created_at}
+                                                </Panel>
+                                            )
+                                        )}
+                                </Container>
+                                <Footer
+                                    style={{ position: "sticky", bottom: "0" }}
+                                >
+                                    <Form
+                                        onSubmit={sendMessage}
+                                        style={{ marginTop: "0.5rem" }}
                                     >
-                                        {message.body} | {message.created_at}
-                                    </Panel>
-                                ))}
+                                        <InputGroup size="lg">
+                                            <Input
+                                                value={input}
+                                                onChange={(event) =>
+                                                    setInput(event)
+                                                }
+                                                required
+                                            />
+                                            <InputGroup.Button type="submit">
+                                                <SendIcon />
+                                            </InputGroup.Button>
+                                        </InputGroup>
+                                    </Form>
+                                </Footer>
+                            </Container>
                         </Panel>
                     </Content>
-                    <Footer>
-                        <Panel bordered style={{ marginTop: "0.5rem" }}>
-                            <Form onSubmit={sendMessage}>
-                                <InputGroup size="lg">
-                                    <Input
-                                        value={input}
-                                        onChange={(event) => setInput(event)}
-                                        required
-                                    />
-                                    <InputGroup.Button type="submit">
-                                        <SendIcon />
-                                    </InputGroup.Button>
-                                </InputGroup>
-                            </Form>
-                        </Panel>
-                    </Footer>
                 </Container>
             </FlexboxGrid.Item>
         </FlexboxGrid>
