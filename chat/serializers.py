@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from users.serializers import UserSerializer
+
 from chat.models import Message, Thread
 
 
@@ -10,6 +11,7 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ("id", "thread", "sender", "body", "created_at")
+
 
 class ThreadSerializer(serializers.ModelSerializer):
     users = UserSerializer(many=True, read_only=True)

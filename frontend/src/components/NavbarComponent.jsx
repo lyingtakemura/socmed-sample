@@ -10,6 +10,7 @@ import Feed from "../pages/Feed";
 import Messenger from "../pages/Messenger";
 import AboutPage from "../pages/AboutPage";
 import LoginPage from "../pages/LoginPage";
+import Register from "../pages/Register";
 
 export function NavbarComponent() {
     let currentUser = useSelector((state) => state.users.currentUser);
@@ -34,9 +35,18 @@ export function NavbarComponent() {
 
             <Nav pullRight>
                 {!currentUser && (
-                    <Nav.Item as={Link} to="/login" element={<LoginPage />}>
-                        Login
-                    </Nav.Item>
+                    <>
+                        <Nav.Item as={Link} to="/login" element={<LoginPage />}>
+                            Login
+                        </Nav.Item>
+                        <Nav.Item
+                            as={Link}
+                            to="/register"
+                            element={<Register />}
+                        >
+                            Register
+                        </Nav.Item>
+                    </>
                 )}
 
                 {currentUser && (

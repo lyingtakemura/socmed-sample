@@ -5,6 +5,7 @@ import Feed from "./pages/Feed";
 import Messenger from "./pages/Messenger";
 import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
+import Register from "./pages/Register";
 
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -63,7 +64,14 @@ const App = () => {
                         !currentUser ? <Navigate to="/login" /> : <AboutPage />
                     }
                 />
-                <Route path="login" element={<LoginPage />} />
+                <Route
+                    path="login"
+                    element={!currentUser ? <LoginPage /> : <Navigate to="/" />}
+                />
+                <Route
+                    path="register"
+                    element={!currentUser ? <Register /> : <Navigate to="/" />}
+                />
                 <Route path="*" element={<h1>404</h1>} />
             </Route>
         </Routes>
