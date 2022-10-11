@@ -155,12 +155,12 @@ const Messenger = (props) => {
                             bordered
                             style={{
                                 height: "85vh",
-                                overflowY: "scroll",
+                                overflowY: "auto",
                                 marginTop: "0.5rem",
                             }}
                         >
                             <Container>
-                                <Container style={{ minHeight: "100vh" }}>
+                                <Container style={{ minHeight: "80vh" }}>
                                     {selectedThread["messages"] &&
                                         selectedThread["messages"].map(
                                             (message) => (
@@ -183,27 +183,30 @@ const Messenger = (props) => {
                                             )
                                         )}
                                 </Container>
+                                {selectedThread && (
                                 <Footer
-                                    style={{ position: "sticky", bottom: "0" }}
+                                style={{ position: "sticky", bottom: "0" }}
+                            >
+                                <Form
+                                    onSubmit={sendMessage}
+                                    style={{ marginTop: "0.5rem" }}
                                 >
-                                    <Form
-                                        onSubmit={sendMessage}
-                                        style={{ marginTop: "0.5rem" }}
-                                    >
-                                        <InputGroup size="lg">
-                                            <Input
-                                                value={input}
-                                                onChange={(event) =>
-                                                    setInput(event)
-                                                }
-                                                required
-                                            />
-                                            <InputGroup.Button type="submit">
-                                                <SendIcon />
-                                            </InputGroup.Button>
-                                        </InputGroup>
-                                    </Form>
-                                </Footer>
+                                    <InputGroup size="lg">
+                                        <Input
+                                            value={input}
+                                            onChange={(event) =>
+                                                setInput(event)
+                                            }
+                                            required
+                                        />
+                                        <InputGroup.Button type="submit">
+                                            <SendIcon />
+                                        </InputGroup.Button>
+                                    </InputGroup>
+                                </Form>
+                            </Footer>
+                                )}
+
                             </Container>
                         </Panel>
                     </Content>
