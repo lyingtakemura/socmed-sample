@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const [alert, setAlert] = useState("");
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
@@ -44,25 +44,27 @@ const LoginPage = () => {
             })
             .catch((error) => {
                 // console.log(error.response);
-                setError(error.response.data["non_field_errors"]);
+                setAlert({
+                    type: "error",
+                    body: error.response.data["non_field_errors"],
+                });
             });
     };
 
     return (
         <>
-            {error && (
+            {alert && (
                 <FlexboxGrid
                     justify="center"
                     style={{ margin: "0.5rem", justify: "center" }}
                 >
-                    <FlexboxGrid.Item colspan={12}>
+                    <FlexboxGrid.Item colspan={10}>
                         <Message
-                            closable
                             showIcon
-                            type="warning"
-                            onClose={(event) => setError("")}
+                            type={alert.type}
+                            onClose={(event) => setAlert("")}
                         >
-                            {error}
+                            {alert.body}
                         </Message>
                     </FlexboxGrid.Item>
                 </FlexboxGrid>
