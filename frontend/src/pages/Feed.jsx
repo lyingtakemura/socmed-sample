@@ -18,10 +18,13 @@ const Feed = () => {
 
     useEffect(() => {
         axios
-            .get("http://127.0.0.1:8000/posts/")
+            .get("http://127.0.0.1:8000/posts/", {
+                headers: {
+                    Authorization: "Token " + currentUser.token,
+                },
+            })
             .then((response) => {
                 setPosts(response.data);
-                // console.log(response);
             })
             .catch((error) => {
                 console.log(error);
@@ -46,11 +49,6 @@ const Feed = () => {
                 let obj = response.data;
                 let posts_temp = [...posts, obj];
                 setPosts(posts_temp);
-                // ws.send(
-                //     JSON.stringify({
-                //         message: response.data,
-                //     })
-                // );
             })
             .catch((error) => {
                 console.log(error);
@@ -60,8 +58,8 @@ const Feed = () => {
 
     return (
         <>
-            <FlexboxGrid justify="center" style={{ marginTop: "0.5rem" }}>
-                <FlexboxGrid.Item colspan={12}>
+            <FlexboxGrid justify="center">
+                <FlexboxGrid.Item colspan={22}>
                     <Panel bordered style={{ marginTop: "0.5rem" }}>
                         <Form onSubmit={sendPost}>
                             <InputGroup size="lg">
@@ -84,7 +82,7 @@ const Feed = () => {
                                     post //check if posts array have been loaded from axios request to state before render
                                 ) => (
                                     <Panel
-                                        header={`USER: ${post.user} POSTED AT ${post.created_at}`}
+                                        header={`${post.user.username} at ${post.created_at}:`}
                                         key={post.id}
                                     >
                                         {post.body}

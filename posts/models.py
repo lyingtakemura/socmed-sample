@@ -1,5 +1,5 @@
-from users.models import User
 from django.db import models
+from users.models import User
 
 
 class Post(models.Model):
@@ -8,6 +8,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"BY {self.user.username}: {self.body[:30]}"
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -31,6 +31,14 @@ const Messenger = (props) => {
         }
     };
 
+    const lastMessagePreview = (thread) => {
+        if (thread.messages.length >= 1) {
+            return thread.messages[thread.messages.length - 1].body;
+        } else {
+            return "No Messages";
+        }
+    };
+
     useEffect(() => {
         axios
             .get("http://127.0.0.1:8000/threads/", {
@@ -124,11 +132,7 @@ const Messenger = (props) => {
                                             colspan={24}
                                             style={{ overflow: "hidden" }}
                                         >
-                                            {
-                                                thread.messages[
-                                                    thread.messages.length - 1
-                                                ].body
-                                            }
+                                            {lastMessagePreview(thread)}
                                         </FlexboxGrid.Item>
                                     </Panel>
                                 ))}
@@ -137,7 +141,7 @@ const Messenger = (props) => {
                 </Container>
             </FlexboxGrid.Item>
             &nbsp;
-            <FlexboxGrid.Item colspan={10}>
+            <FlexboxGrid.Item colspan={18}>
                 <Container>
                     <Header>
                         <Panel bordered>
@@ -184,29 +188,31 @@ const Messenger = (props) => {
                                         )}
                                 </Container>
                                 {selectedThread && (
-                                <Footer
-                                style={{ position: "sticky", bottom: "0" }}
-                            >
-                                <Form
-                                    onSubmit={sendMessage}
-                                    style={{ marginTop: "0.5rem" }}
-                                >
-                                    <InputGroup size="lg">
-                                        <Input
-                                            value={input}
-                                            onChange={(event) =>
-                                                setInput(event)
-                                            }
-                                            required
-                                        />
-                                        <InputGroup.Button type="submit">
-                                            <SendIcon />
-                                        </InputGroup.Button>
-                                    </InputGroup>
-                                </Form>
-                            </Footer>
+                                    <Footer
+                                        style={{
+                                            position: "sticky",
+                                            bottom: "0",
+                                        }}
+                                    >
+                                        <Form
+                                            onSubmit={sendMessage}
+                                            style={{ marginTop: "0.5rem" }}
+                                        >
+                                            <InputGroup size="lg">
+                                                <Input
+                                                    value={input}
+                                                    onChange={(event) =>
+                                                        setInput(event)
+                                                    }
+                                                    required
+                                                />
+                                                <InputGroup.Button type="submit">
+                                                    <SendIcon />
+                                                </InputGroup.Button>
+                                            </InputGroup>
+                                        </Form>
+                                    </Footer>
                                 )}
-
                             </Container>
                         </Panel>
                     </Content>

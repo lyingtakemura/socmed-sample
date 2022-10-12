@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
@@ -13,6 +14,20 @@ class PostViewSet(
 ):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
+
+
+    def list(self, request):
+        '''
+        To serialize a queryset or list of objects instead of a single object
+        instance, you should set many=True flag when instantiating serializer.
+
+        Get only posts of users which current user is following and self
+        '''
+        queryset = Post.objects.filter(
+            Q(user__in=self.request.user.following.all()) | Q(user=self.request.user)
+        ).order_by('-created_at')
+        serializer = PostSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         '''

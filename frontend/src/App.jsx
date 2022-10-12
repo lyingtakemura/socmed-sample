@@ -3,9 +3,9 @@ import "./css/App.css";
 import "rsuite/dist/rsuite.min.css";
 import Feed from "./pages/Feed";
 import Messenger from "./pages/Messenger";
-import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import Register from "./pages/Register";
+import Search from "./pages/Search";
 
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -59,9 +59,9 @@ const App = () => {
                     }
                 />
                 <Route
-                    path="about"
+                    path="search"
                     element={
-                        !currentUser ? <Navigate to="/login" /> : <AboutPage />
+                        !currentUser ? <Navigate to="/login" /> : <Search />
                     }
                 />
                 <Route

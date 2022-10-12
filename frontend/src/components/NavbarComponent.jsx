@@ -8,9 +8,9 @@ import { Navbar, Nav } from "rsuite";
 
 import Feed from "../pages/Feed";
 import Messenger from "../pages/Messenger";
-import AboutPage from "../pages/AboutPage";
 import LoginPage from "../pages/LoginPage";
 import Register from "../pages/Register";
+import Search from "../pages/Search";
 
 export function NavbarComponent() {
     let currentUser = useSelector((state) => state.users.currentUser);
@@ -27,8 +27,8 @@ export function NavbarComponent() {
                     <Nav.Item as={Link} to="/messenger" element={<Messenger />}>
                         Messenger
                     </Nav.Item>
-                    <Nav.Item as={Link} to="/about" element={<AboutPage />}>
-                        About
+                    <Nav.Item as={Link} to="/search" element={<Search />}>
+                        Search
                     </Nav.Item>
                 </Nav>
             )}

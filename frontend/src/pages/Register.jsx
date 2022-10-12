@@ -32,7 +32,7 @@ const LoginPage = () => {
 
                 setTimeout(() => {
                     navigate("/login");
-                }, 3000);
+                }, 2000);
             })
             .catch((error) => {
                 console.log(error.response);
@@ -75,17 +75,15 @@ const LoginPage = () => {
                 <FlexboxGrid.Item colspan={10}>
                     <Form onSubmit={handleSubmit} fluid>
                         <Form.Group controlId="email">
-                            {/* <Form.ControlLabel>Username</Form.ControlLabel> */}
                             <Form.Control
                                 name="email"
                                 value={email}
                                 onChange={(event) => setEmail(event)}
                                 required
-                                placeholder="Username"
+                                placeholder="Email"
                             />
                         </Form.Group>
                         <Form.Group controlId="username">
-                            {/* <Form.ControlLabel>Username</Form.ControlLabel> */}
                             <Form.Control
                                 name="username"
                                 value={username}
@@ -95,7 +93,6 @@ const LoginPage = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="password">
-                            {/* <Form.ControlLabel>Password</Form.ControlLabel> */}
                             <Form.Control
                                 name="password"
                                 value={password}
@@ -107,7 +104,6 @@ const LoginPage = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="rePassword">
-                            {/* <Form.ControlLabel>Password</Form.ControlLabel> */}
                             <Form.Control
                                 name="password"
                                 value={rePassword}

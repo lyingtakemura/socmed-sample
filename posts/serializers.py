@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from users.serializers import UserSerializer
 
 from posts.models import Comment, Post
 
@@ -12,7 +13,7 @@ class PostSerializer(serializers.ModelSerializer):
     a representation, but is not used when creating or updating an instance
     during deserialization.
     '''
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Post
