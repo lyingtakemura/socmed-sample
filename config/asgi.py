@@ -11,7 +11,7 @@ import os
 
 # from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-from chat.routing import ws_urlpatterns
+from messenger.routing import ws_urlpatterns
 from django.core.asgi import get_asgi_application
 
 from config.middleware import TokenAuthMiddleware
