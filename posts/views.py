@@ -12,9 +12,8 @@ class PostViewSet(
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin
 ):
-    queryset = Post.objects.all().order_by('-created_at')
+    queryset = Post.objects.all()
     serializer_class = PostSerializer
-
 
     def list(self, request):
         '''
@@ -46,7 +45,6 @@ class CommentViewSet(
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
 ):
-
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

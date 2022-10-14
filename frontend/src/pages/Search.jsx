@@ -61,7 +61,7 @@ const Search = () => {
             .post(
                 `http://127.0.0.1:8000/threads/`,
                 {
-                    type: "personal",
+                    // type: "personal",
                     users: [id, currentUser.id],
                 },
                 {
