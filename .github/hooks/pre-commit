@@ -1,0 +1,2 @@
+#!/bin/sh
+exec black /. --verbose --check --exclude frontend --exclude venv
