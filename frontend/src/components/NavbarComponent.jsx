@@ -22,7 +22,7 @@ export function NavbarComponent() {
     const dispatch = useDispatch();
 
     return (
-        <Navbar style={{ fontWeight: "bold" }}>
+        <Navbar>
             <Navbar.Brand href="#">SOCMED-SAMPLE </Navbar.Brand>
             {currentUser && (
                 <Nav>
@@ -74,7 +74,6 @@ export function NavbarComponent() {
                         <Nav.Menu
                             title={currentUser.username}
                             icon={<MenuIcon />}
-
                             // <Avatar
                             //     size="sm"
                             //     circle
@@ -86,7 +85,6 @@ export function NavbarComponent() {
                                 href="#"
                                 onClick={() => dispatch(logout())}
                                 icon={<ExitIcon />}
-                                style={{ fontWeight: "bold" }}
                             >
                                 Logout
                             </Nav.Item>
