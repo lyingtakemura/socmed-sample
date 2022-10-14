@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./css/App.css";
 import "rsuite/dist/rsuite.min.css";
-import Feed from "./pages/Feed";
+import Home from "./pages/Home";
 import Messenger from "./pages/Messenger";
 import LoginPage from "./pages/LoginPage";
 import Register from "./pages/Register";
@@ -46,7 +46,7 @@ const App = () => {
             <Route path="/" element={<LayoutsWithNavbar />}>
                 <Route
                     path="/"
-                    element={!currentUser ? <Navigate to="/login" /> : <Feed />}
+                    element={!currentUser ? <Navigate to="/login" /> : <Home />}
                 />
                 <Route
                     path="messenger"

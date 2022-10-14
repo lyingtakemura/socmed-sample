@@ -96,7 +96,7 @@ const Messenger = (props) => {
 
     return (
         <FlexboxGrid justify="center" style={{ marginTop: "0.5rem" }}>
-            <FlexboxGrid.Item colspan={4}>
+            <FlexboxGrid.Item colspan={6}>
                 <Container>
                     <Header>
                         <Panel bordered>SEARCH_INPUT</Panel>
@@ -141,7 +141,7 @@ const Messenger = (props) => {
                 </Container>
             </FlexboxGrid.Item>
             &nbsp;
-            <FlexboxGrid.Item colspan={18}>
+            <FlexboxGrid.Item colspan={16}>
                 <Container>
                     <Header>
                         <Panel bordered>
