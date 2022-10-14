@@ -1,5 +1,4 @@
 exclude: ^(venv/|frontend/)
-verbose: true
 repos:
   - repo: https://github.com/psf/black
     rev: 22.10.0
