@@ -9,4 +9,5 @@ exclude = [
     .env,
 ]
 
-max-line-length = 80
+max-line-length = 88
+extend-ignore = E203
