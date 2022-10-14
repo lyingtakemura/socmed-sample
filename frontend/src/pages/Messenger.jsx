@@ -99,7 +99,9 @@ const Messenger = (props) => {
             <FlexboxGrid.Item colspan={6}>
                 <Container>
                     <Header>
-                        <Panel bordered>SEARCH_INPUT</Panel>
+                        <Panel bordered style={{ fontWeight: "bold" }}>
+                            SEARCH_INPUT
+                        </Panel>
                     </Header>
                     <Content>
                         <Panel
@@ -116,7 +118,10 @@ const Messenger = (props) => {
                                             getThread(event, thread)
                                         }
                                     >
-                                        <FlexboxGrid.Item colspan={24}>
+                                        <FlexboxGrid.Item
+                                            colspan={24}
+                                            style={{ fontWeight: "bold" }}
+                                        >
                                             {thread.type === "group" &&
                                                 thread.type + ": "}
                                             {thread.users
@@ -144,7 +149,7 @@ const Messenger = (props) => {
             <FlexboxGrid.Item colspan={16}>
                 <Container>
                     <Header>
-                        <Panel bordered>
+                        <Panel bordered style={{ fontWeight: "bold" }}>
                             {selectedThread
                                 ? selectedThread.users
                                       .filter(
