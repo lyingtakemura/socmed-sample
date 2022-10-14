@@ -5,9 +5,8 @@ from channels.generic.websocket import WebsocketConsumer
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
         print(self.channel_name)
-        self.room_name = 'broadcast'
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_name, self.channel_name)
+        self.room_name = "broadcast"
+        async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
         self.accept()
 
     def receive(self, text_data=None):
@@ -24,4 +23,5 @@ class ChatConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
-            self.room_name, self.channel_name)
+            self.room_name, self.channel_name
+        )

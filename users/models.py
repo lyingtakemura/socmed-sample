@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    '''
+    """
     When Django processes this model, it identifies that it has a
     ManyToManyField on itself, and as a result, it doesn't add a followers
     attribute to the User class. Instead, the ManyToManyField is assumed to be
@@ -15,6 +15,11 @@ class User(AbstractUser):
     to be non-symmetrical.
 
     blank=True - means that field is not required
-    '''
-    following = models.ManyToManyField('self', related_name='following_set', symmetrical=False, blank=True)
-    followers = models.ManyToManyField('self', related_name='followers_set', symmetrical=False, blank=True)
+    """
+
+    following = models.ManyToManyField(
+        "self", related_name="following_set", symmetrical=False, blank=True
+    )
+    followers = models.ManyToManyField(
+        "self", related_name="followers_set", symmetrical=False, blank=True
+    )

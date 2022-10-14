@@ -21,17 +21,17 @@ from rest_framework import routers
 from users.views import UserViewSet
 
 router = routers.SimpleRouter()
-router.register(r'posts', PostViewSet)
-router.register(r'comments', CommentViewSet)
-router.register(r'messages', MessageViewSet)
-router.register(r'threads', ThreadViewSet)
-router.register(r'users', UserViewSet)
+router.register(r"posts", PostViewSet)
+router.register(r"comments", CommentViewSet)
+router.register(r"messages", MessageViewSet)
+router.register(r"threads", ThreadViewSet)
+router.register(r"users", UserViewSet)
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    re_path(r'^auth/', include('djoser.urls')),
-    re_path(r'^auth/', include('djoser.urls.authtoken')),
+    path("admin/", admin.site.urls),
+    re_path(r"^auth/", include("djoser.urls")),
+    re_path(r"^auth/", include("djoser.urls.authtoken")),
 ]
 
 urlpatterns += router.urls

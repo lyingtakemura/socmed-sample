@@ -4,10 +4,10 @@ from users.models import User
 
 class Thread(models.Model):
     THREAD_TYPE = (  # first - actual value, second - human-readable name
-        ('personal', 'personal'),
-        ('group', 'group')
+        ("personal", "personal"),
+        ("group", "group"),
     )
-    type = models.CharField(max_length=8, choices=THREAD_TYPE, default='personal')
+    type = models.CharField(max_length=8, choices=THREAD_TYPE, default="personal")
     users = models.ManyToManyField(User)
 
     def __str__(self):
@@ -16,7 +16,12 @@ class Thread(models.Model):
     @classmethod
     def get_or_create_personal_thread(cls, users):
         user1, user2 = users
-        obj = Thread.objects.filter(type="personal").filter(users=user1).filter(users=user2).exists()
+        obj = (
+            Thread.objects.filter(type="personal")
+            .filter(users=user1)
+            .filter(users=user2)
+            .exists()
+        )
         if not obj and len(users) >= 2:
             qs = Thread.objects.create(type="personal")
             qs.users.set(users)
@@ -29,5 +34,4 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "Message from: {}".format(
-            self.sender.username)
+        return "Message from: {}".format(self.sender.username)
