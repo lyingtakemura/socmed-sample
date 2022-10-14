@@ -21,29 +21,20 @@ class ThreadViewSet(
 
     def perform_create(self, serializer):
         '''
-        The pre_save and post_save hooks no longer exist, but are replaced with
-        perform_create(self, serializer) and perform_update(self, serializer).
-        These methods should save the object instance by calling
-        serializer.save(), adding in any additional arguments as required.
-        They may also perform any custom pre-save or post-save behavior.
-
         Check if input combination of thread type and users already exist.
         For personal thread also check if there's no more than 2 users.
 
         POST /threads {"type": str, "users": list}
         '''
-
         users = self.request.data['users']
         type = self.request.data['type']
 
-        if not Thread.objects.filter(type=type, users__in=users).exists():
-            if type == 'group':
-                thread = serializer.save()
-                thread.users.set(self.request.data['users'])
-
-            if type == 'personal' and not len(users) > 2:
-                thread = serializer.save()
-                thread.users.set(self.request.data['users'])
+        if type == 'personal':
+            user1, user2 = users
+            obj = Thread.objects.filter(type=type).filter(users=user1).filter(users=user2).exists()
+            if not obj and len(users) >= 2:
+                qs = Thread.objects.create(type=type)
+                qs.users.set(users)
 
 
 class MessageViewSet(

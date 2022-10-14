@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import {
-    FlexboxGrid,
-    Panel,
-    Input,
-    InputGroup,
-    Form,
-    Button,
-    Row,
-    Col,
-} from "rsuite";
-import SendIcon from "@rsuite/icons/Send";
+import { FlexboxGrid, Panel, ButtonToolbar, Button, Row, Col } from "rsuite";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
     let currentUser = useSelector((state) => state.users.currentUser);
     const [users, setUsers] = useState("");
     const [input, setInput] = useState("");
+    let navigate = useNavigate();
 
     const getUsers = () => {
         axios
@@ -63,25 +55,34 @@ const Search = () => {
             });
     };
 
+    const sendMessage = (event, id) => {
+        console.log(id);
+        axios
+            .post(
+                `http://127.0.0.1:8000/threads/`,
+                {
+                    type: "personal",
+                    users: [id, currentUser.id],
+                },
+                {
+                    headers: {
+                        Authorization: "Token " + currentUser.token,
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response.data);
+                navigate("/messenger");
+            })
+            .catch((error) => {
+                console.log(error.response);
+            });
+    };
+
     return (
         <>
             <FlexboxGrid justify="center">
                 <FlexboxGrid.Item colspan={22}>
-                    {/* <Panel bordered style={{ marginTop: "0.5rem" }}>
-                        <Form onSubmit={() => console.log("search")}>
-                            <InputGroup size="lg">
-                                <Input
-                                    value={input}
-                                    onChange={(event) => setInput(event)}
-                                    required
-                                />
-                                <InputGroup.Button type="submit">
-                                    <SendIcon />
-                                </InputGroup.Button>
-                            </InputGroup>
-                        </Form>
-                    </Panel> */}
-
                     <Row>
                         {users &&
                             users.map((user) => (
@@ -102,26 +103,37 @@ const Search = () => {
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                         <hr />
-                                        <Button
-                                            appearance={
-                                                user.followers.includes(
+                                        <ButtonToolbar>
+                                            <Button
+                                                appearance={
+                                                    user.followers.includes(
+                                                        currentUser.id
+                                                    )
+                                                        ? "default"
+                                                        : "primary"
+                                                }
+                                                size="sm"
+                                                onClick={(event) =>
+                                                    toggleFollow(event, user.id)
+                                                }
+                                            >
+                                                {user.followers.includes(
                                                     currentUser.id
                                                 )
-                                                    ? "default"
-                                                    : "primary"
-                                            }
-                                            block
-                                            size="sm"
-                                            onClick={(event) =>
-                                                toggleFollow(event, user.id)
-                                            }
-                                        >
-                                            {user.followers.includes(
-                                                currentUser.id
-                                            )
-                                                ? "Following"
-                                                : "Follow"}
-                                        </Button>
+                                                    ? "Following"
+                                                    : "Follow"}
+                                            </Button>
+
+                                            <Button
+                                                appearance={"primary"}
+                                                size="sm"
+                                                onClick={(event) =>
+                                                    sendMessage(event, user.id)
+                                                }
+                                            >
+                                                Message
+                                            </Button>
+                                        </ButtonToolbar>
                                     </Panel>
                                 </Col>
                             ))}
