@@ -10,3 +10,8 @@ repos:
         # https://pre-commit.com/#top_level-default_language_version
         language_version: python3.9
         verbose: true
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.4
+    hooks:
+      - id: bandit
