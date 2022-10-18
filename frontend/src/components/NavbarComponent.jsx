@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { logout } from "../redux/usersSlice";
 
-import { Navbar, Nav, Avatar } from "rsuite";
+import { Navbar, Nav } from "rsuite";
 
 import Home from "../pages/Home";
 import Messenger from "../pages/Messenger";

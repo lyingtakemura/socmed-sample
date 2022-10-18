@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import {
-    FlexboxGrid,
-    Panel,
-    Input,
-    InputGroup,
-    Form,
-    PanelGroup,
-} from "rsuite";
+import { FlexboxGrid, Panel, Input, InputGroup, Form } from "rsuite";
 import ExpandOutlineIcon from "@rsuite/icons/ExpandOutline";
 
 const Home = () => {
@@ -29,7 +22,7 @@ const Home = () => {
             .catch((error) => {
                 console.log(error);
             });
-    }, []); // posts in useEffect dependency causes infinite axios request loop
+    }, [currentUser]); // posts in useEffect dependency causes infinite axios request loop
 
     const formatDateTime = (input) => {
         let time = new Date(input);

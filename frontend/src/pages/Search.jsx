@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FlexboxGrid, Panel, ButtonToolbar, Button, Row, Col } from "rsuite";
@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 const Search = () => {
     let currentUser = useSelector((state) => state.users.currentUser);
     const [users, setUsers] = useState("");
-    const [input, setInput] = useState("");
     let navigate = useNavigate();
 
-    const getUsers = () => {
+    const getUsers = useCallback(() => {
+        //  useCallback is a React Hook that lets you cache a function definition between re-renders
         axios
             .get("http://127.0.0.1:8000/users/", {
                 headers: {
@@ -24,11 +24,11 @@ const Search = () => {
             .catch((error) => {
                 console.log(error);
             });
-    };
+    }, [currentUser]);
 
     useEffect(() => {
         getUsers();
-    }, []);
+    }, [getUsers]);
 
     const toggleFollow = (event, id) => {
         console.log(id);
