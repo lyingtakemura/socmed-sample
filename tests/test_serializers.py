@@ -14,7 +14,6 @@ class TestPostSerializer:
 
     user = UserFactory.build()
 
-    @pytest.mark.unit
     def test_serialize_model(self):
         post = PostFactory.build()
         serializer = PostSerializer(post)
@@ -34,7 +33,6 @@ class TestMessageSerializer:
     class Meta:
         model = Message
 
-    @pytest.mark.unit
     def test_serialize_model(self):
         message = MessageFactory.build()
         serializer = MessageSerializer(message)
