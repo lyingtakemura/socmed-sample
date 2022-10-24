@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { logout } from "../redux/usersSlice";
 
-import { Navbar, Nav } from "rsuite";
+import { Navbar, Nav, Avatar } from "rsuite";
 
 import Home from "../pages/Home";
 import Messenger from "../pages/Messenger";
@@ -14,7 +14,6 @@ import Search from "../pages/Search";
 import SearchIcon from "@rsuite/icons/Search";
 import MessageIcon from "@rsuite/icons/Message";
 import HomeIcon from "@rsuite/icons/legacy/Home";
-import MenuIcon from "@rsuite/icons/Menu";
 import ExitIcon from "@rsuite/icons/Exit";
 
 export function NavbarComponent() {
@@ -71,15 +70,16 @@ export function NavbarComponent() {
 
                 {currentUser && (
                     <>
+                        {/* {JSON.stringify(currentUser)} */}
                         <Nav.Menu
                             title={currentUser.username}
-                            icon={<MenuIcon />}
-                            // <Avatar
-                            //     size="sm"
-                            //     circle
-                            //     src="..."
-                            //     alt="..."
-                            // />}
+                            icon={
+                                <Avatar
+                                    size="sm"
+                                    src={currentUser.image}
+                                    alt="?"
+                                />
+                            }
                         >
                             <Nav.Item
                                 href="#"

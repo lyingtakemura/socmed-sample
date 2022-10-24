@@ -35,6 +35,7 @@ const LoginPage = () => {
                             token: token,
                             username: details.username,
                             email: details.email,
+                            image: details.image,
                         };
                         dispatch(login(currentUser));
                         setUsername("");

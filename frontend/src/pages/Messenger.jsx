@@ -9,6 +9,8 @@ import {
     Header,
     Content,
     Footer,
+    Avatar,
+    List,
 } from "rsuite";
 import SendIcon from "@rsuite/icons/Send";
 import axios from "axios";
@@ -33,7 +35,10 @@ const Messenger = (props) => {
 
     const lastMessagePreview = (thread) => {
         if (thread.messages.length >= 1) {
-            return thread.messages[thread.messages.length - 1].body;
+            return thread.messages[thread.messages.length - 1].body.slice(
+                0,
+                30
+            );
         } else {
             return "No Messages";
         }
@@ -95,52 +100,74 @@ const Messenger = (props) => {
     };
 
     return (
-        <FlexboxGrid justify="center" style={{ marginTop: "0.5rem" }}>
-            <FlexboxGrid.Item colspan={6}>
+        <FlexboxGrid justify="center" style={{ margin: "0.5rem" }}>
+            <FlexboxGrid.Item colspan={6} style={{ marginRight: "0.5rem" }}>
                 <Container>
                     <Header>
                         <Panel bordered>SEARCH_INPUT</Panel>
                     </Header>
                     <Content>
-                        <Panel
+                        <List
+                            hover
                             bordered
                             style={{ height: "85vh", marginTop: "0.5rem" }}
                         >
                             {threads &&
                                 threads.map((thread) => (
-                                    <Panel
-                                        bordered
-                                        style={{ marginBottom: "0.5rem" }}
+                                    <List.Item
                                         key={thread.id}
                                         onClick={(event) =>
                                             getThread(event, thread)
                                         }
                                     >
-                                        <FlexboxGrid.Item colspan={24}>
-                                            {thread.type === "group" &&
-                                                thread.type + ": "}
-                                            {thread.users
-                                                .filter(
-                                                    (user) =>
-                                                        user.id !==
-                                                        currentUser.id
-                                                )
-                                                .map((user) => user.username)}
-                                        </FlexboxGrid.Item>
-
-                                        <FlexboxGrid.Item
-                                            colspan={24}
-                                            style={{ overflow: "hidden" }}
-                                        >
-                                            {lastMessagePreview(thread)}
-                                        </FlexboxGrid.Item>
-                                    </Panel>
+                                        <FlexboxGrid>
+                                            <FlexboxGrid align="middle">
+                                                <FlexboxGrid.Item
+                                                    style={{
+                                                        marginRight: "0.5rem",
+                                                    }}
+                                                >
+                                                    <Avatar
+                                                        size="md"
+                                                        src={
+                                                            "http://127.0.0.1:8000" +
+                                                            thread.users[0]
+                                                                .image
+                                                        }
+                                                        alt="?"
+                                                    />
+                                                </FlexboxGrid.Item>
+                                                <FlexboxGrid.Item>
+                                                    <FlexboxGrid.Item
+                                                        colspan={24}
+                                                    >
+                                                        {thread.type ===
+                                                            "group" &&
+                                                            thread.type + ": "}
+                                                        {thread.users
+                                                            .filter(
+                                                                (user) =>
+                                                                    user.id !==
+                                                                    currentUser.id
+                                                            )
+                                                            .map(
+                                                                (user) =>
+                                                                    user.username
+                                                            )}
+                                                        <br />
+                                                        {lastMessagePreview(
+                                                            thread
+                                                        )}
+                                                    </FlexboxGrid.Item>
+                                                </FlexboxGrid.Item>
+                                            </FlexboxGrid>
+                                        </FlexboxGrid>
+                                    </List.Item>
                                 ))}
-                        </Panel>
+                        </List>
                     </Content>
                 </Container>
             </FlexboxGrid.Item>
-            &nbsp;
             <FlexboxGrid.Item colspan={16}>
                 <Container>
                     <Header>

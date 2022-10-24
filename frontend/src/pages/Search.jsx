@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { FlexboxGrid, Panel, ButtonToolbar, Button, Row, Col } from "rsuite";
+import { FlexboxGrid, ButtonToolbar, Button, List, Avatar } from "rsuite";
 import { useNavigate } from "react-router-dom";
 
 const Search = () => {
@@ -18,7 +18,7 @@ const Search = () => {
                 },
             })
             .then((response) => {
-                // console.log(response.data);
+                console.log(response.data);
                 setUsers(response.data);
             })
             .catch((error) => {
@@ -80,67 +80,79 @@ const Search = () => {
     };
 
     return (
-        <>
-            <FlexboxGrid justify="center">
-                <FlexboxGrid.Item colspan={22}>
-                    <Row>
-                        {users &&
-                            users.map((user) => (
-                                <Col
-                                    md={6}
-                                    sm={24}
-                                    style={{ marginTop: "0.5rem" }}
-                                    key={user.id}
-                                >
-                                    <Panel bordered>
-                                        <FlexboxGrid justify="space-between">
-                                            <FlexboxGrid.Item colspan={5}>
-                                                {user.username}
-                                            </FlexboxGrid.Item>
-                                            <FlexboxGrid.Item colspan={5}>
-                                                Followers:{" "}
-                                                {user.followers.length}
-                                            </FlexboxGrid.Item>
-                                        </FlexboxGrid>
-                                        <hr />
-                                        <ButtonToolbar>
-                                            <Button
-                                                appearance={
-                                                    user.followers.includes(
-                                                        currentUser.id
-                                                    )
-                                                        ? "default"
-                                                        : "primary"
-                                                }
-                                                size="sm"
-                                                onClick={(event) =>
-                                                    toggleFollow(event, user.id)
-                                                }
-                                            >
-                                                {user.followers.includes(
+        <List hover bordered style={{ margin: "0.5rem" }}>
+            {users &&
+                users.map((user) => (
+                    <List.Item key={user.id}>
+                        <FlexboxGrid justify="space-between" align="middle">
+                            <FlexboxGrid.Item
+                                style={{
+                                    marginRight: "0.5rem",
+                                }}
+                            >
+                                <Avatar
+                                    size="lg"
+                                    src={"http://127.0.0.1:8000" + user.image}
+                                    alt="?"
+                                />
+                            </FlexboxGrid.Item>
+                            <FlexboxGrid.Item
+                                style={{
+                                    marginRight: "0.5rem",
+                                }}
+                            >
+                                {user.username}
+                            </FlexboxGrid.Item>
+                            <FlexboxGrid.Item
+                                style={{
+                                    marginRight: "0.5rem",
+                                }}
+                            >
+                                Followers: {user.followers.length}
+                            </FlexboxGrid.Item>
+                            <FlexboxGrid.Item
+                                style={{
+                                    marginRight: "0.5rem",
+                                }}
+                            >
+                                <FlexboxGrid.Item colspan={24}>
+                                    <ButtonToolbar>
+                                        <Button
+                                            appearance={
+                                                user.followers.includes(
                                                     currentUser.id
                                                 )
-                                                    ? "Following"
-                                                    : "Follow"}
-                                            </Button>
+                                                    ? "default"
+                                                    : "primary"
+                                            }
+                                            size="sm"
+                                            onClick={(event) =>
+                                                toggleFollow(event, user.id)
+                                            }
+                                        >
+                                            {user.followers.includes(
+                                                currentUser.id
+                                            )
+                                                ? "Following"
+                                                : "Follow"}
+                                        </Button>
 
-                                            <Button
-                                                appearance={"primary"}
-                                                size="sm"
-                                                onClick={(event) =>
-                                                    sendMessage(event, user.id)
-                                                }
-                                            >
-                                                Message
-                                            </Button>
-                                        </ButtonToolbar>
-                                    </Panel>
-                                </Col>
-                            ))}
-                    </Row>
-                </FlexboxGrid.Item>
-            </FlexboxGrid>
-        </>
+                                        <Button
+                                            appearance={"primary"}
+                                            size="sm"
+                                            onClick={(event) =>
+                                                sendMessage(event, user.id)
+                                            }
+                                        >
+                                            Message
+                                        </Button>
+                                    </ButtonToolbar>
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid.Item>
+                        </FlexboxGrid>
+                    </List.Item>
+                ))}
+        </List>
     );
 };
 
