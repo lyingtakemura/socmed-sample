@@ -23,3 +23,4 @@ class User(AbstractUser):
     followers = models.ManyToManyField(
         "self", related_name="followers_set", symmetrical=False, blank=True
     )
+    image = models.ImageField(upload_to="users/", blank=True)

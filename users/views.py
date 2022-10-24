@@ -17,7 +17,8 @@ class UserViewSet(
         To serialize a queryset or list of objects instead of a single object
         instance, you should set many=True flag when instantiating serializer.
 
-        If you need to execute more complex queries (for example, queries with OR statements), you can use Q objects.
+        If you need to execute more complex queries (for example, queries with OR
+        statements), you can use Q objects.
         """
         queryset = User.objects.filter(
             ~Q(id=self.request.user.id)
