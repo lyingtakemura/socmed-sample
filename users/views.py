@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from users.models import User
 from users.serializers import UserSerializer
+from rest_framework import filters
 
 
 class UserViewSet(
@@ -11,20 +12,22 @@ class UserViewSet(
 ):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["username"]
 
-    def list(self, request):
-        """
-        To serialize a queryset or list of objects instead of a single object
-        instance, you should set many=True flag when instantiating serializer.
+    # def list(self, request):
+    #     """
+    #     To serialize a queryset or list of objects instead of a single object
+    #     instance, you should set many=True flag when instantiating serializer.
 
-        If you need to execute more complex queries (for example, queries with OR
-        statements), you can use Q objects.
-        """
-        queryset = User.objects.filter(
-            ~Q(id=self.request.user.id)
-        )  # exclude self from response query
-        serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data)
+    #     If you need to execute more complex queries (for example, queries with OR
+    #     statements), you can use Q objects.
+    #     """
+    #     queryset = User.objects.filter(
+    #         ~Q(id=self.request.user.id)
+    #     )  # exclude self from response query
+    #     serializer = UserSerializer(queryset, many=True)
+    #     return Response(serializer.data)
 
     def perform_update(self, serializer):
         """

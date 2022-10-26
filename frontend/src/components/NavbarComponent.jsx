@@ -11,10 +11,12 @@ import Messenger from "../pages/Messenger";
 import LoginPage from "../pages/LoginPage";
 import Register from "../pages/Register";
 import Search from "../pages/Search";
+import User from "../pages/User";
 import SearchIcon from "@rsuite/icons/Search";
 import MessageIcon from "@rsuite/icons/Message";
 import HomeIcon from "@rsuite/icons/legacy/Home";
 import ExitIcon from "@rsuite/icons/Exit";
+import MenuIcon from "@rsuite/icons/Menu";
 
 export function NavbarComponent() {
     let currentUser = useSelector((state) => state.users.currentUser);
@@ -70,9 +72,10 @@ export function NavbarComponent() {
 
                 {currentUser && (
                     <>
-                        {/* {JSON.stringify(currentUser)} */}
-                        <Nav.Menu
-                            title={currentUser.username}
+                        <Nav.Item
+                            as={Link}
+                            to={"/" + currentUser.username}
+                            element={<User />}
                             icon={
                                 <Avatar
                                     size="sm"
@@ -81,6 +84,9 @@ export function NavbarComponent() {
                                 />
                             }
                         >
+                            {currentUser.username}
+                        </Nav.Item>
+                        <Nav.Menu title="More" icon={<MenuIcon />}>
                             <Nav.Item
                                 href="#"
                                 onClick={() => dispatch(logout())}

@@ -90,11 +90,7 @@ const Search = () => {
                                     marginRight: "0.5rem",
                                 }}
                             >
-                                <Avatar
-                                    size="lg"
-                                    src={"http://127.0.0.1:8000" + user.image}
-                                    alt="?"
-                                />
+                                <Avatar size="lg" src={user.image} alt="?" />
                             </FlexboxGrid.Item>
                             <FlexboxGrid.Item
                                 style={{
