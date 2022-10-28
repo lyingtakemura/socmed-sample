@@ -27,6 +27,32 @@ const User = () => {
             });
     }, [currentUser, params]);
 
+    const handleImageChange = (e) => {
+        let image = e.target.files[0];
+        let bodyFormData = new FormData();
+        bodyFormData.append("image", image); 
+        console.log(bodyFormData.get('image'));
+        axios
+            .patch(
+                `http://127.0.0.1:8000/users/${currentUser.id}/`,
+                {
+                    image: bodyFormData.get("image"),
+                },
+                {
+                    headers: {
+                        Authorization: "Token " + currentUser.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error.response);
+            });
+    };
+
     return (
         <>
             {user && (
@@ -51,6 +77,14 @@ const User = () => {
                                                 src={user.image}
                                                 alt={user.username}
                                             />{" "}
+                                            <input
+                                                type="file"
+                                                name="image_url"
+                                                accept="image/jpeg,image/png,image/gif"
+                                                onChange={(e) => {
+                                                    handleImageChange(e);
+                                                }}
+                                            />
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item colspan={18} sm={24}>
                                             <FlexboxGrid justify="space-between">
