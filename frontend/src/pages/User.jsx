@@ -3,11 +3,14 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { FlexboxGrid, Panel, Avatar } from "rsuite";
 import { useParams } from "react-router-dom";
+import { update } from "../redux/usersSlice";
+import { useDispatch } from "react-redux";
 
 const User = () => {
     let currentUser = useSelector((state) => state.users.currentUser);
     let params = useParams();
     const [user, setUser] = useState("");
+    const dispatch = useDispatch();
 
     useEffect(() => {
         axios
@@ -29,14 +32,14 @@ const User = () => {
 
     const handleImageChange = (e) => {
         let image = e.target.files[0];
-        let bodyFormData = new FormData();
-        bodyFormData.append("image", image); 
-        console.log(bodyFormData.get('image'));
+        let input = new FormData();
+        input.append("image", image);
+        // console.log(input.get("image"));
         axios
             .patch(
                 `http://127.0.0.1:8000/users/${currentUser.id}/`,
                 {
-                    image: bodyFormData.get("image"),
+                    image: input.get("image"),
                 },
                 {
                     headers: {
@@ -46,7 +49,7 @@ const User = () => {
                 }
             )
             .then((response) => {
-                console.log(response.data);
+                dispatch(update(response.data["image"]));
             })
             .catch((error) => {
                 console.log(error.response);
