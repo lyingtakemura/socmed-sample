@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { FlexboxGrid, Panel, Avatar } from "rsuite";
+import { FlexboxGrid, Panel } from "rsuite";
 import { useParams } from "react-router-dom";
 import { update } from "../redux/usersSlice";
 import { useDispatch } from "react-redux";
@@ -59,63 +59,55 @@ const User = () => {
     return (
         <>
             {user && (
-                <FlexboxGrid justify="center" align="middle">
-                    <FlexboxGrid.Item colspan={12} md={24}>
-                        <FlexboxGrid justify="space-between" align="middle">
-                            <FlexboxGrid.Item colspan={24}>
-                                <Panel
-                                    bordered
-                                    style={{
-                                        marginTop: "0.5rem",
-                                        marginBottom: "0.5rem",
-                                    }}
-                                >
-                                    <FlexboxGrid
-                                        justify="space-between"
-                                        align="middle"
-                                    >
-                                        <FlexboxGrid.Item colspan={6} sm={24}>
-                                            <Avatar
-                                                size="lg"
-                                                src={user.image}
-                                                alt={user.username}
-                                            />{" "}
-                                            <input
-                                                type="file"
-                                                name="image_url"
-                                                accept="image/jpeg,image/png,image/gif"
-                                                onChange={(e) => {
-                                                    handleImageChange(e);
-                                                }}
-                                            />
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item colspan={18} sm={24}>
-                                            <FlexboxGrid justify="space-between">
-                                                <FlexboxGrid.Item colspan={24}>
-                                                    {user.username}
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item colspan={12}>
-                                                    Followers:{" "}
-                                                    {user.followers.length}
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item colspan={12}>
-                                                    Following:{" "}
-                                                    {user.following.length}
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid>
-                                </Panel>
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item colspan={24}>
-                                <Panel
-                                    bordered
-                                    style={{ marginBottom: "0.5rem" }}
-                                >
-                                    USER_POSTS
-                                </Panel>
-                            </FlexboxGrid.Item>
-                        </FlexboxGrid>
+                <FlexboxGrid justify="center" align="top">
+                    <FlexboxGrid.Item>
+                        <Panel
+                            shaded
+                            bordered
+                            bodyFill
+                            style={{
+                                display: "inline-block",
+                                width: 400,
+                                marginTop: "0.5rem",
+                                marginRight: "0.5rem",
+                            }}
+                        >
+                            <img
+                                src={user.image}
+                                height="400px"
+                                width="400px"
+                                alt="?"
+                                style={{
+                                    objectFit: "cover",
+                                    verticalAlign: "center",
+                                }}
+                            />
+                            <Panel header={user.username}>
+                                {user.id === currentUser.id && (
+                                    <input
+                                        type="file"
+                                        name="image_url"
+                                        accept="image/jpeg,image/png"
+                                        onChange={(e) => {
+                                            handleImageChange(e);
+                                        }}
+                                    />
+                                )}
+                                <p>Followers: {user.followers.length}</p>
+                                <p>Following: {user.following.length}</p>
+                            </Panel>
+                        </Panel>
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item colspan={12}>
+                        <Panel
+                            bordered
+                            style={{
+                                marginBottom: "0.5rem",
+                                marginTop: "0.5rem",
+                            }}
+                        >
+                            USER_POSTS
+                        </Panel>
                     </FlexboxGrid.Item>
                 </FlexboxGrid>
             )}

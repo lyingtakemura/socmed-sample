@@ -101,7 +101,7 @@ const Messenger = (props) => {
 
     return (
         <FlexboxGrid justify="center" style={{ margin: "0.5rem" }}>
-            <FlexboxGrid.Item colspan={6} style={{ marginRight: "0.5rem" }}>
+            <FlexboxGrid.Item colspan={6}>
                 <Container>
                     <Header>
                         <Panel bordered>SEARCH_INPUT</Panel>
@@ -131,8 +131,7 @@ const Messenger = (props) => {
                                                         size="md"
                                                         src={
                                                             "http://127.0.0.1:8000" +
-                                                            thread.users[0]
-                                                                .image
+                                                            thread.users.filter(user => user.id !== currentUser.id)[0].image
                                                         }
                                                         alt="?"
                                                     />
@@ -168,7 +167,7 @@ const Messenger = (props) => {
                     </Content>
                 </Container>
             </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={16}>
+            <FlexboxGrid.Item colspan={18}>
                 <Container>
                     <Header>
                         <Panel bordered>

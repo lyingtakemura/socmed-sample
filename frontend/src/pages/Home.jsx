@@ -58,7 +58,7 @@ const Home = () => {
     return (
         <>
             <FlexboxGrid justify="center" style={{ margin: "0.5rem" }}>
-                <FlexboxGrid.Item colspan={22}>
+                <FlexboxGrid.Item colspan={12} sm ={24}>
                     <Form
                         onSubmit={sendPost}
                         style={{
