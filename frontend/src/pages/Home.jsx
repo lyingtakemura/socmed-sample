@@ -24,9 +24,16 @@ const Home = () => {
             });
     }, [currentUser]); // posts in useEffect dependency causes infinite axios request loop
 
-    const formatDateTime = (input) => {
-        let time = new Date(input);
-        let result = `on ${time.getDate()}/${time.getMonth()}/${time.getFullYear()} at ${time.getHours()}:${time.getMinutes()}`;
+    const formatPostTimestamp = (input) => {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+            year: "2-digit",
+            month: "2-digit",
+            day: "2-digit",
+            minute: "2-digit",
+            hour: "2-digit",
+        });
+        const date = new Date(input);
+        const result = formatter.format(date);
         return result;
     };
 
@@ -58,7 +65,7 @@ const Home = () => {
     return (
         <>
             <FlexboxGrid justify="center" style={{ margin: "0.5rem" }}>
-                <FlexboxGrid.Item colspan={12} sm ={24}>
+                <FlexboxGrid.Item colspan={12} sm={24}>
                     <Form
                         onSubmit={sendPost}
                         style={{
@@ -86,10 +93,13 @@ const Home = () => {
                                 <Panel
                                     header={`${
                                         post.user.username
-                                    } ${formatDateTime(post.created_at)}:`}
+                                    } ${formatPostTimestamp(post.created_at)}:`}
                                     key={post.id}
                                     bordered
-                                    style={{ marginBottom: "0.5rem" }}
+                                    style={{
+                                        marginBottom: "0.5rem",
+                                        backgroundColor: "#30373D",
+                                    }}
                                 >
                                     {post.body}
                                 </Panel>

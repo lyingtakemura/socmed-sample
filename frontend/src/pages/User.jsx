@@ -70,6 +70,7 @@ const User = () => {
                                 width: 400,
                                 marginTop: "0.5rem",
                                 marginRight: "0.5rem",
+                                backgroundColor: "#30373D",
                             }}
                         >
                             <img

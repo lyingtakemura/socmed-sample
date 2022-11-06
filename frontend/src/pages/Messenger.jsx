@@ -44,6 +44,16 @@ const Messenger = (props) => {
         }
     };
 
+    const formatMessageTimestamp = (input) => {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+            minute: "2-digit",
+            hour: "2-digit",
+        });
+        const date = new Date(input);
+        const result = formatter.format(date);
+        return result;
+    };
+
     useEffect(() => {
         axios
             .get("http://127.0.0.1:8000/threads/", {
@@ -104,13 +114,24 @@ const Messenger = (props) => {
             <FlexboxGrid.Item colspan={6}>
                 <Container>
                     <Header>
-                        <Panel bordered>SEARCH_INPUT</Panel>
+                        <Panel
+                            bordered
+                            style={{
+                                marginRight: "0.5rem",
+                            }}
+                        >
+                            SEARCH_INPUT
+                        </Panel>
                     </Header>
                     <Content>
                         <List
                             hover
                             bordered
-                            style={{ height: "85vh", marginTop: "0.5rem" }}
+                            style={{
+                                height: "85vh",
+                                marginTop: "0.5rem",
+                                marginRight: "0.5rem",
+                            }}
                         >
                             {threads &&
                                 threads.map((thread) => (
@@ -131,7 +152,11 @@ const Messenger = (props) => {
                                                         size="md"
                                                         src={
                                                             "http://127.0.0.1:8000" +
-                                                            thread.users.filter(user => user.id !== currentUser.id)[0].image
+                                                            thread.users.filter(
+                                                                (user) =>
+                                                                    user.id !==
+                                                                    currentUser.id
+                                                            )[0].image
                                                         }
                                                         alt="?"
                                                     />
@@ -167,17 +192,22 @@ const Messenger = (props) => {
                     </Content>
                 </Container>
             </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={18}>
+            <FlexboxGrid.Item colspan={12}>
                 <Container>
                     <Header>
-                        <Panel bordered>
+                        <Panel
+                            bordered
+                            style={{
+                                marginRight: "0.5rem",
+                            }}
+                        >
                             {selectedThread
                                 ? selectedThread.users
                                       .filter(
                                           (user) => user.id !== currentUser.id
                                       )
                                       .map((user) => user.username)
-                                : "Select Thread"}
+                                : "SELECT_THREAD"}
                         </Panel>
                     </Header>
                     <Content>
@@ -187,10 +217,11 @@ const Messenger = (props) => {
                                 height: "85vh",
                                 overflowY: "auto",
                                 marginTop: "0.5rem",
+                                marginRight: "0.5rem",
                             }}
                         >
                             <Container>
-                                <Container style={{ minHeight: "80vh" }}>
+                                <Container style={{ minHeight: "85vh" }}>
                                     {selectedThread["messages"] &&
                                         selectedThread["messages"].map(
                                             (message) => (
@@ -199,16 +230,34 @@ const Messenger = (props) => {
                                                     key={message.id}
                                                     style={{
                                                         marginBottom: "0.5rem",
+                                                        padding: "1px",
+                                                        width: "50%",
+                                                        marginLeft:
+                                                            message.sender ===
+                                                                currentUser.id &&
+                                                            "50%",
+                                                        backgroundColor:
+                                                            message.sender ===
+                                                            currentUser.id
+                                                                ? "#445764"
+                                                                : "#30373D",
                                                     }}
-                                                    align={
-                                                        message.sender ===
-                                                        currentUser.id
-                                                            ? "right"
-                                                            : ""
-                                                    }
                                                 >
-                                                    {message.body} |{" "}
-                                                    {message.created_at}
+                                                    <FlexboxGrid
+                                                        justify="space-between"
+                                                        align="middle"
+                                                    >
+                                                        <FlexboxGrid.Item>
+                                                            {message.body}
+                                                        </FlexboxGrid.Item>
+                                                        <FlexboxGrid.Item>
+                                                            <small>
+                                                                {formatMessageTimestamp(
+                                                                    message.created_at
+                                                                )}
+                                                            </small>
+                                                        </FlexboxGrid.Item>
+                                                    </FlexboxGrid>
                                                 </Panel>
                                             )
                                         )}
@@ -241,6 +290,23 @@ const Messenger = (props) => {
                                 )}
                             </Container>
                         </Panel>
+                    </Content>
+                </Container>
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={6}>
+                <Container>
+                    <Header>
+                        <Panel bordered>CONVERSATION_DETAILS</Panel>
+                    </Header>
+                    <Content>
+                        <Panel
+                            bordered
+                            style={{
+                                height: "85vh",
+                                overflowY: "auto",
+                                marginTop: "0.5rem",
+                            }}
+                        ></Panel>
                     </Content>
                 </Container>
             </FlexboxGrid.Item>

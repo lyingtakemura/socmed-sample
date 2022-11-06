@@ -23,7 +23,7 @@ export function NavbarComponent() {
     const dispatch = useDispatch();
 
     return (
-        <Navbar>
+        <Navbar style={{ position: "sticky", top: "0", zIndex: "9999" }}>
             <Navbar.Brand href="#">SOCMED-SAMPLE </Navbar.Brand>
             {currentUser && (
                 <Nav>

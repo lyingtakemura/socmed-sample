@@ -78,7 +78,7 @@ const Search = () => {
 
     return (
         <FlexboxGrid justify="center" align="middle">
-            <FlexboxGrid.Item colspan={10} sm={24}>
+            <FlexboxGrid.Item colspan={12} sm={24}>
                 <List hover bordered style={{ margin: "0.5rem" }}>
                     {users &&
                         users.map((user) => (
@@ -91,6 +91,9 @@ const Search = () => {
                                         style={{
                                             marginRight: "0.5rem",
                                         }}
+                                        onClick={() =>
+                                            navigate(`/${user.username}`)
+                                        }
                                     >
                                         <Avatar
                                             size="lg"
@@ -102,7 +105,9 @@ const Search = () => {
                                         style={{
                                             marginRight: "0.5rem",
                                         }}
-                                        onClick={() => navigate(`/${user.username}`)}
+                                        onClick={() =>
+                                            navigate(`/${user.username}`)
+                                        }
                                     >
                                         {user.username}
                                     </FlexboxGrid.Item>
