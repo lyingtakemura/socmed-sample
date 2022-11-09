@@ -37,13 +37,15 @@ class UserViewSet(
         serializer.save(), adding in any additional arguments as required.
         They may also perform any custom pre-save or post-save behavior.
 
-        Check if input combination of thread type and users already exist.
-        For personal thread also check if there's no more than 2 users.
-
         - Follow/Unfollow:
         PATCH /users/<int:current_user_id> {"follow": int}
+
+        - Remove user image:
+        PATCH /users/<int:current_user_id> {"image": ""}
         """
 
+        # Check if input combination of thread type and users already exist.
+        # For personal thread also check if there's no more than 2 users.
         if self.request.data.get("follow"):
             current_user = self.request.user
             selected_user = User.objects.get(id=self.request.data.get("follow"))
@@ -55,5 +57,9 @@ class UserViewSet(
             else:
                 current_user.following.add(selected_user)
                 selected_user.followers.add(current_user)
+
+        # On user image update request delete previous file
+        if self.request.data.get("image"):
+            self.request.user.image.delete()
 
         serializer.save()

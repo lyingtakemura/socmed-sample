@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { FlexboxGrid, Panel } from "rsuite";
+import { FlexboxGrid, Panel, Button } from "rsuite";
 import { useParams } from "react-router-dom";
 import { update } from "../redux/usersSlice";
 import { useDispatch } from "react-redux";
@@ -34,7 +34,6 @@ const User = () => {
         let image = e.target.files[0];
         let input = new FormData();
         input.append("image", image);
-        // console.log(input.get("image"));
         axios
             .patch(
                 `http://127.0.0.1:8000/users/${currentUser.id}/`,
@@ -50,6 +49,28 @@ const User = () => {
             )
             .then((response) => {
                 dispatch(update(response.data["image"]));
+            })
+            .catch((error) => {
+                console.log(error.response);
+            });
+    };
+
+    const deleteImage = (e) => {
+        axios
+            .patch(
+                `http://127.0.0.1:8000/users/${currentUser.id}/`,
+                {
+                    image: "",
+                },
+                {
+                    headers: {
+                        Authorization: "Token " + currentUser.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            )
+            .then((response) => {
+                dispatch(update(""));
             })
             .catch((error) => {
                 console.log(error.response);
@@ -83,6 +104,13 @@ const User = () => {
                                     verticalAlign: "center",
                                 }}
                             />
+                            <Button
+                                onClick={(e) => {
+                                    deleteImage(e);
+                                }}
+                            >
+                                Delete Image
+                            </Button>
                             <Panel header={user.username}>
                                 {user.id === currentUser.id && (
                                     <input
