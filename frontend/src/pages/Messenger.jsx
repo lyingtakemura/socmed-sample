@@ -151,7 +151,6 @@ const Messenger = (props) => {
                                                     <Avatar
                                                         size="md"
                                                         src={
-                                                            "http://127.0.0.1:8000" +
                                                             thread.users.filter(
                                                                 (user) =>
                                                                     user.id !==

@@ -30,6 +30,8 @@ class UserViewSet(
     #     return Response(serializer.data)
 
     def perform_update(self, serializer):
+        print(dir(self.request))
+        print(self.request.data)
         """
         The pre_save and post_save hooks no longer exist, but are replaced with
         perform_create(self, serializer) and perform_update(self, serializer).

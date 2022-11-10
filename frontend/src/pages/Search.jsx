@@ -97,7 +97,11 @@ const Search = () => {
                                     >
                                         <Avatar
                                             size="lg"
-                                            src={user.image}
+                                            src={
+                                                user.image
+                                                    ? user.image
+                                                    : "https://via.placeholder.com/100"
+                                            }
                                             alt="?"
                                         />
                                     </FlexboxGrid.Item>
