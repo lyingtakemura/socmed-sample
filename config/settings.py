@@ -165,7 +165,7 @@ DJOSER = {
 }
 
 
-if os.getenv("USE_S3"):
+if os.getenv("USE_S3") is True:
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
     STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
 

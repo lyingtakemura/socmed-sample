@@ -2,3 +2,5 @@
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 
 black ./ --verbose --check --exclude frontend --exclude venv
+
+poetry shell

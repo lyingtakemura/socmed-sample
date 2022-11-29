@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "socmed-sample"
+version = "0.1.0"
+description = ""
+authors = ["lyingtakemura <106205052+lyingtakemura@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "socmed_sample"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.1.3"
+djangorestframework = "^3.14.0"
+django-cors-headers = "^3.13.0"
+boto3 = "^1.26.19"
+bandit = "^1.7.4"
+black = "^22.10.0"
+flake8 = "^6.0.0"
+djoser = "^2.1.0"
+pytest = "^7.2.0"
+django-environ = "^0.9.0"
+channels = "^4.0.0"
+django-storages = "^1.13.1"
+psycopg2-binary = "^2.9.5"
+faker = "^15.3.3"
+factory-boy = "^3.2.1"
+pillow = "^9.3.0"
+pytest-django = "^4.5.2"
+pytest-mock = "^3.10.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
