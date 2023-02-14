@@ -1,12 +1,14 @@
-name: Lint
+name: Main
 
 on: [push, pull_request]
 
 jobs:
-  lint:
+  main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: psf/black@stable
         with:
           options: "--verbose --check --exclude frontend --exclude venv"
