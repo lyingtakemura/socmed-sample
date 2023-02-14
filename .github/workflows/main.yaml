@@ -11,4 +11,4 @@ jobs:
           fetch-depth: 0
       - uses: psf/black@stable
         with:
-          options: "--verbose --check --exclude migrations --exclude frontend"
+          options: "--verbose --check --exclude /migrations --exclude /frontend"
