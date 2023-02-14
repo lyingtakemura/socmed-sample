@@ -1,10 +1,10 @@
-from django.db.models import Q
-from rest_framework import mixins, viewsets
-from rest_framework.response import Response
+# from django.db.models import Q
+from rest_framework import filters, mixins, viewsets
 
 from users.models import User
 from users.serializers import UserSerializer
-from rest_framework import filters
+
+# from rest_framework.response import Response
 
 
 class UserViewSet(

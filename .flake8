@@ -9,4 +9,8 @@ exclude =
     __pycache__,
     venv,
     .env,
-    frontend
+    frontend,
+    tests,
+    tests.py,
+    migrations,
+    config,

@@ -1,4 +1,4 @@
-exclude: ^(venv/|frontend/|tests/)
+exclude: ^frontend/|tests/|migrations/|config/
 repos:
   - repo: https://github.com/psf/black
     rev: 23.1.0
@@ -10,3 +10,8 @@ repos:
     rev: 1.7.4
     hooks:
       - id: bandit
+
+  - repo: https://github.com/pycqa/flake8
+    rev: '6.0.0'
+    hooks:
+      - id: flake8
