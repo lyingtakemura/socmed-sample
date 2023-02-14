@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Run black formatter
+      - name: black . --verbose --diff --exclude /migrations/
         uses: psf/black@stable
         with:
           options: "--verbose --diff --exclude /migrations/"
