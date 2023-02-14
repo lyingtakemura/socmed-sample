@@ -5,7 +5,6 @@
 ```
 poetry shell
 poetry install
-poetry update
 
 black . --verbose --diff --exclude /migrations/
 flake8 .
