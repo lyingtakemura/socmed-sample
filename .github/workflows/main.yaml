@@ -1,14 +1,15 @@
-name: Main
+name: main
 
 on: [push, pull_request]
 
 jobs:
-  main:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: psf/black@stable
+      - name: Run black formatter
+        uses: psf/black@stable
         with:
           options: "--verbose --diff --exclude /migrations/"
