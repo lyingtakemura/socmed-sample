@@ -95,18 +95,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.70"
+version = "1.26.78"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.70-py3-none-any.whl", hash = "sha256:5324c2a9dbc271d2b25eb79f7469b422de411665f9ab1c0b410e8ac820859b1a"},
-    {file = "boto3-1.26.70.tar.gz", hash = "sha256:123cf34f3cc58772b4f806dfbb1ae9ffae47459de5088e971be9d3cd2b198975"},
+    {file = "boto3-1.26.78-py3-none-any.whl", hash = "sha256:0c593017fa49dbc34dcdbd5659208f2daf293a499d5f4d7e61978cd6b5d72a97"},
+    {file = "boto3-1.26.78.tar.gz", hash = "sha256:488bf63d65864ab7fcdf9337c5aa4d825d444e253738a60f80789916bacc47dc"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.70,<1.30.0"
+botocore = ">=1.29.78,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -115,14 +115,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.70"
+version = "1.29.78"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.70-py3-none-any.whl", hash = "sha256:7d9abef42846c1c2f31dacaa559f8450f6fbda74c2c9e3dc6630e06e882ad026"},
-    {file = "botocore-1.29.70.tar.gz", hash = "sha256:caaa144f49ef0d01b5e8812c9afa729def2c3358d9c4d9204789be2b56c5e849"},
+    {file = "botocore-1.29.78-py3-none-any.whl", hash = "sha256:656ac8822a1b6c887a8efe1172bcefa9c9c450face26dc39998a249e8c340a23"},
+    {file = "botocore-1.29.78.tar.gz", hash = "sha256:2bee6ed037590ef1e4884d944486232871513915f12a8590c63e3bb6046479bf"},
 ]
 
 [package.dependencies]
@@ -731,14 +731,14 @@ smmap = ">=3.0.1,<6"
 
 [[package]]
 name = "gitpython"
-version = "3.1.30"
-description = "GitPython is a python library used to interact with Git repositories"
+version = "3.1.31"
+description = "GitPython is a Python library used to interact with Git repositories"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GitPython-3.1.30-py3-none-any.whl", hash = "sha256:cd455b0000615c60e286208ba540271af9fe531fa6a87cc590a7298785ab2882"},
-    {file = "GitPython-3.1.30.tar.gz", hash = "sha256:769c2d83e13f5d938b7688479da374c4e3d49f71549aaf462b646db9602ea6f8"},
+    {file = "GitPython-3.1.31-py3-none-any.whl", hash = "sha256:f04893614f6aa713a60cbbe1e6a97403ef633103cdd0ef5eb6efe0deb98dbe8d"},
+    {file = "GitPython-3.1.31.tar.gz", hash = "sha256:8ce3bcf69adfdf7c7d503e78fd3b1c492af782d58893b650adb2ac8912ddd573"},
 ]
 
 [package.dependencies]
@@ -1102,14 +1102,14 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pre-commit"
-version = "3.0.4"
+version = "3.1.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pre_commit-3.0.4-py2.py3-none-any.whl", hash = "sha256:9e3255edb0c9e7fe9b4f328cb3dc86069f8fdc38026f1bf521018a05eaf4d67b"},
-    {file = "pre_commit-3.0.4.tar.gz", hash = "sha256:bc4687478d55578c4ac37272fe96df66f73d9b5cf81be6f28627d4e712e752d5"},
+    {file = "pre_commit-3.1.0-py2.py3-none-any.whl", hash = "sha256:7001dfcd174540658822b1fd3630ceadf4f41375a5d1844b5c3b3830f227348c"},
+    {file = "pre_commit-3.1.0.tar.gz", hash = "sha256:61bd9f1b96d3d1e763f2a9a0f8522aed341646800642ff6803c73fac5781f5b7"},
 ]
 
 [package.dependencies]
@@ -1472,14 +1472,14 @@ crt = ["botocore[crt] (>=1.20.29,<2.0a.0)"]
 
 [[package]]
 name = "setuptools"
-version = "67.3.1"
+version = "67.4.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "setuptools-67.3.1-py3-none-any.whl", hash = "sha256:23c86b4e44432bfd8899384afc08872ec166a24f48a3f99f293b0a557e6a6b5d"},
-    {file = "setuptools-67.3.1.tar.gz", hash = "sha256:daec07fd848d80676694d6bf69c009d28910aeece68a38dbe88b7e1bb6dba12e"},
+    {file = "setuptools-67.4.0-py3-none-any.whl", hash = "sha256:f106dee1b506dee5102cc3f3e9e68137bbad6d47b616be7991714b0c62204251"},
+    {file = "setuptools-67.4.0.tar.gz", hash = "sha256:e5fd0a713141a4a105412233c63dc4e17ba0090c8e8334594ac790ec97792330"},
 ]
 
 [package.extras]
@@ -1597,14 +1597,14 @@ files = [
 
 [[package]]
 name = "typing-extensions"
-version = "4.4.0"
+version = "4.5.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typing_extensions-4.4.0-py3-none-any.whl", hash = "sha256:16fa4864408f655d35ec496218b85f79b3437c829e93320c7c9215ccfd92489e"},
-    {file = "typing_extensions-4.4.0.tar.gz", hash = "sha256:1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa"},
+    {file = "typing_extensions-4.5.0-py3-none-any.whl", hash = "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4"},
+    {file = "typing_extensions-4.5.0.tar.gz", hash = "sha256:5cb5f4a79139d699607b3ef622a1dedafa84e115ab0024e0d9c044a9479ca7cb"},
 ]
 
 [[package]]
