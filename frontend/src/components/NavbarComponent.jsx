@@ -18,21 +18,21 @@ export function NavbarComponent() {
     const dispatch = useDispatch();
 
     return (
-        <div className="sticky top-0 bg-gray-300 w-auto border-b-2 border-green-600 font-bold p-4 flex justify-between">
+        <div className="sticky top-0 bg-gray-300 w-auto font-bold p-4 flex justify-between z-50 mb-2">
             <div className="text-black">SOCMED-SAMPLE</div>
             {!currentUser && (
                 <div className="space-x-2">
                     <Link
                         to="/login"
                         element={<LoginPage />}
-                        className="text-black hover:text-green-600 hover:no-underline"
+                        className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
                     >
                         Login
                     </Link>
                     <Link
                         to="/register"
                         element={<Register />}
-                        className="text-black hover:text-green-600 hover:no-underline"
+                        className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
                     >
                         Register
                     </Link>
@@ -45,21 +45,21 @@ export function NavbarComponent() {
                         <Link
                             to="/"
                             element={<Home />}
-                            className="text-black hover:text-green-600 hover:no-underline"
+                            className="text-black hover:text-gray-300 hover:no-underline"
                         >
                             Home
                         </Link>
                         <Link
                             to="/messenger"
                             element={<Messenger />}
-                            className="text-black hover:text-green-600 hover:no-underline"
+                            className="text-black hover:text-gray-300 hover:no-underline"
                         >
                             Messenger
                         </Link>
                         <Link
                             to="/search"
                             element={<Search />}
-                            className="text-black hover:text-green-600 hover:no-underline"
+                            className="text-black hover:text-gray-300 hover:no-underline"
                         >
                             Search
                         </Link>
@@ -69,14 +69,14 @@ export function NavbarComponent() {
                         <Link
                             to={"/" + currentUser.username}
                             element={<User />}
-                            className="text-black hover:text-green-600 hover:no-underline"
+                            className="text-black hover:text-gray-300 hover:no-underline"
                         >
                             {currentUser.username}
                         </Link>
                         <Link
                             href="#"
                             onClick={() => dispatch(logout())}
-                            className="text-black hover:text-green-600 hover:no-underline"
+                            className="text-black hover:text-gray-300 hover:no-underline"
                         >
                             Logout
                         </Link>
