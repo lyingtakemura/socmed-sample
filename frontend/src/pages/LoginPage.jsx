@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/usersSlice";
-import { Form, ButtonToolbar, Button, FlexboxGrid, Message } from "rsuite";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
@@ -12,7 +11,8 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
+        event.preventDefault();
         axios
             .post("http://127.0.0.1:8000/auth/token/login/", {
                 username: username,
@@ -44,7 +44,7 @@ const LoginPage = () => {
                     });
             })
             .catch((error) => {
-                // console.log(error.response);
+                console.log(error.response);
                 setAlert({
                     type: "error",
                     body: error.response.data["non_field_errors"],
@@ -55,71 +55,42 @@ const LoginPage = () => {
     return (
         <>
             {alert && (
-                <FlexboxGrid
-                    justify="center"
-                    style={{ margin: "0.5rem", justify: "center" }}
+                <div
+                    onClick={(event) => setAlert("")}
+                    className="mx-auto mb-1 p-4 border-4 border-green-500 w-1/2 font-bold text-center rounded-lg"
                 >
-                    <FlexboxGrid.Item colspan={10}>
-                        <Message
-                            showIcon
-                            type={alert.type}
-                            onClose={(event) => setAlert("")}
-                        >
-                            {alert.body}
-                        </Message>
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
+                    {alert.body}
+                </div>
             )}
-            <FlexboxGrid
-                justify="center"
-                style={{
-                    position: "absolute",
-                    left: "0",
-                    right: "0",
-                    top: "50%",
-                    bottom: "0",
-                    margin: "auto",
-                }}
-            >
-                <FlexboxGrid.Item colspan={10}>
-                    <Form onSubmit={handleSubmit} fluid>
-                        <Form.Group controlId="username">
-                            {/* <Form.ControlLabel>Username</Form.ControlLabel> */}
-                            <Form.Control
-                                name="name"
-                                value={username}
-                                onChange={(event) => setUsername(event)}
-                                required
-                                placeholder="Username"
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="password">
-                            {/* <Form.ControlLabel>Password</Form.ControlLabel> */}
-                            <Form.Control
-                                name="password"
-                                value={password}
-                                type="password"
-                                autoComplete="off"
-                                onChange={(event) => setPassword(event)}
-                                required
-                                placeholder="Password"
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <ButtonToolbar>
-                                <Button
-                                    appearance="primary"
-                                    color="green"
-                                    type="submit"
-                                    block
-                                >
-                                    Login
-                                </Button>
-                            </ButtonToolbar>
-                        </Form.Group>
-                    </Form>
-                </FlexboxGrid.Item>
-            </FlexboxGrid>
+            <div className="m-auto w-1/2 absolute top-1/3 left-0 right-0">
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="name"
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                        required
+                        placeholder="USERNAME"
+                        className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        value={password}
+                        autoComplete="off"
+                        onChange={(event) => setPassword(event.target.value)}
+                        required
+                        placeholder="PASSWORD"
+                        className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                    />
+                    <button
+                        type="submit"
+                        className="p-2 rounded-lg border-4 border-green-500 bg-green-500 font-bold w-full"
+                    >
+                        LOGIN
+                    </button>
+                </form>
+            </div>
         </>
     );
 };
