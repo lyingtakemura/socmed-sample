@@ -8,7 +8,6 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 
-import { CustomProvider } from "rsuite";
 
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
@@ -20,9 +19,7 @@ root.render(
     <BrowserRouter>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <CustomProvider theme="dark">
-                    <App />
-                </CustomProvider>
+                <App />
             </PersistGate>
         </Provider>
     </BrowserRouter>
