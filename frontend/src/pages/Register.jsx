@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form, ButtonToolbar, Button, FlexboxGrid, Message } from "rsuite";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-    const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
     const [alert, setAlert] = useState("");
     let navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
+        event.preventDefault()
         axios
             .post("http://127.0.0.1:8000/auth/users/", {
                 email: email,
@@ -46,89 +46,61 @@ const LoginPage = () => {
     return (
         <>
             {alert && (
-                <FlexboxGrid
-                    justify="center"
-                    style={{ margin: "0.5rem", justify: "center" }}
+                <div
+                    onClick={(event) => setAlert("")}
+                    className="mx-auto mb-1 p-4 border-4 border-green-500 w-1/2 font-bold text-center rounded-lg"
                 >
-                    <FlexboxGrid.Item colspan={10}>
-                        <Message
-                            showIcon
-                            type={alert.type}
-                            onClose={(event) => setAlert("")}
-                        >
-                            {alert.body}
-                        </Message>
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
+                    {alert.body}
+                </div>
             )}
-            <FlexboxGrid
-                justify="center"
-                style={{
-                    position: "absolute",
-                    left: "0",
-                    right: "0",
-                    top: "50%",
-                    bottom: "0",
-                    margin: "auto",
-                }}
-            >
-                <FlexboxGrid.Item colspan={10}>
-                    <Form onSubmit={handleSubmit} fluid>
-                        <Form.Group controlId="email">
-                            <Form.Control
-                                name="email"
-                                value={email}
-                                onChange={(event) => setEmail(event)}
-                                required
-                                placeholder="Email"
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="username">
-                            <Form.Control
-                                name="username"
-                                value={username}
-                                onChange={(event) => setUsername(event)}
-                                required
-                                placeholder="Username"
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="password">
-                            <Form.Control
-                                name="password"
-                                value={password}
-                                type="password"
-                                autoComplete="off"
-                                onChange={(event) => setPassword(event)}
-                                required
-                                placeholder="Password"
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="rePassword">
-                            <Form.Control
-                                name="password"
-                                value={rePassword}
-                                type="password"
-                                autoComplete="off"
-                                onChange={(event) => setRePassword(event)}
-                                required
-                                placeholder="Password Confirmation"
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <ButtonToolbar>
-                                <Button
-                                    appearance="primary"
-                                    color="green"
-                                    type="submit"
-                                    block
-                                >
-                                    Register
-                                </Button>
-                            </ButtonToolbar>
-                        </Form.Group>
-                    </Form>
-                </FlexboxGrid.Item>
-            </FlexboxGrid>
+            <div className="m-auto w-1/2 absolute top-1/3 left-0 right-0">
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="username"
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                        required
+                        placeholder="USERNAME"
+                        className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                    />
+                    <input
+                        type="text"
+                        name="email"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        required
+                        placeholder="EMAIL"
+                        className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        value={password}
+                        autoComplete="off"
+                        onChange={(event) => setPassword(event.target.value)}
+                        required
+                        placeholder="PASSWORD"
+                        className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                    />
+                    <input
+                        type="password"
+                        name="rePassword"
+                        value={rePassword}
+                        autoComplete="off"
+                        onChange={(event) => setRePassword(event.target.value)}
+                        required
+                        placeholder="CONFIRM PASSWORD"
+                        className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                    />
+                    <button
+                        type="submit"
+                        className="p-2 rounded-lg border-4 border-green-500 bg-green-500 font-bold w-full"
+                    >
+                        REGISTER
+                    </button>
+                </form>
+            </div>
         </>
     );
 };
