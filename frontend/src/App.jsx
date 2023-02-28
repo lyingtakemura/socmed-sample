@@ -90,10 +90,10 @@ const App = () => {
 
 function LayoutsWithNavbar() {
     return (
-        <>
+        <div className="min-h-screen bg-gray-200">
             <NavbarComponent />
             <Outlet />
-        </>
+        </div>
     );
 }
 
