@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { FlexboxGrid, Panel, Input, InputGroup, Form } from "rsuite";
-import ExpandOutlineIcon from "@rsuite/icons/ExpandOutline";
 
 const Home = () => {
     let currentUser = useSelector((state) => state.users.currentUser);
@@ -37,7 +35,8 @@ const Home = () => {
         return result;
     };
 
-    const sendPost = () => {
+    const sendPost = (event) => {
+        event.preventDefault();
         axios
             .post(
                 "http://127.0.0.1:8000/posts/",
@@ -63,51 +62,35 @@ const Home = () => {
     };
 
     return (
-        <>
-            <FlexboxGrid justify="center" style={{ margin: "0.5rem" }}>
-                <FlexboxGrid.Item colspan={12} sm={24}>
-                    <Form
-                        onSubmit={sendPost}
-                        style={{
-                            marginBottom: "0.5rem",
-                            position: "sticky",
-                            top: "0",
-                        }}
+        <div className="m-auto w-1/2 pb-1">
+            <form onSubmit={sendPost} className="mb-2">
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    required
+                    className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                />
+                <button
+                    type="submit"
+                    className="p-2 rounded-lg border-4 border-green-500 bg-green-500 font-bold w-full"
+                >
+                    SUBMIT
+                </button>
+            </form>
+            {posts && // check if posts array have been loaded from axios request to state before render
+                posts.map((post) => (
+                    <div
+                        className="p-2 rounded-lg border-4 border-gray-300 hover:border-green-500 font-bold w-full mb-2"
+                        key={post.id}
                     >
-                        <InputGroup size="lg">
-                            <Input
-                                value={input}
-                                onChange={(event) => setInput(event)}
-                                required
-                            />
-                            <InputGroup.Button type="submit">
-                                <ExpandOutlineIcon />
-                            </InputGroup.Button>
-                        </InputGroup>
-                    </Form>
-                    {posts &&
-                        posts.map(
-                            (
-                                post //check if posts array have been loaded from axios request to state before render
-                            ) => (
-                                <Panel
-                                    header={`${
-                                        post.user.username
-                                    } ${formatPostTimestamp(post.created_at)}:`}
-                                    key={post.id}
-                                    bordered
-                                    style={{
-                                        marginBottom: "0.5rem",
-                                        backgroundColor: "#30373D",
-                                    }}
-                                >
-                                    {post.body}
-                                </Panel>
-                            )
-                        )}
-                </FlexboxGrid.Item>
-            </FlexboxGrid>
-        </>
+                        {post.body}
+                        <br />
+                        {post.user.username} at:{" "}
+                        {formatPostTimestamp(post.created_at)}
+                    </div>
+                ))}
+        </div>
     );
 };
 
