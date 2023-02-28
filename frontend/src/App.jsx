@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import "./css/App.css";
+import "./css/index.css";
+
 import "rsuite/dist/rsuite.min.css";
+
 import Home from "./pages/Home";
 import Messenger from "./pages/Messenger";
 import LoginPage from "./pages/LoginPage";

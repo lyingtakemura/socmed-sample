@@ -4,101 +4,86 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { logout } from "../redux/usersSlice";
 
-import { Navbar, Nav, Avatar } from "rsuite";
-
 import Home from "../pages/Home";
 import Messenger from "../pages/Messenger";
 import LoginPage from "../pages/LoginPage";
 import Register from "../pages/Register";
 import Search from "../pages/Search";
 import User from "../pages/User";
-import SearchIcon from "@rsuite/icons/Search";
-import MessageIcon from "@rsuite/icons/Message";
-import HomeIcon from "@rsuite/icons/legacy/Home";
-import ExitIcon from "@rsuite/icons/Exit";
-import MenuIcon from "@rsuite/icons/Menu";
+
+// import { UserIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 
 export function NavbarComponent() {
     let currentUser = useSelector((state) => state.users.currentUser);
     const dispatch = useDispatch();
 
     return (
-        <Navbar style={{ position: "sticky", top: "0", zIndex: "9999" }}>
-            <Navbar.Brand href="#">SOCMED-SAMPLE </Navbar.Brand>
-            {currentUser && (
-                <Nav>
-                    <Nav.Item
-                        as={Link}
-                        to="/"
-                        element={<Home />}
-                        icon={<HomeIcon />}
+        <div className="sticky top-0 bg-gray-300 w-auto border-b-2 border-green-600 font-bold p-4 flex justify-between">
+            <div className="text-black">SOCMED-SAMPLE</div>
+            {!currentUser && (
+                <div className="space-x-2">
+                    <Link
+                        to="/login"
+                        element={<LoginPage />}
+                        className="text-black hover:text-green-600 hover:no-underline"
                     >
-                        Home
-                    </Nav.Item>
-                    <Nav.Item
-                        as={Link}
-                        to="/messenger"
-                        element={<Messenger />}
-                        icon={<MessageIcon />}
+                        Login
+                    </Link>
+                    <Link
+                        to="/register"
+                        element={<Register />}
+                        className="text-black hover:text-green-600 hover:no-underline"
                     >
-                        Messenger
-                    </Nav.Item>
-                    <Nav.Item
-                        as={Link}
-                        to="/search"
-                        element={<Search />}
-                        icon={<SearchIcon />}
-                    >
-                        Search
-                    </Nav.Item>
-                </Nav>
+                        Register
+                    </Link>
+                </div>
             )}
 
-            <Nav pullRight>
-                {!currentUser && (
-                    <>
-                        <Nav.Item as={Link} to="/login" element={<LoginPage />}>
-                            Login
-                        </Nav.Item>
-                        <Nav.Item
-                            as={Link}
-                            to="/register"
-                            element={<Register />}
+            {currentUser && (
+                <>
+                    <div className="space-x-2">
+                        <Link
+                            to="/"
+                            element={<Home />}
+                            className="text-black hover:text-green-600 hover:no-underline"
                         >
-                            Register
-                        </Nav.Item>
-                    </>
-                )}
+                            Home
+                        </Link>
+                        <Link
+                            to="/messenger"
+                            element={<Messenger />}
+                            className="text-black hover:text-green-600 hover:no-underline"
+                        >
+                            Messenger
+                        </Link>
+                        <Link
+                            to="/search"
+                            element={<Search />}
+                            className="text-black hover:text-green-600 hover:no-underline"
+                        >
+                            Search
+                        </Link>
+                    </div>
 
-                {currentUser && (
-                    <>
-                        <Nav.Item
-                            as={Link}
+                    <div className="space-x-2">
+                        <Link
                             to={"/" + currentUser.username}
                             element={<User />}
-                            icon={
-                                <Avatar
-                                    size="sm"
-                                    src={currentUser.image}
-                                    alt="?"
-                                />
-                            }
+                            className="text-black hover:text-green-600 hover:no-underline"
                         >
                             {currentUser.username}
-                        </Nav.Item>
-                        <Nav.Menu title="More" icon={<MenuIcon />}>
-                            <Nav.Item
-                                href="#"
-                                onClick={() => dispatch(logout())}
-                                icon={<ExitIcon />}
-                            >
-                                Logout
-                            </Nav.Item>
-                        </Nav.Menu>
-                    </>
-                )}
-            </Nav>
-        </Navbar>
+                        </Link>
+                        <Link
+                            href="#"
+                            onClick={() => dispatch(logout())}
+                            className="text-black hover:text-green-600 hover:no-underline"
+                        >
+                            Logout
+                        </Link>
+                    </div>
+                </>
+            )}
+        </div>
     );
 }
 
