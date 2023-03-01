@@ -627,6 +627,26 @@ python-jose = ["python-jose (==3.0.0)"]
 test = ["cryptography", "pytest", "pytest-cov", "pytest-django", "pytest-xdist", "tox"]
 
 [[package]]
+name = "djangorestframework-yaml"
+version = "2.0.0"
+description = "YAML support for Django REST Framework"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "djangorestframework-yaml-2.0.0.tar.gz", hash = "sha256:1b2cfd7482425f3c6924a8eb803d6f73276e76b03293cd7144c755753e029f15"},
+    {file = "djangorestframework_yaml-2.0.0-py2.py3-none-any.whl", hash = "sha256:7fe744e6004d2191fa1cb8a4fc62f98150202bfebd60702a04f8187cc240b7c4"},
+]
+
+[package.dependencies]
+PyYAML = ">=3.10"
+
+[package.extras]
+dev = ["Django (>=1.6)", "djangorestframework (>=2.4.3)", "flake8", "mkdocs (>=0.11.1)", "pre-commit", "pytest", "pytest-django", "tox"]
+docs = ["mkdocs (>=0.11.1)"]
+tests = ["Django (>=1.6)", "djangorestframework (>=2.4.3)", "flake8", "pytest", "pytest-django"]
+
+[[package]]
 name = "djoser"
 version = "2.1.0"
 description = "REST implementation of Django authentication system."
@@ -1688,4 +1708,4 @@ test = ["covdefaults (>=2.2.2)", "coverage (>=7.1)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b00821aaa16b455ec932a3287fceeef6d17d90cbbf24880e1552afa13dcac94a"
+content-hash = "3c2171c5fd88d9505a5ecd7d24db885ef4542fa29bd6b9aab1e5da251556e34a"
