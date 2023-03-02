@@ -62,18 +62,18 @@ const Home = () => {
     };
 
     return (
-        <div className="m-auto w-1/2 pb-1">
+        <div className="m-auto w-1/2 font-bold">
             <form onSubmit={sendPost} className="mb-2">
                 <input
                     type="text"
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
                     required
-                    className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                    className="p-2 rounded-lg bg-gray-300 focus:border-green-500 focus:outline-none w-full mb-2"
                 />
                 <button
                     type="submit"
-                    className="p-2 rounded-lg border-4 border-green-500 bg-green-500 font-bold w-full"
+                    className="p-2 rounded-lg bg-green-500 w-full"
                 >
                     SUBMIT
                 </button>
@@ -81,13 +81,14 @@ const Home = () => {
             {posts && // check if posts array have been loaded from axios request to state before render
                 posts.map((post) => (
                     <div
-                        className="p-2 rounded-lg border-4 border-gray-300 hover:border-green-500 font-bold w-full mb-2"
+                        className="p-2 rounded-lg bg-gray-300 w-full mb-2"
                         key={post.id}
                     >
-                        {post.body}
-                        <br />
-                        {post.user.username} at:{" "}
-                        {formatPostTimestamp(post.created_at)}
+                        <div>{post.body}</div>
+                        <div className="text-center">
+                            {post.user.username} at:{" "}
+                            {formatPostTimestamp(post.created_at)}
+                        </div>
                     </div>
                 ))}
         </div>
