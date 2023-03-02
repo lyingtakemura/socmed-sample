@@ -103,7 +103,11 @@ const Messenger = (props) => {
                         <div
                             key={thread.id}
                             onClick={(event) => getThread(event, thread)}
-                            className="mb-2 p-2 rounded-lg hover:bg-green-500/20"
+                            className={`${
+                                selectedThread.id == thread.id
+                                    ? "bg-green-500/20"
+                                    : ""
+                            } mb-2 p-2 rounded-lg hover:bg-green-500/20`}
                         >
                             <div className="flex space-x-1">
                                 <img
@@ -131,15 +135,15 @@ const Messenger = (props) => {
                         </div>
                     ))}
             </div>
-            <div className="w-2/3 bg-gray-300 rounded-lg p-2 overflow-y-scroll">
-                <div className="text-center mb-2 p-2">
+            <div className="w-2/3 bg-gray-300 rounded-lg overflow-y-scroll flex flex-col">
+                <div className="text-center m-2 p-2 bg-green-500/20 rounded-lg">
                     {selectedThread
                         ? selectedThread.users
                               .filter((user) => user.id !== currentUser.id)
                               .map((user) => user.username)
                         : "SELECT_THREAD"}
                 </div>
-                <div>
+                <div className="mx-2">
                     {selectedThread["messages"] &&
                         selectedThread["messages"].map((message) => (
                             <div
@@ -164,22 +168,29 @@ const Messenger = (props) => {
                             </div>
                         ))}
                 </div>
-                <div className="sticky bottom-0 bg-gray-300">
-                    <form onSubmit={sendMessage}>
-                        <input
-                            className="p-2 rounded-lg bg-green-500/20 w-full mb-2 focus:outline-none"
-                            value={input}
-                            onChange={(event) => setInput(event.target.value)}
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className="p-2 rounded-lg w-full bg-green-500/20"
+                {selectedThread && (
+                    <div className="sticky bottom-0 bg-gray-300 mx-2">
+                        <form
+                            onSubmit={sendMessage}
+                            className="flex space-x-1 py-2"
                         >
-                            Send
-                        </button>
-                    </form>
-                </div>
+                            <input
+                                className="w-5/6 p-2 rounded-lg bg-green-500/20 focus:outline-none"
+                                value={input}
+                                onChange={(event) =>
+                                    setInput(event.target.value)
+                                }
+                                required
+                            />
+                            <button
+                                type="submit"
+                                className="w-1/6 p-2 rounded-lg bg-green-500/20"
+                            >
+                                Send
+                            </button>
+                        </form>
+                    </div>
+                )}
             </div>
         </div>
     );
