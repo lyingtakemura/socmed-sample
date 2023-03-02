@@ -1,18 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {
-    FlexboxGrid,
-    Panel,
-    Input,
-    InputGroup,
-    Form,
-    Container,
-    Header,
-    Content,
-    Footer,
-    Avatar,
-    List,
-} from "rsuite";
-import SendIcon from "@rsuite/icons/Send";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -63,14 +49,14 @@ const Messenger = (props) => {
             })
             .then((response) => {
                 setThreads(response.data);
-                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [currentUser]); // useEffect will re-run whenever object in it's dependency array changes
 
-    const sendMessage = () => {
+    const sendMessage = (event) => {
+        event.preventDefault();
         axios
             .post(
                 "http://127.0.0.1:8000/messages/",
@@ -110,206 +96,92 @@ const Messenger = (props) => {
     };
 
     return (
-        <FlexboxGrid justify="center" style={{ margin: "0.5rem" }}>
-            <FlexboxGrid.Item colspan={6}>
-                <Container>
-                    <Header>
-                        <Panel
-                            bordered
-                            style={{
-                                marginRight: "0.5rem",
-                            }}
+        <div className="flex font-bold space-x-1 m-1 w-1/2 mx-auto min-h-screen max-h-screen overflow-hidden">
+            <div className="w-1/3 bg-gray-300 rounded-lg p-2">
+                {threads &&
+                    threads.map((thread) => (
+                        <div
+                            key={thread.id}
+                            onClick={(event) => getThread(event, thread)}
+                            className="mb-2 p-2 rounded-lg hover:bg-green-500/20"
                         >
-                            SEARCH_INPUT
-                        </Panel>
-                    </Header>
-                    <Content>
-                        <List
-                            hover
-                            bordered
-                            style={{
-                                height: "85vh",
-                                marginTop: "0.5rem",
-                                marginRight: "0.5rem",
-                            }}
-                        >
-                            {threads &&
-                                threads.map((thread) => (
-                                    <List.Item
-                                        key={thread.id}
-                                        onClick={(event) =>
-                                            getThread(event, thread)
-                                        }
-                                    >
-                                        <FlexboxGrid>
-                                            <FlexboxGrid align="middle">
-                                                <FlexboxGrid.Item
-                                                    style={{
-                                                        marginRight: "0.5rem",
-                                                    }}
-                                                >
-                                                    <Avatar
-                                                        size="md"
-                                                        src={
-                                                            thread.users.filter(
-                                                                (user) =>
-                                                                    user.id !==
-                                                                    currentUser.id
-                                                            )[0].image
-                                                        }
-                                                        alt="?"
-                                                    />
-                                                </FlexboxGrid.Item>
-                                                <FlexboxGrid.Item>
-                                                    <FlexboxGrid.Item
-                                                        colspan={24}
-                                                    >
-                                                        {thread.type ===
-                                                            "group" &&
-                                                            thread.type + ": "}
-                                                        {thread.users
-                                                            .filter(
-                                                                (user) =>
-                                                                    user.id !==
-                                                                    currentUser.id
-                                                            )
-                                                            .map(
-                                                                (user) =>
-                                                                    user.username
-                                                            )}
-                                                        <br />
-                                                        {lastMessagePreview(
-                                                            thread
-                                                        )}
-                                                    </FlexboxGrid.Item>
-                                                </FlexboxGrid.Item>
-                                            </FlexboxGrid>
-                                        </FlexboxGrid>
-                                    </List.Item>
-                                ))}
-                        </List>
-                    </Content>
-                </Container>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={12}>
-                <Container>
-                    <Header>
-                        <Panel
-                            bordered
-                            style={{
-                                marginRight: "0.5rem",
-                            }}
-                        >
-                            {selectedThread
-                                ? selectedThread.users
-                                      .filter(
-                                          (user) => user.id !== currentUser.id
-                                      )
-                                      .map((user) => user.username)
-                                : "SELECT_THREAD"}
-                        </Panel>
-                    </Header>
-                    <Content>
-                        <Panel
-                            bordered
-                            style={{
-                                height: "85vh",
-                                overflowY: "auto",
-                                marginTop: "0.5rem",
-                                marginRight: "0.5rem",
-                            }}
-                        >
-                            <Container>
-                                <Container style={{ minHeight: "85vh" }}>
-                                    {selectedThread["messages"] &&
-                                        selectedThread["messages"].map(
-                                            (message) => (
-                                                <Panel
-                                                    bordered
-                                                    key={message.id}
-                                                    style={{
-                                                        marginBottom: "0.5rem",
-                                                        padding: "1px",
-                                                        width: "50%",
-                                                        marginLeft:
-                                                            message.sender ===
-                                                                currentUser.id &&
-                                                            "50%",
-                                                        backgroundColor:
-                                                            message.sender ===
-                                                            currentUser.id
-                                                                ? "#445764"
-                                                                : "#30373D",
-                                                    }}
-                                                >
-                                                    <FlexboxGrid
-                                                        justify="space-between"
-                                                        align="middle"
-                                                    >
-                                                        <FlexboxGrid.Item>
-                                                            {message.body}
-                                                        </FlexboxGrid.Item>
-                                                        <FlexboxGrid.Item>
-                                                            <small>
-                                                                {formatMessageTimestamp(
-                                                                    message.created_at
-                                                                )}
-                                                            </small>
-                                                        </FlexboxGrid.Item>
-                                                    </FlexboxGrid>
-                                                </Panel>
-                                            )
+                            <div className="flex space-x-1">
+                                <img
+                                    className="w-12 rounded-lg"
+                                    src={
+                                        "http://localhost:8000" +
+                                        thread.users.filter(
+                                            (user) => user.id !== currentUser.id
+                                        )[0].image
+                                    }
+                                    alt="..."
+                                />
+                                <div>
+                                    {thread.type === "group" &&
+                                        thread.type + ": "}
+                                    {thread.users
+                                        .filter(
+                                            (user) => user.id !== currentUser.id
+                                        )
+                                        .map((user) => user.username)}
+                                    <br />
+                                    {lastMessagePreview(thread)}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+            </div>
+            <div className="w-2/3 bg-gray-300 rounded-lg p-2 overflow-y-scroll">
+                <div className="text-center mb-2 p-2">
+                    {selectedThread
+                        ? selectedThread.users
+                              .filter((user) => user.id !== currentUser.id)
+                              .map((user) => user.username)
+                        : "SELECT_THREAD"}
+                </div>
+                <div>
+                    {selectedThread["messages"] &&
+                        selectedThread["messages"].map((message) => (
+                            <div
+                                className={`flex ${
+                                    message.sender === currentUser.id
+                                        ? "flex-row-reverse"
+                                        : ""
+                                }`}
+                                key={message.id}
+                            >
+                                <div
+                                    className="p-2 mb-2 rounded-lg w-1/2 bg-green-500/20"
+                                    key={message.id}
+                                >
+                                    <div>{message.body}</div>
+                                    <div className="text-xs">
+                                        {formatMessageTimestamp(
+                                            message.created_at
                                         )}
-                                </Container>
-                                {selectedThread && (
-                                    <Footer
-                                        style={{
-                                            position: "sticky",
-                                            bottom: "0",
-                                        }}
-                                    >
-                                        <Form
-                                            onSubmit={sendMessage}
-                                            style={{ marginTop: "0.5rem" }}
-                                        >
-                                            <InputGroup size="lg">
-                                                <Input
-                                                    value={input}
-                                                    onChange={(event) =>
-                                                        setInput(event)
-                                                    }
-                                                    required
-                                                />
-                                                <InputGroup.Button type="submit">
-                                                    <SendIcon />
-                                                </InputGroup.Button>
-                                            </InputGroup>
-                                        </Form>
-                                    </Footer>
-                                )}
-                            </Container>
-                        </Panel>
-                    </Content>
-                </Container>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={6}>
-                <Container>
-                    <Header>
-                        <Panel bordered>CONVERSATION_DETAILS</Panel>
-                    </Header>
-                    <Content>
-                        <Panel
-                            bordered
-                            style={{
-                                height: "85vh",
-                                overflowY: "auto",
-                                marginTop: "0.5rem",
-                            }}
-                        ></Panel>
-                    </Content>
-                </Container>
-            </FlexboxGrid.Item>
-        </FlexboxGrid>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                </div>
+                <div className="sticky bottom-0 bg-gray-300">
+                    <form onSubmit={sendMessage}>
+                        <input
+                            className="p-2 rounded-lg bg-green-500/20 w-full mb-2 focus:outline-none"
+                            value={input}
+                            onChange={(event) => setInput(event.target.value)}
+                            required
+                        />
+                        <button
+                            type="submit"
+                            className="p-2 rounded-lg w-full bg-green-500/20"
+                        >
+                            Send
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     );
 };
 
