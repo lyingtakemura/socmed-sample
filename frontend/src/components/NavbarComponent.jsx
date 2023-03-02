@@ -77,7 +77,6 @@ export function NavbarComponent() {
                             href="#"
                             onClick={() => dispatch(logout())}
                             className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
-                            s
                         >
                             Logout
                         </Link>

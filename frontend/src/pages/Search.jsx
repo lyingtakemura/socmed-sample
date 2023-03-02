@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { FlexboxGrid, ButtonToolbar, Button, List, Avatar } from "rsuite";
 import { useNavigate } from "react-router-dom";
 
 const Search = () => {
@@ -77,102 +76,67 @@ const Search = () => {
     };
 
     return (
-        <FlexboxGrid justify="center" align="middle">
-            <FlexboxGrid.Item colspan={12} sm={24}>
-                <List hover bordered style={{ margin: "0.5rem" }}>
-                    {users &&
-                        users.map((user) => (
-                            <List.Item key={user.id}>
-                                <FlexboxGrid
-                                    justify="space-between"
-                                    align="middle"
-                                >
-                                    <FlexboxGrid.Item
-                                        style={{
-                                            marginRight: "0.5rem",
-                                        }}
-                                        onClick={() =>
-                                            navigate(`/${user.username}`)
-                                        }
-                                    >
-                                        <Avatar
-                                            size="lg"
-                                            src={
-                                                user.image
-                                                    ? user.image
-                                                    : "https://via.placeholder.com/100"
-                                            }
-                                            alt="?"
-                                        />
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item
-                                        style={{
-                                            marginRight: "0.5rem",
-                                        }}
-                                        onClick={() =>
-                                            navigate(`/${user.username}`)
-                                        }
-                                    >
-                                        {user.username}
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item
-                                        style={{
-                                            marginRight: "0.5rem",
-                                        }}
-                                    >
-                                        Followers: {user.followers.length}
-                                    </FlexboxGrid.Item>
-                                    <FlexboxGrid.Item
-                                        style={{
-                                            marginRight: "0.5rem",
-                                        }}
-                                    >
-                                        <FlexboxGrid.Item colspan={24}>
-                                            <ButtonToolbar>
-                                                <Button
-                                                    appearance={
-                                                        user.followers.includes(
-                                                            currentUser.id
-                                                        )
-                                                            ? "default"
-                                                            : "primary"
-                                                    }
-                                                    size="sm"
-                                                    onClick={(event) =>
-                                                        toggleFollow(
-                                                            event,
-                                                            user.id
-                                                        )
-                                                    }
-                                                >
-                                                    {user.followers.includes(
-                                                        currentUser.id
-                                                    )
-                                                        ? "Following"
-                                                        : "Follow"}
-                                                </Button>
+        <>
+            <div className="m-auto w-1/2 pb-1">
+                {users &&
+                    users.map((user) => (
+                        <div
+                            className="p-2 rounded-lg border-4 border-gray-300 mb-2 flex font-bold space-x-1"
+                            key={user.id}
+                        >
+                            {/* <Avatar
+                                size="lg"
+                                src={
+                                    user.image
+                                        ? user.image
+                                        : "https://via.placeholder.com/100"
+                                }
+                                alt="?"
+                            /> */}
+                            <img
+                                className="w-12 rounded-lg"
+                                src={
+                                    user.image
+                                        ? user.image
+                                        : "https://via.placeholder.com/100"
+                                }
+                            />
 
-                                                <Button
-                                                    appearance={"primary"}
-                                                    size="sm"
-                                                    onClick={(event) =>
-                                                        sendMessage(
-                                                            event,
-                                                            user.id
-                                                        )
-                                                    }
-                                                >
-                                                    Message
-                                                </Button>
-                                            </ButtonToolbar>
-                                        </FlexboxGrid.Item>
-                                    </FlexboxGrid.Item>
-                                </FlexboxGrid>
-                            </List.Item>
-                        ))}
-                </List>
-            </FlexboxGrid.Item>
-        </FlexboxGrid>
+                            <div className="flex-auto p-1">
+                                <div
+                                    className="hover:text-green-500"
+                                    onClick={() =>
+                                        navigate(`/${user.username}`)
+                                    }
+                                >
+                                    {user.username}
+                                </div>
+                                <div>Followers: {user.followers.length}</div>
+                            </div>
+                            <button
+                                className={`rounded-lg ${
+                                    user.followers.includes(currentUser.id)
+                                        ? "bg-green-500"
+                                        : "bg-gray-300"
+                                } p-1 text-sm border-4 border-gray-300 w-1/6`}
+                                onClick={(event) =>
+                                    toggleFollow(event, user.id)
+                                }
+                            >
+                                {user.followers.includes(currentUser.id)
+                                    ? "Following"
+                                    : "Follow"}
+                            </button>
+                            <button
+                                className="rounded-lg bg-green-500 p-1 text-sm border-4 border-gray-300 w-1/6"
+                                onClick={(event) => sendMessage(event, user.id)}
+                            >
+                                Message
+                            </button>
+                        </div>
+                    ))}
+            </div>
+        </>
     );
 };
 
