@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from users.serializers import UserSerializer
 
 from messenger.models import Message, Thread
+from users.serializers import UserSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):

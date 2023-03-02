@@ -16,7 +16,7 @@ class ThreadViewSet(
 
     def list(self, request):
         """
-        Filter threads where current user is participating
+        Return only threads where current user is participating
 
         GET /threads
         """
@@ -29,10 +29,12 @@ class ThreadViewSet(
         Thread type value is personal by default, so if no type
         is provided in request object - personal thread should be created
 
-        POST /threads {"users": array, "type": str}
+        POST /threads {"users": list, "type": str}
         """
         if not self.request.data.get("type"):
-            Thread.get_or_create_personal_thread(users=self.request.data["users"])
+            Thread.objects.get_or_create_personal_thread(
+                users=self.request.data["users"]
+            )
 
 
 class MessageViewSet(
@@ -44,7 +46,7 @@ class MessageViewSet(
 
     def perform_create(self, serializer):
         """
-        POST /messages {"body": string, "thread": int}
+        POST /messages {"body": str, "thread": int}
         """
         thread = Thread.objects.get(id=self.request.data["thread"])
         serializer.save(sender=self.request.user, thread=thread)

@@ -1,8 +1,12 @@
 from django.db import models
+
+from messenger.managers import CustomThreadManager
 from users.models import User
 
 
 class Thread(models.Model):
+    objects = CustomThreadManager()
+
     THREAD_TYPE = (  # first - actual value, second - human-readable name
         ("personal", "personal"),
         ("group", "group"),
@@ -12,19 +16,6 @@ class Thread(models.Model):
 
     def __str__(self):
         return f"{self.type.upper()}: {self.users.all()}"
-
-    @classmethod
-    def get_or_create_personal_thread(cls, users):
-        user1, user2 = users
-        obj = (
-            Thread.objects.filter(type="personal")
-            .filter(users=user1)
-            .filter(users=user2)
-            .exists()
-        )
-        if not obj and len(users) >= 2:
-            qs = Thread.objects.create(type="personal")
-            qs.users.set(users)
 
 
 class Message(models.Model):
