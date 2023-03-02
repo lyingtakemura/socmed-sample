@@ -52,12 +52,10 @@ const Search = () => {
     };
 
     const sendMessage = (event, id) => {
-        // console.log(id);
         axios
             .post(
                 `http://127.0.0.1:8000/threads/`,
                 {
-                    // type: "personal",
                     users: [id, currentUser.id],
                 },
                 {
@@ -67,7 +65,6 @@ const Search = () => {
                 }
             )
             .then((response) => {
-                // console.log(response.data);
                 navigate("/messenger");
             })
             .catch((error) => {
@@ -76,67 +73,52 @@ const Search = () => {
     };
 
     return (
-        <>
-            <div className="m-auto w-1/2 pb-1">
-                {users &&
-                    users.map((user) => (
-                        <div
-                            className="p-2 rounded-lg border-4 border-gray-300 mb-2 flex font-bold space-x-1"
-                            key={user.id}
-                        >
-                            {/* <Avatar
-                                size="lg"
-                                src={
-                                    user.image
-                                        ? user.image
-                                        : "https://via.placeholder.com/100"
-                                }
-                                alt="?"
-                            /> */}
-                            <img
-                                className="w-12 rounded-lg"
-                                src={
-                                    user.image
-                                        ? user.image
-                                        : "https://via.placeholder.com/100"
-                                }
-                            />
+        <div className="m-auto w-1/2 pb-1">
+            {users &&
+                users.map((user) => (
+                    <div
+                        className="p-2 rounded-lg border-4 border-gray-300 mb-2 flex font-bold space-x-1"
+                        key={user.id}
+                    >
+                        <img
+                            className="w-12 rounded-lg"
+                            src={
+                                user.image
+                                    ? user.image
+                                    : "https://via.placeholder.com/100"
+                            }
+                        />
 
-                            <div className="flex-auto p-1">
-                                <div
-                                    className="hover:text-green-500"
-                                    onClick={() =>
-                                        navigate(`/${user.username}`)
-                                    }
-                                >
-                                    {user.username}
-                                </div>
-                                <div>Followers: {user.followers.length}</div>
+                        <div className="flex-auto p-1">
+                            <div
+                                className="hover:text-green-500"
+                                onClick={() => navigate(`/${user.username}`)}
+                            >
+                                {user.username}
                             </div>
-                            <button
-                                className={`rounded-lg ${
-                                    user.followers.includes(currentUser.id)
-                                        ? "bg-green-500"
-                                        : "bg-gray-300"
-                                } p-1 text-sm border-4 border-gray-300 w-1/6`}
-                                onClick={(event) =>
-                                    toggleFollow(event, user.id)
-                                }
-                            >
-                                {user.followers.includes(currentUser.id)
-                                    ? "Following"
-                                    : "Follow"}
-                            </button>
-                            <button
-                                className="rounded-lg bg-green-500 p-1 text-sm border-4 border-gray-300 w-1/6"
-                                onClick={(event) => sendMessage(event, user.id)}
-                            >
-                                Message
-                            </button>
+                            <div>Followers: {user.followers.length}</div>
                         </div>
-                    ))}
-            </div>
-        </>
+                        <button
+                            className={`rounded-lg ${
+                                user.followers.includes(currentUser.id)
+                                    ? "bg-green-500"
+                                    : "bg-gray-300"
+                            } p-1 text-sm border-4 border-gray-300 w-1/6`}
+                            onClick={(event) => toggleFollow(event, user.id)}
+                        >
+                            {user.followers.includes(currentUser.id)
+                                ? "Following"
+                                : "Follow"}
+                        </button>
+                        <button
+                            className="rounded-lg bg-green-500 p-1 text-sm border-4 border-gray-300 w-1/6"
+                            onClick={(event) => sendMessage(event, user.id)}
+                        >
+                            Message
+                        </button>
+                    </div>
+                ))}
+        </div>
     );
 };
 
