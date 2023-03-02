@@ -73,7 +73,7 @@ const Home = () => {
                 />
                 <button
                     type="submit"
-                    className="p-2 rounded-lg bg-green-500 w-full"
+                    className="p-2 rounded-lg bg-green-500/20 w-full"
                 >
                     SUBMIT
                 </button>

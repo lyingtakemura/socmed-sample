@@ -57,12 +57,12 @@ const LoginPage = () => {
             {alert && (
                 <div
                     onClick={(event) => setAlert("")}
-                    className="mx-auto mb-1 p-4 border-4 border-green-500 w-1/2 font-bold text-center rounded-lg"
+                    className="mx-auto mb-1 p-2 w-1/2 font-bold text-center rounded-lg bg-gray-300"
                 >
                     {alert.body}
                 </div>
             )}
-            <div className="m-auto w-1/2 absolute top-1/3 left-0 right-0">
+            <div className="m-auto w-1/2 absolute top-1/3 left-0 right-0 font-bold">
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -71,7 +71,7 @@ const LoginPage = () => {
                         onChange={(event) => setUsername(event.target.value)}
                         required
                         placeholder="USERNAME"
-                        className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                        className="p-2 rounded-lg bg-gray-300 w-full mb-2 focus:outline-none"
                     />
                     <input
                         type="password"
@@ -81,11 +81,11 @@ const LoginPage = () => {
                         onChange={(event) => setPassword(event.target.value)}
                         required
                         placeholder="PASSWORD"
-                        className="p-2 rounded-lg border-4 border-gray-300 focus:border-green-500 focus:outline-none font-bold w-full mb-2"
+                        className="p-2 rounded-lg bg-gray-300 w-full mb-2 focus:outline-none"
                     />
                     <button
                         type="submit"
-                        className="p-2 rounded-lg border-4 border-green-500 bg-green-500 font-bold w-full"
+                        className="p-2 rounded-lg w-full bg-green-500/20"
                     >
                         LOGIN
                     </button>

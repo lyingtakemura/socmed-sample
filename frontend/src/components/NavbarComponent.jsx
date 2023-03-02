@@ -25,14 +25,14 @@ export function NavbarComponent() {
                     <Link
                         to="/login"
                         element={<LoginPage />}
-                        className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
+                        className="text-black hover:text-green-500/20 hover:no-underline focus:text-green-500/20 focus:no-underline"
                     >
                         Login
                     </Link>
                     <Link
                         to="/register"
                         element={<Register />}
-                        className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
+                        className="text-black hover:text-green-500/20 hover:no-underline focus:text-green-500/20 focus:no-underline"
                     >
                         Register
                     </Link>
@@ -45,21 +45,21 @@ export function NavbarComponent() {
                         <Link
                             to="/"
                             element={<Home />}
-                            className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
+                            className="text-black hover:text-green-500/20 hover:no-underline focus:text-green-500/20 focus:no-underline"
                         >
                             Home
                         </Link>
                         <Link
                             to="/messenger"
                             element={<Messenger />}
-                            className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
+                            className="text-black hover:text-green-500/20 hover:no-underline focus:text-green-500/20 focus:no-underline"
                         >
                             Messenger
                         </Link>
                         <Link
                             to="/search"
                             element={<Search />}
-                            className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
+                            className="text-black hover:text-green-500/20 hover:no-underline focus:text-green-500/20 focus:no-underline"
                         >
                             Search
                         </Link>
@@ -69,14 +69,14 @@ export function NavbarComponent() {
                         <Link
                             to={"/" + currentUser.username}
                             element={<User />}
-                            className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
+                            className="text-black hover:text-green-500/20 hover:no-underline focus:text-green-500/20 focus:no-underline"
                         >
                             {currentUser.username}
                         </Link>
                         <Link
                             href="#"
                             onClick={() => dispatch(logout())}
-                            className="text-black hover:text-green-500 hover:no-underline focus:text-green-500 focus:no-underline"
+                            className="text-black hover:text-green-500/20 hover:no-underline focus:text-green-500/20 focus:no-underline"
                         >
                             Logout
                         </Link>
