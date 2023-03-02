@@ -17,7 +17,7 @@ const Search = () => {
                 },
             })
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 setUsers(response.data);
             })
             .catch((error) => {
@@ -77,7 +77,7 @@ const Search = () => {
             {users &&
                 users.map((user) => (
                     <div
-                        className="p-2 rounded-lg border-4 border-gray-300 mb-2 flex font-bold space-x-1"
+                        className="p-2 bg-gray-300 rounded-lg mb-2 flex font-bold space-x-1"
                         key={user.id}
                     >
                         <img
@@ -87,11 +87,12 @@ const Search = () => {
                                     ? user.image
                                     : "https://via.placeholder.com/100"
                             }
+                            alt="..."
                         />
 
                         <div className="flex-auto p-1">
                             <div
-                                className="hover:text-green-500"
+                                className="hover:text-green-500/20"
                                 onClick={() => navigate(`/${user.username}`)}
                             >
                                 {user.username}
@@ -99,11 +100,7 @@ const Search = () => {
                             <div>Followers: {user.followers.length}</div>
                         </div>
                         <button
-                            className={`rounded-lg ${
-                                user.followers.includes(currentUser.id)
-                                    ? "bg-green-500"
-                                    : "bg-gray-300"
-                            } p-1 text-sm border-4 border-gray-300 w-1/6`}
+                            className={`rounded-lg bg-gray-300 text-xs w-1/6 `}
                             onClick={(event) => toggleFollow(event, user.id)}
                         >
                             {user.followers.includes(currentUser.id)
@@ -111,7 +108,7 @@ const Search = () => {
                                 : "Follow"}
                         </button>
                         <button
-                            className="rounded-lg bg-green-500 p-1 text-sm border-4 border-gray-300 w-1/6"
+                            className="rounded-lg bg-green-500/20 text-xs w-1/6"
                             onClick={(event) => sendMessage(event, user.id)}
                         >
                             Message
