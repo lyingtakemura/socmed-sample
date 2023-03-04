@@ -157,6 +157,11 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.BrowsableAPIRenderer",
         "rest_framework_yaml.renderers.YAMLRenderer",  # HEADER Accept application/yaml
     ],
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {"anon": "5/minute", "user": "20/minute"},
 }
 
 CORS_ORIGIN_WHITELIST = ("http://localhost:3000",)

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from posts.models import Comment, Post
 from posts.serializers import CommentSerializer, PostSerializer
+from rest_framework.throttling import UserRateThrottle
 
 
 class PostViewSet(
@@ -14,6 +15,7 @@ class PostViewSet(
 ):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    throttle_classes = [UserRateThrottle]
 
     def list(self, request):
         """

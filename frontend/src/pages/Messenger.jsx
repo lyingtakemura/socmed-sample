@@ -104,7 +104,7 @@ const Messenger = (props) => {
                             key={thread.id}
                             onClick={(event) => getThread(event, thread)}
                             className={`${
-                                selectedThread.id == thread.id
+                                selectedThread.id === thread.id
                                     ? "bg-green-500/20"
                                     : ""
                             } mb-2 p-2 rounded-lg hover:bg-green-500/20`}
