@@ -165,8 +165,7 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
     ],
-    # "DEFAULT_THROTTLE_RATES": {"anon": "5/minute", "user": "20/minute"},
-    # "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_THROTTLE_RATES": {"anon": "10/minute", "user": "100/minute"},
 }
 
 CORS_ORIGIN_WHITELIST = ("http://localhost:3000",)
