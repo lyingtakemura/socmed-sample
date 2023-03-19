@@ -88,7 +88,7 @@ const App = () => {
 
 function LayoutsWithNavbar() {
     return (
-        <div className="min-h-screen bg-gray-200 pb-1 text-black">
+        <div className="min-h-screen bg-gray-200 pb-1 text-black text-sm antialiased">
             <NavbarComponent />
             <Outlet />
         </div>
