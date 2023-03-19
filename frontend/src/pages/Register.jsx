@@ -11,7 +11,7 @@ const LoginPage = () => {
     let navigate = useNavigate();
 
     const handleSubmit = (event) => {
-        event.preventDefault()
+        event.preventDefault();
         axios
             .post("http://127.0.0.1:8000/auth/users/", {
                 email: email,

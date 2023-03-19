@@ -30,6 +30,7 @@ pre-commit = "^3.0.4"
 django-debug-toolbar = "^3.8.1"
 djangorestframework-yaml = "^2.0.0"
 channels-redis = "^4.0.0"
+django-filter = "^22.1"
 
 
 [build-system]

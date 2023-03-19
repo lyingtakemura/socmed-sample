@@ -30,7 +30,7 @@ const Search = () => {
     }, [getUsers]);
 
     const toggleFollow = (event, id) => {
-        console.log(id);
+        // console.log(id);
         axios
             .patch(
                 `http://127.0.0.1:8000/users/${currentUser.id}/`,

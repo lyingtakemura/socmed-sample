@@ -1,10 +1,11 @@
 from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle
 
 from posts.models import Comment, Post
 from posts.serializers import CommentSerializer, PostSerializer
-from rest_framework.throttling import UserRateThrottle
 
 
 class PostViewSet(
@@ -13,22 +14,24 @@ class PostViewSet(
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
 ):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
     throttle_classes = [UserRateThrottle]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["user"]
 
-    def list(self, request):
-        """
-        To serialize a queryset or list of objects instead of a single object
-        instance, you should set many=True flag when instantiating serializer.
+    # def list(self, request):
+    #     """
+    #     To serialize a queryset or list of objects instead of a single object
+    #     instance, you should set many=True flag when instantiating serializer.
 
-        Get only posts of users which current user is following and self
-        """
-        queryset = Post.objects.filter(
-            Q(user__in=self.request.user.following.all()) | Q(user=self.request.user)
-        ).order_by("-created_at")
-        serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data)
+    #     Get only posts of users which current user is following and self
+    #     """
+    #     queryset = Post.objects.filter(
+    #         Q(user__in=self.request.user.following.all()) | Q(user=self.request.user)
+    #     ).order_by("-created_at")
+    #     serializer = PostSerializer(queryset, many=True)
+    #     return Response(serializer.data)
 
     def perform_create(self, serializer):
         """
