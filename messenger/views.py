@@ -1,40 +1,33 @@
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
-from messenger.models import Message, Thread
-from messenger.serializers import MessageSerializer, ThreadSerializer
+from messenger.models import Message, Room
+from messenger.serializers import MessageSerializer, RoomSerializer
 
 
-class ThreadViewSet(
+class RoomViewSet(
     viewsets.GenericViewSet,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
 ):
-    queryset = Thread.objects.all()
-    serializer_class = ThreadSerializer
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
 
     def list(self, request):
         """
-        Return only threads where current user is participating
-
-        GET /threads
+        GET /rooms
         """
-        queryset = Thread.objects.filter(users__in=[self.request.user])
-        serializer = ThreadSerializer(queryset, many=True)
+        queryset = Room.objects.filter(users__in=[self.request.user])
+        serializer = RoomSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def perform_create(self, serializer):
         """
-        Thread type value is personal by default, so if no type
-        is provided in request object - personal thread should be created
-
-        POST /threads {"users": list, "type": str}
+        POST /rooms {"users": list}
         """
-        if not self.request.data.get("type"):
-            Thread.objects.get_or_create_personal_thread(
-                users=self.request.data["users"]
-            )
+        room = Room.objects.create()
+        room.users.set(self.request.data["users"])
 
 
 class MessageViewSet(
@@ -46,7 +39,7 @@ class MessageViewSet(
 
     def perform_create(self, serializer):
         """
-        POST /messages {"body": str, "thread": int}
+        POST /messages {"body": str, "room": int}
         """
-        thread = Thread.objects.get(id=self.request.data["thread"])
-        serializer.save(sender=self.request.user, thread=thread)
+        room = Room.objects.get(id=self.request.data["room"])
+        serializer.save(sender=self.request.user, room=room)
