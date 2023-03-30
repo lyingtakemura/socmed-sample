@@ -54,7 +54,10 @@ const Search = () => {
     const sendMessage = (event, id) => {
         axios
             .post(
-                `http://127.0.0.1:8000/threads/`,
+                window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    ":8000/rooms/",
                 {
                     users: [id, currentUser.id],
                 },

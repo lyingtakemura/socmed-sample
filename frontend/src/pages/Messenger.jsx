@@ -4,27 +4,29 @@ import { useSelector } from "react-redux";
 
 const Messenger = (props) => {
     const [input, setInput] = useState("");
-    const [threads, setThreads] = useState("");
-    const [selectedThread, setSelectedThread] = useState("");
+    const [rooms, setRooms] = useState("");
+    const [selectedRoom, setSelectedRoom] = useState("");
 
     let currentUser = useSelector((state) => state.users.currentUser);
     const ws = props.ws;
 
     ws.onmessage = (e) => {
-        let ws_event = JSON.parse(e.data).message;
-        if (ws_event.thread === selectedThread.id) {
-            let temp_thread = { ...selectedThread };
-            temp_thread.messages = [...temp_thread.messages, ws_event];
-            setSelectedThread(temp_thread);
+        /*
+        create messages copy array and push new message
+        replace local state with updated copy
+        */
+        let ws_event = JSON.parse(e.data);
+        console.log(ws_event);
+        if (ws_event.room === selectedRoom.id) {
+            let temp_room = { ...selectedRoom };
+            temp_room.messages = [...temp_room.messages, ws_event];
+            setSelectedRoom(temp_room);
         }
     };
 
-    const lastMessagePreview = (thread) => {
-        if (thread.messages.length >= 1) {
-            return thread.messages[thread.messages.length - 1].body.slice(
-                0,
-                30
-            );
+    const lastMessagePreview = (room) => {
+        if (room.messages.length >= 1) {
+            return room.messages[room.messages.length - 1].body.slice(0, 30);
         } else {
             return "No Messages";
         }
@@ -41,14 +43,22 @@ const Messenger = (props) => {
     };
 
     useEffect(() => {
+        // console.log(Object.keys(window.location));
+        // console.log(window.location.protocol)
         axios
-            .get("http://127.0.0.1:8000/threads/", {
-                headers: {
-                    Authorization: "Token " + currentUser.token,
-                },
-            })
+            .get(
+                window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    ":8000/rooms/",
+                {
+                    headers: {
+                        Authorization: "Token " + currentUser.token,
+                    },
+                }
+            )
             .then((response) => {
-                setThreads(response.data);
+                setRooms(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -57,13 +67,24 @@ const Messenger = (props) => {
 
     const sendMessage = (event) => {
         event.preventDefault();
+        ws.send(
+            JSON.stringify({
+                body: input,
+                room: selectedRoom.id,
+                sender: currentUser.id,
+            })
+        );
+        setInput("");
+    };
+
+    const getRoom = (event, room) => {
         axios
-            .post(
-                "http://127.0.0.1:8000/messages/",
-                {
-                    body: input,
-                    thread: selectedThread.id,
-                },
+            .get(
+                window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    ":8000/rooms/" +
+                    room.id,
                 {
                     headers: {
                         Authorization: "Token " + currentUser.token,
@@ -71,65 +92,44 @@ const Messenger = (props) => {
                 }
             )
             .then((response) => {
-                ws.send(
-                    JSON.stringify({
-                        message: response.data,
-                    })
-                );
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        setInput("");
-    };
-
-    const getThread = (event, thread) => {
-        axios
-            .get("http://127.0.0.1:8000/threads/" + thread.id, {
-                headers: {
-                    Authorization: "Token " + currentUser.token,
-                },
-            })
-            .then((response) => {
-                setSelectedThread(response.data);
+                setSelectedRoom(response.data);
             });
     };
 
     return (
         <div className="flex font-bold space-x-1 m-1 w-1/2 mx-auto min-h-screen max-h-screen overflow-hidden">
             <div className="w-1/3 bg-gray-300 rounded-lg p-2">
-                {threads &&
-                    threads.map((thread) => (
+                {rooms &&
+                    rooms.map((room) => (
                         <div
-                            key={thread.id}
-                            onClick={(event) => getThread(event, thread)}
+                            key={room.id}
+                            onClick={(event) => getRoom(event, room)}
                             className={`${
-                                selectedThread.id === thread.id
+                                selectedRoom.id === room.id
                                     ? "bg-green-500/20"
                                     : ""
                             } mb-2 p-2 rounded-lg hover:bg-green-500/20`}
                         >
                             <div className="flex space-x-1">
-                                <img
+                                {/* <img
                                     className="w-12 rounded-lg"
                                     src={
                                         "http://localhost:8000" +
-                                        thread.users.filter(
+                                        room.users.filter(
                                             (user) => user.id !== currentUser.id
                                         )[0].image
                                     }
                                     alt="..."
-                                />
+                                /> */}
                                 <div>
-                                    {thread.type === "group" &&
-                                        thread.type + ": "}
-                                    {thread.users
+                                    {room.type === "group" && room.type + ": "}
+                                    {room.users
                                         .filter(
                                             (user) => user.id !== currentUser.id
                                         )
                                         .map((user) => user.username)}
                                     <br />
-                                    {lastMessagePreview(thread)}
+                                    {lastMessagePreview(room)}
                                 </div>
                             </div>
                         </div>
@@ -137,15 +137,15 @@ const Messenger = (props) => {
             </div>
             <div className="w-2/3 bg-gray-300 rounded-lg overflow-y-scroll flex flex-col">
                 <div className="text-center m-2 p-2 bg-green-500/20 rounded-lg">
-                    {selectedThread
-                        ? selectedThread.users
+                    {selectedRoom
+                        ? selectedRoom.users
                               .filter((user) => user.id !== currentUser.id)
                               .map((user) => user.username)
-                        : "SELECT_THREAD"}
+                        : "SELECT_CHAT"}
                 </div>
                 <div className="mx-2">
-                    {selectedThread["messages"] &&
-                        selectedThread["messages"].map((message) => (
+                    {selectedRoom["messages"] &&
+                        selectedRoom["messages"].map((message) => (
                             <div
                                 className={`flex ${
                                     message.sender === currentUser.id
@@ -168,7 +168,7 @@ const Messenger = (props) => {
                             </div>
                         ))}
                 </div>
-                {selectedThread && (
+                {selectedRoom && (
                     <div className="sticky bottom-0 bg-gray-300 mx-2">
                         <form
                             onSubmit={sendMessage}

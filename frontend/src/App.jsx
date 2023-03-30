@@ -17,29 +17,33 @@ import NavbarComponent from "./components/NavbarComponent";
 const App = () => {
     let currentUser = useSelector((state) => state.users.currentUser);
     let ws;
+    // console.log(window.location.hostname);
     if (currentUser) {
         ws = new WebSocket(
-            "ws://127.0.0.1:8000/ws/test/?token=" + currentUser.token
+            "ws://" +
+                window.location.hostname +
+                ":8000/ws/chat/?token=" +
+                currentUser.token
         );
     }
 
     useEffect(() => {
         if (currentUser) {
             ws.onopen = () => {
-                console.log("WS_INIT");
+                console.log("WS_CONNECTED");
             };
 
-            ws.onmessage = (e) => {
-                console.log(e.data);
-            };
+            // ws.onmessage = (e) => {
+            //     console.log(e.data);
+            // };
 
-            ws.onerror = (e) => {
-                console.log(e);
-            };
+            // ws.onerror = (e) => {
+            //     console.log(e);
+            // };
 
-            ws.onclose = (e) => {
-                console.log(e);
-            };
+            // ws.onclose = (e) => {
+            //     console.log(e);
+            // };
         }
     }, [currentUser, ws]); // without second param useEffect will stuck in update loop
 
@@ -88,7 +92,7 @@ const App = () => {
 
 function LayoutsWithNavbar() {
     return (
-        <div className="min-h-screen bg-gray-200 pb-1 text-black text-sm antialiased">
+        <div className="min-h-screen bg-gray-200 pb-1 text-black">
             <NavbarComponent />
             <Outlet />
         </div>

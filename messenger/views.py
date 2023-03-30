@@ -1,8 +1,8 @@
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
-from messenger.models import Message, Room
-from messenger.serializers import MessageSerializer, RoomSerializer
+from messenger.models import Room
+from messenger.serializers import RoomSerializer
 
 
 class RoomViewSet(
@@ -28,18 +28,3 @@ class RoomViewSet(
         """
         room = Room.objects.create()
         room.users.set(self.request.data["users"])
-
-
-class MessageViewSet(
-    viewsets.GenericViewSet,
-    mixins.CreateModelMixin,
-):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-
-    def perform_create(self, serializer):
-        """
-        POST /messages {"body": str, "room": int}
-        """
-        room = Room.objects.get(id=self.request.data["room"])
-        serializer.save(sender=self.request.user, room=room)

@@ -1,20 +1,11 @@
-from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
 import json
 
+from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer
 
-# class ChatConsumer(WebsocketConsumer):
-#     def connect(self):
-#         self.accept()
-
-#     def disconnect(self, close_code):
-#         pass
-
-#     def receive(self, text_data):
-#         text_data_json = json.loads(text_data)
-#         message = text_data_json["message"]
-
-#         self.send(text_data=json.dumps({"message": message}))
+from messenger.models import Room
+from messenger.serializers import MessageSerializer
+from users.models import User
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -27,18 +18,29 @@ class ChatConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
         self.accept()
 
-    def receive(self, text_data=None):
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_name,
-            {
-                "type": "ws.message",
-                "text": text_data,
-            },
-        )
-        print(text_data)
+    def receive(self, text_data):
+        """
+        -  serializer data will get only non-relation fields,
+        related fields require model instances
+        """
+        # print(dir(self))
+        data = json.loads(text_data)
+        serializer = MessageSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            room = Room.objects.get(id=data["room"])
+            sender = User.objects.get(id=data["sender"])
+            serializer.save(room=room, sender=sender)
+            # print(serializer.data)
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_name,
+                {
+                    "type": "websocket_message",
+                    "text": json.dumps(serializer.data),
+                },
+            )
 
-    def ws_message(self, event):
-        print("WS_MESSAGE:", event)
+    def websocket_message(self, event):
+        # print("WS_MESSAGE:", event)
         self.send(text_data=event["text"])
 
     def disconnect(self, close_code):
