@@ -10,9 +10,9 @@ from users.models import User
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
-        print(dir(self))
-        print("GROUPS: ", self.groups)
-        print("SCOPE: ", self.scope)
+        # print(dir(self))
+        # print("GROUPS: ", self.groups)
+        # print("SCOPE: ", self.scope)
 
         self.room_name = "broadcast"
         async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
