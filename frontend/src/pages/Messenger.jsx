@@ -125,10 +125,10 @@ const Messenger = (props) => {
                         <div
                             key={room.id}
                             onClick={(event) => select_room(event, room)}
-                            className={`${
+                            className={`border-2 ${
                                 selected_room.id === room.id
-                                    ? "bg-green-500/20 border-2 border-gray-400"
-                                    : "border-2 border-gray-300"
+                                    ? "bg-green-500/20 border-gray-400"
+                                    : "border-gray-300"
                             } mb-1 p-2 rounded-lg hover:bg-green-500/20`}
                         >
                             <div className="flex space-x-1">
@@ -157,47 +157,49 @@ const Messenger = (props) => {
                     ))}
             </div>
             <div
-                className="overflow-hidden relative flex flex-col w-2/3 bg-gray-300 rounded-lg
-             overflow-y-scroll max-h-screen border-2 border-gray-400"
+                className="overflow-hidden flex flex-col w-2/3 bg-gray-300 rounded-lg
+              max-h-screen border-2 border-gray-400"
             >
-                <div className="text-center m-2 p-2 bg-green-500/20 rounded-lg border-2 border-gray-400">
+                <div className="text-center m-1 p-2 bg-green-500/20 rounded-lg border-2 border-gray-400">
                     {selected_room
                         ? selected_room.users
                               .filter((user) => user.id !== authenticated.id)
                               .map((user) => user.username)
                         : "SELECT_CHAT"}
                 </div>
-                <div className="mx-2">
-                    {selected_room["messages"] &&
-                        selected_room["messages"].map((message) => (
-                            <div
-                                className={`flex ${
-                                    message.sender === authenticated.id
-                                        ? "flex-row-reverse"
-                                        : ""
-                                }`}
-                                key={message.id}
-                            >
+                <div className="mx-1 min-h-screen max-h-screen overflow-y-scroll border-t-2 border-gray-400">
+                    <div className="mt-1">
+                        {selected_room["messages"] &&
+                            selected_room["messages"].map((message) => (
                                 <div
-                                    className="border-2 border-gray-400 p-2 mb-1 rounded-lg w-1/2
-                                    bg-green-500/20"
+                                    className={`flex ${
+                                        message.sender === authenticated.id
+                                            ? "flex-row-reverse"
+                                            : ""
+                                    } last:mb-48 `}
                                     key={message.id}
                                 >
-                                    <div>{message.body}</div>
-                                    <div className="text-xs">
-                                        {format_message_timestamp(
-                                            message.created_at
-                                        )}
+                                    <div
+                                        className="border-2 border-gray-400 p-2 mb-1 rounded-lg w-1/2
+                                    bg-green-500/20"
+                                        key={message.id}
+                                    >
+                                        <div>{message.body}</div>
+                                        <div className="text-xs">
+                                            {format_message_timestamp(
+                                                message.created_at
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                    </div>
                 </div>
                 {selected_room && (
-                    <div className="absolute bottom-0 w-full bg-gray-300">
+                    <div className="sticky bottom-0 w-full bg-gray-300">
                         <form
                             onSubmit={send_message}
-                            className="flex space-x-1 py-2 border-t-2 border-gray-400 mx-2"
+                            className="flex space-x-1 py-1 border-t-2 border-gray-400 mx-1"
                         >
                             <input
                                 className="w-5/6 p-2 rounded-lg bg-green-500/20 focus:outline-none

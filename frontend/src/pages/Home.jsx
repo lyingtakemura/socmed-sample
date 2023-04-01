@@ -64,20 +64,20 @@ const Home = () => {
     return (
         <div className="mx-1 md:m-auto md:w-1/2 sm:w-full font-bold h-[calc(100%-10%)] overflow-y-scroll">
             <div className="max-h-screen my-1">
-                <form onSubmit={sendPost} className="mb-1">
+                <form onSubmit={sendPost} className="mb-1 flex space-x-1">
                     <input
                         type="text"
                         value={input}
                         onChange={(event) => setInput(event.target.value)}
                         required
                         className="p-2 rounded-lg bg-gray-300 border-2 border-gray-400
-                         focus:border-green-500 focus:outline-none w-full mb-1"
+                         focus:border-green-500/20 focus:outline-none w-full"
                     />
                     <button
                         type="submit"
-                        className="p-2 rounded-lg bg-green-500/20 w-full border-2 border-gray-400"
+                        className="p-2 rounded-lg bg-green-500/20 w-1/6 border-2 border-gray-400"
                     >
-                        SUBMIT
+                        Add
                     </button>
                 </form>
                 {posts && // check if posts array have been loaded from axios request to state before render
