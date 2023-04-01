@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../redux/usersSlice";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [alert, setAlert] = useState("");
@@ -71,7 +71,7 @@ const LoginPage = () => {
                         onChange={(event) => setUsername(event.target.value)}
                         required
                         placeholder="USERNAME"
-                        className="p-2 rounded-lg bg-gray-300 w-full mb-2 focus:outline-none"
+                        className="p-2 rounded-lg bg-gray-300 w-full mb-1 focus:outline-none"
                     />
                     <input
                         type="password"
@@ -81,7 +81,7 @@ const LoginPage = () => {
                         onChange={(event) => setPassword(event.target.value)}
                         required
                         placeholder="PASSWORD"
-                        className="p-2 rounded-lg bg-gray-300 w-full mb-2 focus:outline-none"
+                        className="p-2 rounded-lg bg-gray-300 w-full mb-1 focus:outline-none"
                     />
                     <button
                         type="submit"
@@ -95,4 +95,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default Login;

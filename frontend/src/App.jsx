@@ -4,7 +4,7 @@ import "./css/index.css";
 
 import Home from "./pages/Home";
 import Messenger from "./pages/Messenger";
-import LoginPage from "./pages/LoginPage";
+import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
 import User from "./pages/User";
@@ -15,22 +15,22 @@ import { useSelector } from "react-redux";
 import NavbarComponent from "./components/NavbarComponent";
 
 const App = () => {
-    let currentUser = useSelector((state) => state.users.currentUser);
+    let authenticated = useSelector((state) => state.users.currentUser);
     let ws;
     // console.log(window.location.hostname);
-    if (currentUser) {
+    if (authenticated) {
         ws = new WebSocket(
             "ws://" +
                 window.location.hostname +
-                ":8000/ws/chat/?token=" +
-                currentUser.token
+                ":8000/ws/notifications/?token=" +
+                authenticated.token
         );
     }
 
     useEffect(() => {
-        if (currentUser) {
+        if (authenticated) {
             ws.onopen = () => {
-                console.log("WS_CONNECTED");
+                console.log("WS_NOTIFICATIONS_INIT");
             };
 
             // ws.onmessage = (e) => {
@@ -45,19 +45,21 @@ const App = () => {
             //     console.log(e);
             // };
         }
-    }, [currentUser, ws]); // without second param useEffect will stuck in update loop
+    }, [authenticated, ws]); // without second param useEffect will stuck in update loop
 
     return (
         <Routes>
             <Route path="/" element={<LayoutsWithNavbar />}>
                 <Route
                     path="/"
-                    element={!currentUser ? <Navigate to="/login" /> : <Home />}
+                    element={
+                        !authenticated ? <Navigate to="/login" /> : <Home />
+                    }
                 />
                 <Route
                     path="messenger"
                     element={
-                        !currentUser ? (
+                        !authenticated ? (
                             <Navigate to="/login" />
                         ) : (
                             <Messenger ws={ws} />
@@ -67,21 +69,23 @@ const App = () => {
                 <Route
                     path="search"
                     element={
-                        !currentUser ? <Navigate to="/login" /> : <Search />
+                        !authenticated ? <Navigate to="/login" /> : <Search />
                     }
                 />
                 <Route
                     path="login"
-                    element={!currentUser ? <LoginPage /> : <Navigate to="/" />}
+                    element={!authenticated ? <Login /> : <Navigate to="/" />}
                 />
                 <Route
                     path="register"
-                    element={!currentUser ? <Register /> : <Navigate to="/" />}
+                    element={
+                        !authenticated ? <Register /> : <Navigate to="/" />
+                    }
                 />
 
                 <Route
                     path=":username"
-                    element={currentUser ? <User /> : <Navigate to="/" />}
+                    element={authenticated ? <User /> : <Navigate to="/" />}
                 />
 
                 <Route path="*" element={<h1>404</h1>} />
@@ -92,9 +96,11 @@ const App = () => {
 
 function LayoutsWithNavbar() {
     return (
-        <div className="min-h-screen bg-gray-200 pb-1 text-black">
+        <div className="grid grid-cols-1 bg-gray-200 text-black overflow-hidden max-h-screen">
             <NavbarComponent />
-            <Outlet />
+            <div className="min-h-screen">
+                <Outlet />
+            </div>
         </div>
     );
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const Register = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -62,7 +62,7 @@ const LoginPage = () => {
                         onChange={(event) => setUsername(event.target.value)}
                         required
                         placeholder="USERNAME"
-                        className="p-2 rounded-lg w-full mb-2 bg-gray-300 focus:outline-none"
+                        className="p-2 rounded-lg w-full mb-1 bg-gray-300 focus:outline-none"
                     />
                     <input
                         type="text"
@@ -71,7 +71,7 @@ const LoginPage = () => {
                         onChange={(event) => setEmail(event.target.value)}
                         required
                         placeholder="EMAIL"
-                        className="p-2 rounded-lg w-full mb-2 bg-gray-300 focus:outline-none"
+                        className="p-2 rounded-lg w-full mb-1 bg-gray-300 focus:outline-none"
                     />
                     <input
                         type="password"
@@ -81,7 +81,7 @@ const LoginPage = () => {
                         onChange={(event) => setPassword(event.target.value)}
                         required
                         placeholder="PASSWORD"
-                        className="p-2 rounded-lg w-full mb-2 bg-gray-300 focus:outline-none"
+                        className="p-2 rounded-lg w-full mb-1 bg-gray-300 focus:outline-none"
                     />
                     <input
                         type="password"
@@ -91,7 +91,7 @@ const LoginPage = () => {
                         onChange={(event) => setRePassword(event.target.value)}
                         required
                         placeholder="CONFIRM PASSWORD"
-                        className="p-2 rounded-lg w-full mb-2 bg-gray-300 focus:outline-none"
+                        className="p-2 rounded-lg w-full mb-1 bg-gray-300 focus:outline-none"
                     />
                     <button
                         type="submit"
@@ -105,4 +105,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default Register;

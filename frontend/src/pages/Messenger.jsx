@@ -1,30 +1,48 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Messenger = (props) => {
-    const [input, setInput] = useState("");
-    const [rooms, setRooms] = useState("");
-    const [selectedRoom, setSelectedRoom] = useState("");
+    let [message_body, set_message_body] = useState("");
+    let [rooms, set_rooms] = useState("");
+    let [selected_room, set_selected_room] = useState("");
+    let [ws_messenger, set_ws_messenger] = useState("");
+    let authenticated = useSelector((state) => state.users.currentUser);
 
-    let currentUser = useSelector((state) => state.users.currentUser);
-    const ws = props.ws;
+    useEffect(() => {
+        if (selected_room) {
+            let ws_messenger = new WebSocket(
+                "ws://" +
+                    window.location.hostname +
+                    ":8000/ws/chat/" +
+                    selected_room.id +
+                    "?token=" +
+                    authenticated.token
+            );
+            set_ws_messenger(ws_messenger);
 
-    ws.onmessage = (e) => {
-        /*
-        create messages copy array and push new message
-        replace local state with updated copy
-        */
-        let ws_event = JSON.parse(e.data);
-        console.log(ws_event);
-        if (ws_event.room === selectedRoom.id) {
-            let temp_room = { ...selectedRoom };
-            temp_room.messages = [...temp_room.messages, ws_event];
-            setSelectedRoom(temp_room);
+            ws_messenger.onmessage = (e) => {
+                /*
+                create messages copy array and push new message
+                replace local state with updated copy
+                */
+                let event = JSON.parse(e.data);
+                if (event.room === selected_room.id) {
+                    let room = { ...selected_room };
+                    room.messages = [...room.messages, event];
+                    set_selected_room(room);
+                }
+            };
+            // ws.onerror = (e) => {
+            //     console.log(e);
+            // };
+            // ws.onclose = (e) => {
+            //     console.log(e);
+            // };
         }
-    };
+    }, [authenticated, selected_room]); // without second param useEffect will stuck in update loop
 
-    const lastMessagePreview = (room) => {
+    const last_message_preview = (room) => {
         if (room.messages.length >= 1) {
             return room.messages[room.messages.length - 1].body.slice(0, 30);
         } else {
@@ -32,12 +50,12 @@ const Messenger = (props) => {
         }
     };
 
-    const formatMessageTimestamp = (input) => {
+    const format_message_timestamp = (message_body) => {
         const formatter = new Intl.DateTimeFormat("en-GB", {
             minute: "2-digit",
             hour: "2-digit",
         });
-        const date = new Date(input);
+        const date = new Date(message_body);
         const result = formatter.format(date);
         return result;
     };
@@ -53,31 +71,31 @@ const Messenger = (props) => {
                     ":8000/rooms/",
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                     },
                 }
             )
             .then((response) => {
-                setRooms(response.data);
+                set_rooms(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, [currentUser]); // useEffect will re-run whenever object in it's dependency array changes
+    }, [authenticated]); // useEffect will re-run whenever object in it's dependency array changes
 
-    const sendMessage = (event) => {
+    const send_message = (event) => {
         event.preventDefault();
-        ws.send(
+        ws_messenger.send(
             JSON.stringify({
-                body: input,
-                room: selectedRoom.id,
-                sender: currentUser.id,
+                body: message_body,
+                room: selected_room.id,
+                sender: authenticated.id,
             })
         );
-        setInput("");
+        set_message_body("");
     };
 
-    const getRoom = (event, room) => {
+    const select_room = (event, room) => {
         axios
             .get(
                 window.location.protocol +
@@ -87,28 +105,31 @@ const Messenger = (props) => {
                     room.id,
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                     },
                 }
             )
             .then((response) => {
-                setSelectedRoom(response.data);
+                set_selected_room(response.data);
             });
     };
 
     return (
-        <div className="flex font-bold space-x-1 m-1 w-1/2 mx-auto min-h-screen max-h-screen overflow-hidden">
-            <div className="w-1/3 bg-gray-300 rounded-lg p-2">
+        <div className="flex font-bold w-1/2 mx-auto space-x-1 h-[calc(100%-10%)] mt-1">
+            <div
+                className="w-1/3 bg-gray-300 rounded-lg p-2  max-h-screen overflow-y-scroll
+             border-2 border-gray-400"
+            >
                 {rooms &&
                     rooms.map((room) => (
                         <div
                             key={room.id}
-                            onClick={(event) => getRoom(event, room)}
+                            onClick={(event) => select_room(event, room)}
                             className={`${
-                                selectedRoom.id === room.id
-                                    ? "bg-green-500/20"
-                                    : ""
-                            } mb-2 p-2 rounded-lg hover:bg-green-500/20`}
+                                selected_room.id === room.id
+                                    ? "bg-green-500/20 border-2 border-gray-400"
+                                    : "border-2 border-gray-300"
+                            } mb-1 p-2 rounded-lg hover:bg-green-500/20`}
                         >
                             <div className="flex space-x-1">
                                 {/* <img
@@ -122,45 +143,49 @@ const Messenger = (props) => {
                                     alt="..."
                                 /> */}
                                 <div>
-                                    {room.type === "group" && room.type + ": "}
                                     {room.users
                                         .filter(
-                                            (user) => user.id !== currentUser.id
+                                            (user) =>
+                                                user.id !== authenticated.id
                                         )
                                         .map((user) => user.username)}
                                     <br />
-                                    {lastMessagePreview(room)}
+                                    {last_message_preview(room)}
                                 </div>
                             </div>
                         </div>
                     ))}
             </div>
-            <div className="w-2/3 bg-gray-300 rounded-lg overflow-y-scroll flex flex-col">
-                <div className="text-center m-2 p-2 bg-green-500/20 rounded-lg">
-                    {selectedRoom
-                        ? selectedRoom.users
-                              .filter((user) => user.id !== currentUser.id)
+            <div
+                className="overflow-hidden relative flex flex-col w-2/3 bg-gray-300 rounded-lg
+             overflow-y-scroll max-h-screen border-2 border-gray-400"
+            >
+                <div className="text-center m-2 p-2 bg-green-500/20 rounded-lg border-2 border-gray-400">
+                    {selected_room
+                        ? selected_room.users
+                              .filter((user) => user.id !== authenticated.id)
                               .map((user) => user.username)
                         : "SELECT_CHAT"}
                 </div>
                 <div className="mx-2">
-                    {selectedRoom["messages"] &&
-                        selectedRoom["messages"].map((message) => (
+                    {selected_room["messages"] &&
+                        selected_room["messages"].map((message) => (
                             <div
                                 className={`flex ${
-                                    message.sender === currentUser.id
+                                    message.sender === authenticated.id
                                         ? "flex-row-reverse"
                                         : ""
                                 }`}
                                 key={message.id}
                             >
                                 <div
-                                    className="p-2 mb-2 rounded-lg w-1/2 bg-green-500/20"
+                                    className="border-2 border-gray-400 p-2 mb-1 rounded-lg w-1/2
+                                    bg-green-500/20"
                                     key={message.id}
                                 >
                                     <div>{message.body}</div>
                                     <div className="text-xs">
-                                        {formatMessageTimestamp(
+                                        {format_message_timestamp(
                                             message.created_at
                                         )}
                                     </div>
@@ -168,23 +193,24 @@ const Messenger = (props) => {
                             </div>
                         ))}
                 </div>
-                {selectedRoom && (
-                    <div className="sticky bottom-0 bg-gray-300 mx-2">
+                {selected_room && (
+                    <div className="absolute bottom-0 w-full bg-gray-300">
                         <form
-                            onSubmit={sendMessage}
-                            className="flex space-x-1 py-2"
+                            onSubmit={send_message}
+                            className="flex space-x-1 py-2 border-t-2 border-gray-400 mx-2"
                         >
                             <input
-                                className="w-5/6 p-2 rounded-lg bg-green-500/20 focus:outline-none"
-                                value={input}
+                                className="w-5/6 p-2 rounded-lg bg-green-500/20 focus:outline-none
+                                 border-2 border-gray-400"
+                                value={message_body}
                                 onChange={(event) =>
-                                    setInput(event.target.value)
+                                    set_message_body(event.target.value)
                                 }
                                 required
                             />
                             <button
                                 type="submit"
-                                className="w-1/6 p-2 rounded-lg bg-green-500/20"
+                                className="w-1/6 p-2 rounded-lg bg-green-500/20 border-2 border-gray-400"
                             >
                                 Send
                             </button>

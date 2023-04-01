@@ -143,9 +143,12 @@ const User = () => {
 
     return (
         <>
-            <div className="w-1/2 m-auto font-bold pb-1">
+            <div className="font-bold my-1 sm:w-full md:w-1/2 sm:mx-1 md:mx-auto">
                 {user && (
-                    <div className="flex justify-between w-full p-2 bg-gray-300 rounded-lg h-1/3 mb-1 space-x-4">
+                    <div
+                        className="flex justify-between w-full p-2 bg-gray-300 rounded-lg
+                        h-1/3 mb-1 space-x-4 border-2 border-gray-400"
+                    >
                         <img
                             src={
                                 user.image
@@ -174,7 +177,8 @@ const User = () => {
                                                 type="file"
                                                 onChange={onImageChange}
                                                 accept="image/*"
-                                                className="file:p-2 file:rounded-lg file:bg-green-500/20 file:text-xs file:border-0"
+                                                className="file:p-2 file:rounded-lg file:bg-green-500/20
+                                                 file:text-xs file:border-0"
                                             />
                                         </div>
                                     )}
@@ -219,7 +223,7 @@ const User = () => {
                         {posts &&
                             posts.map((post) => (
                                 <div
-                                    className=" p-2 bg-gray-300 rounded-lg"
+                                    className=" p-2 bg-gray-300 rounded-lg border-2 border-gray-400"
                                     key={post.id}
                                 >
                                     {post.body}
@@ -228,7 +232,7 @@ const User = () => {
                     </div>
                 )}
                 {posts.length < 1 && (
-                    <div className=" p-2 bg-gray-300 rounded-lg">
+                    <div className=" p-2 bg-gray-300 rounded-lg border-2 border-gray-400">
                         User hasn't posted anything yet
                     </div>
                 )}

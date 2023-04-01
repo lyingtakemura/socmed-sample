@@ -76,11 +76,11 @@ const Search = () => {
     };
 
     return (
-        <div className="m-auto w-1/2 pb-1">
+        <div className="m-auto md:w-1/2 sm:w-full grid md:grid-cols-2 sm:grid-cols-1">
             {users &&
                 users.map((user) => (
                     <div
-                        className="p-2 bg-gray-300 rounded-lg mb-2 flex font-bold space-x-1"
+                        className="p-2 bg-gray-300 rounded-lg m-1 flex font-bold border-2 border-gray-400"
                         key={user.id}
                     >
                         <img
@@ -102,20 +102,24 @@ const Search = () => {
                             </div>
                             <div>Followers: {user.followers.length}</div>
                         </div>
-                        <button
-                            className={`rounded-lg bg-gray-300 text-xs w-1/6 `}
-                            onClick={(event) => toggleFollow(event, user.id)}
-                        >
-                            {user.followers.includes(currentUser.id)
-                                ? "Following"
-                                : "Follow"}
-                        </button>
-                        <button
-                            className="rounded-lg bg-green-500/20 text-xs w-1/6"
-                            onClick={(event) => sendMessage(event, user.id)}
-                        >
-                            Message
-                        </button>
+                        <div className="grid grid-cols-1 space-y-1 text-xs">
+                            <button
+                                className={`rounded-lg bg-gray-300 w-full border-2 border-gray-400 p-1`}
+                                onClick={(event) =>
+                                    toggleFollow(event, user.id)
+                                }
+                            >
+                                {user.followers.includes(currentUser.id)
+                                    ? "Following"
+                                    : "Follow"}
+                            </button>
+                            <button
+                                className="rounded-lg bg-green-500/20 w-full border-2 border-gray-400 p-1"
+                                onClick={(event) => sendMessage(event, user.id)}
+                            >
+                                Message
+                            </button>
+                        </div>
                     </div>
                 ))}
         </div>
