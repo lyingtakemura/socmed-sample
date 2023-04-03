@@ -1,11 +1,25 @@
+from abc import abstractmethod
+
 from django.db import models
 
-# from messenger.managers import CustomThreadManager
 from users.models import User
 
 
 class Room(models.Model):
     users = models.ManyToManyField(User)
+
+    @abstractmethod
+    def get_or_create_room(request):
+        print(request.data.get("users"))
+        room = Room.objects.filter(users__in=[request.data.get("user")]).filter(
+            users__in=[request.user.id]
+        )
+        print(room.exists())
+        if room.exists():
+            return room
+        else:
+            room = Room.objects.create()
+            room.users.set([request.data.get("user"), request.user.id])
 
 
 class Message(models.Model):

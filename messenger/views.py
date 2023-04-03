@@ -24,7 +24,6 @@ class RoomViewSet(
 
     def perform_create(self, serializer):
         """
-        POST /rooms {"users": list}
+        POST /rooms {"user": int}
         """
-        room = Room.objects.create()
-        room.users.set(self.request.data["users"])
+        Room.get_or_create_room(self.request)
