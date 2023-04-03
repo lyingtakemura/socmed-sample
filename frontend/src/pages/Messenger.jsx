@@ -12,12 +12,7 @@ const Messenger = (props) => {
     useEffect(() => {
         if (selected_room) {
             let ws_messenger = new WebSocket(
-                "ws://" +
-                    window.location.hostname +
-                    ":8000/ws/chat/" +
-                    selected_room.id +
-                    "?token=" +
-                    authenticated.token
+                `ws://${window.location.hostname}:8000/ws/chat/${selected_room.id}?token=${authenticated.token}`
             );
             set_ws_messenger(ws_messenger);
 
@@ -65,10 +60,7 @@ const Messenger = (props) => {
         // console.log(window.location.protocol)
         axios
             .get(
-                window.location.protocol +
-                    "//" +
-                    window.location.hostname +
-                    ":8000/rooms/",
+                `${window.location.protocol}//${window.location.hostname}:8000/rooms/`,
                 {
                     headers: {
                         Authorization: "Token " + authenticated.token,
@@ -98,11 +90,7 @@ const Messenger = (props) => {
     const select_room = (event, room) => {
         axios
             .get(
-                window.location.protocol +
-                    "//" +
-                    window.location.hostname +
-                    ":8000/rooms/" +
-                    room.id,
+                `${window.location.protocol}//${window.location.hostname}:8000/rooms/${room.id}`,
                 {
                     headers: {
                         Authorization: "Token " + authenticated.token,
@@ -117,7 +105,7 @@ const Messenger = (props) => {
     return (
         <div className="flex font-bold w-1/2 mx-auto space-x-1 h-[calc(100%-10%)] mt-1">
             <div
-                className="w-1/3 bg-gray-300 rounded-lg p-2  max-h-screen overflow-y-scroll
+                className="w-1/3 bg-gray-300 rounded-lg p-2 max-h-screen overflow-y-scroll
              border-2 border-gray-400"
             >
                 {rooms &&

@@ -7,35 +7,40 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const User = () => {
-    let currentUser = useSelector((state) => state.users.currentUser);
     let params = useParams();
-    const [user, setUser] = useState("");
-    const [posts, setPosts] = useState("");
-    const dispatch = useDispatch();
+    let dispatch = useDispatch();
     let navigate = useNavigate();
+    let authenticated = useSelector((state) => state.users.currentUser);
+    let [user, set_user] = useState("");
+    let [posts, set_posts] = useState("");
 
-    const getUser = useCallback(() => {
+    const get_user = useCallback(() => {
         axios
-            .get(`http://127.0.0.1:8000/users?search=${params.username}`, {
-                headers: {
-                    Authorization: "Token " + currentUser.token,
-                },
-            })
+            .get(
+                `${window.location.protocol}//${window.location.hostname}:8000/users?search=${params.username}`,
+                {
+                    headers: {
+                        Authorization: "Token " + authenticated.token,
+                    },
+                }
+            )
             .then((response) => {
                 if (response.data[0]) {
-                    setUser(response.data[0]);
-                    // console.log(response.data[0].id);
+                    set_user(response.data[0]);
                     let id = response.data[0].id;
                     axios
-                        .get(`http://127.0.0.1:8000/posts/?user=${id}`, {
-                            headers: {
-                                Authorization: "Token " + currentUser.token,
-                            },
-                        })
+                        .get(
+                            `${window.location.protocol}//${window.location.hostname}:8000/posts/?user=${id}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        "Token " + authenticated.token,
+                                },
+                            }
+                        )
                         .then((response) => {
                             if (response.data) {
-                                setPosts(response.data);
-                                // console.log(response.data);
+                                set_posts(response.data);
                             }
                         })
                         .catch((error) => {
@@ -46,22 +51,22 @@ const User = () => {
             .catch((error) => {
                 console.log(error);
             });
-    }, [currentUser, params]);
+    }, [authenticated, params]);
 
     useEffect(() => {
-        getUser();
-    }, [getUser]);
+        get_user();
+    }, [get_user]);
 
-    const sendMessage = (event, id) => {
+    const send_message = (event, id) => {
         axios
             .post(
-                `http://127.0.0.1:8000/threads/`,
+                `${window.location.protocol}//${window.location.hostname}:8000/rooms/`,
                 {
-                    users: [id, currentUser.id],
+                    users: [id, authenticated.id],
                 },
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                     },
                 }
             )
@@ -73,16 +78,16 @@ const User = () => {
             });
     };
 
-    const onImageDelete = (e) => {
+    const delete_image = (e) => {
         axios
             .patch(
-                `http://127.0.0.1:8000/users/${currentUser.id}/`,
+                `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
                 {
                     image: null,
                 },
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                         "Content-Type": "multipart/form-data",
                     },
                 }
@@ -95,18 +100,17 @@ const User = () => {
             });
     };
 
-    const onImageChange = (e) => {
+    const change_image = (e) => {
         e.preventDefault();
-        // console.log(e.target.files[0]);
         axios
             .patch(
-                `http://127.0.0.1:8000/users/${currentUser.id}/`,
+                `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
                 {
                     image: e.target.files[0],
                 },
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                         "Content-Type": "multipart/form-data",
                     },
                 }
@@ -119,22 +123,21 @@ const User = () => {
             });
     };
 
-    const toggleFollow = (event, id) => {
-        // console.log(id);
+    const follow = (event, id) => {
         axios
             .patch(
-                `http://127.0.0.1:8000/users/${currentUser.id}/`,
+                `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
                 {
                     follow: id,
                 },
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                     },
                 }
             )
             .then((response) => {
-                getUser(user.id);
+                get_user(user.id);
             })
             .catch((error) => {
                 console.log(error.response);
@@ -142,12 +145,12 @@ const User = () => {
     };
 
     return (
-        <>
-            <div className="font-bold my-1 sm:w-full md:w-1/2 sm:mx-1 md:mx-auto">
+        <div className="mx-1 md:m-auto md:w-1/2 sm:w-full font-bold h-[calc(100%-10%)] overflow-y-scroll">
+            <div className="max-h-screen">
                 {user && (
                     <div
                         className="flex justify-between w-full p-2 bg-gray-300 rounded-lg
-                        h-1/3 mb-1 space-x-4 border-2 border-gray-400"
+                        h-1/3 my-1 space-x-4 border-2 border-gray-400"
                     >
                         <img
                             src={
@@ -162,36 +165,36 @@ const User = () => {
                             <div className="w-auto flex justify-between">
                                 <div className="text-2xl">{user.username}</div>
                                 <div className="w-auto">
-                                    {user.id === currentUser.id && (
+                                    {user.id === authenticated.id && (
                                         <div className="overflow-x-hidden space-x-1">
                                             <button
                                                 size="sm"
                                                 onClick={(e) => {
-                                                    onImageDelete(e);
+                                                    delete_image(e);
                                                 }}
                                                 className="p-2 rounded-lg bg-green-500/20 text-xs"
                                             >
-                                                Delete Image
+                                                Delete
                                             </button>
                                             <input
                                                 type="file"
-                                                onChange={onImageChange}
+                                                onChange={change_image}
                                                 accept="image/*"
                                                 className="file:p-2 file:rounded-lg file:bg-green-500/20
                                                  file:text-xs file:border-0"
                                             />
                                         </div>
                                     )}
-                                    {user.id !== currentUser.id && (
+                                    {user.id !== authenticated.id && (
                                         <div className="space-x-1">
                                             <button
                                                 className="p-2 rounded-lg bg-green-500/20 text-xs"
                                                 onClick={(event) =>
-                                                    toggleFollow(event, user.id)
+                                                    follow(event, user.id)
                                                 }
                                             >
                                                 {user.followers.includes(
-                                                    currentUser.id
+                                                    authenticated.id
                                                 )
                                                     ? "Following"
                                                     : "Follow"}
@@ -199,7 +202,7 @@ const User = () => {
                                             <button
                                                 className="p-2 rounded-lg bg-green-500/20 text-xs"
                                                 onClick={(event) =>
-                                                    sendMessage(event, user.id)
+                                                    send_message(event, user.id)
                                                 }
                                             >
                                                 Message
@@ -223,7 +226,7 @@ const User = () => {
                         {posts &&
                             posts.map((post) => (
                                 <div
-                                    className=" p-2 bg-gray-300 rounded-lg border-2 border-gray-400"
+                                    className="p-2 bg-gray-300 rounded-lg border-2 border-gray-400"
                                     key={post.id}
                                 >
                                     {post.body}
@@ -237,7 +240,7 @@ const User = () => {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

@@ -4,66 +4,63 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Search = () => {
-    let currentUser = useSelector((state) => state.users.currentUser);
-    const [users, setUsers] = useState("");
     let navigate = useNavigate();
+    let authenticated = useSelector((state) => state.users.currentUser);
+    let [users, set_users] = useState("");
 
-    const getUsers = useCallback(() => {
-        //  useCallback is a React Hook that lets you cache a function definition between re-renders
+    const get_users = useCallback(() => {
         axios
-            .get("http://127.0.0.1:8000/users/", {
-                headers: {
-                    Authorization: "Token " + currentUser.token,
-                },
-            })
+            .get(
+                `${window.location.protocol}//${window.location.hostname}:8000/users/`,
+                {
+                    headers: {
+                        Authorization: "Token " + authenticated.token,
+                    },
+                }
+            )
             .then((response) => {
-                // console.log(response.data);
-                setUsers(response.data);
+                set_users(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, [currentUser]);
+    }, [authenticated]); //  useCallback lets you cache a function definition between re-renders
 
     useEffect(() => {
-        getUsers();
-    }, [getUsers]);
+        get_users();
+    }, [get_users]);
 
-    const toggleFollow = (event, id) => {
-        // console.log(id);
+    const follow = (event, id) => {
         axios
             .patch(
-                `http://127.0.0.1:8000/users/${currentUser.id}/`,
+                `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
                 {
                     follow: id,
                 },
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                     },
                 }
             )
             .then((response) => {
-                getUsers();
+                get_users();
             })
             .catch((error) => {
                 console.log(error.response);
             });
     };
 
-    const sendMessage = (event, id) => {
+    const send_message = (event, id) => {
         axios
             .post(
-                window.location.protocol +
-                    "//" +
-                    window.location.hostname +
-                    ":8000/rooms/",
+                `${window.location.protocol}//${window.location.hostname}:8000/rooms/`,
                 {
-                    users: [id, currentUser.id],
+                    users: [id, authenticated.id],
                 },
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                     },
                 }
             )
@@ -105,17 +102,17 @@ const Search = () => {
                         <div className="grid grid-cols-1 space-y-1 text-xs">
                             <button
                                 className={`rounded-lg bg-gray-300 w-full border-2 border-gray-400 p-1`}
-                                onClick={(event) =>
-                                    toggleFollow(event, user.id)
-                                }
+                                onClick={(event) => follow(event, user.id)}
                             >
-                                {user.followers.includes(currentUser.id)
+                                {user.followers.includes(authenticated.id)
                                     ? "Following"
                                     : "Follow"}
                             </button>
                             <button
                                 className="rounded-lg bg-green-500/20 w-full border-2 border-gray-400 p-1"
-                                onClick={(event) => sendMessage(event, user.id)}
+                                onClick={(event) =>
+                                    send_message(event, user.id)
+                                }
                             >
                                 Message
                             </button>

@@ -3,26 +3,29 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const Home = () => {
-    let currentUser = useSelector((state) => state.users.currentUser);
-    const [posts, setPosts] = useState("");
-    const [input, setInput] = useState("");
+    let authenticated = useSelector((state) => state.users.currentUser);
+    const [posts, set_posts] = useState("");
+    const [input, set_input] = useState("");
 
     useEffect(() => {
         axios
-            .get("http://127.0.0.1:8000/posts/", {
-                headers: {
-                    Authorization: "Token " + currentUser.token,
-                },
-            })
+            .get(
+                `${window.location.protocol}//${window.location.hostname}:8000/posts/`,
+                {
+                    headers: {
+                        Authorization: "Token " + authenticated.token,
+                    },
+                }
+            )
             .then((response) => {
-                setPosts(response.data);
+                set_posts(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, [currentUser]); // posts in useEffect dependency causes infinite axios request loop
+    }, [authenticated]); // posts in useEffect dependency causes infinite axios request loop
 
-    const formatPostTimestamp = (input) => {
+    const format_timestamp = (input) => {
         const formatter = new Intl.DateTimeFormat("en-GB", {
             year: "2-digit",
             month: "2-digit",
@@ -35,17 +38,17 @@ const Home = () => {
         return result;
     };
 
-    const sendPost = (event) => {
+    const submit_post = (event) => {
         event.preventDefault();
         axios
             .post(
-                "http://127.0.0.1:8000/posts/",
+                `${window.location.protocol}//${window.location.hostname}:8000/posts/`,
                 {
                     body: input,
                 },
                 {
                     headers: {
-                        Authorization: "Token " + currentUser.token,
+                        Authorization: "Token " + authenticated.token,
                     },
                 }
             )
@@ -53,22 +56,22 @@ const Home = () => {
                 console.log(response.data);
                 let obj = response.data;
                 let posts_temp = [obj, ...posts];
-                setPosts(posts_temp);
+                set_posts(posts_temp);
             })
             .catch((error) => {
                 console.log(error);
             });
-        setInput("");
+        set_input("");
     };
 
     return (
         <div className="mx-1 md:m-auto md:w-1/2 sm:w-full font-bold h-[calc(100%-10%)] overflow-y-scroll">
             <div className="max-h-screen my-1">
-                <form onSubmit={sendPost} className="mb-1 flex space-x-1">
+                <form onSubmit={submit_post} className="mb-1 flex space-x-1">
                     <input
                         type="text"
                         value={input}
-                        onChange={(event) => setInput(event.target.value)}
+                        onChange={(event) => set_input(event.target.value)}
                         required
                         className="p-2 rounded-lg bg-gray-300 border-2 border-gray-400
                          focus:border-green-500/20 focus:outline-none w-full"
@@ -89,7 +92,7 @@ const Home = () => {
                             <div>{post.body}</div>
                             <div className="text-center">
                                 {post.user.username} at:{" "}
-                                {formatPostTimestamp(post.created_at)}
+                                {format_timestamp(post.created_at)}
                             </div>
                         </div>
                     ))}
