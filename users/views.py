@@ -1,10 +1,7 @@
-# from django.db.models import Q
 from rest_framework import filters, mixins, viewsets
 
 from users.models import User
 from users.serializers import UserSerializer
-
-# from rest_framework.response import Response
 
 
 class UserViewSet(
@@ -30,37 +27,13 @@ class UserViewSet(
     #     return Response(serializer.data)
 
     def perform_update(self, serializer):
-        print(dir(self.request))
-        print(self.request.data)
         """
-        The pre_save and post_save hooks no longer exist, but are replaced with
-        perform_create(self, serializer) and perform_update(self, serializer).
-        These methods should save the object instance by calling
-        serializer.save(), adding in any additional arguments as required.
-        They may also perform any custom pre-save or post-save behavior.
-
-        - Follow/Unfollow:
-        PATCH /users/<int:current_user_id> {"follow": int}
-
-        - Remove user image:
-        PATCH /users/<int:current_user_id> {"image": ""}
+        - Remove user image PATCH /users/<int:current_user_id> {"image": ""}
+        - On user image update request delete previous file
         """
-
-        # Check if input combination of thread type and users already exist.
-        # For personal thread also check if there's no more than 2 users.
         if self.request.data.get("follow"):
-            current_user = self.request.user
-            selected_user = User.objects.get(id=self.request.data.get("follow"))
+            User.follow(request=self.request)
 
-            if current_user.following.filter(id=selected_user.id).exists():
-                current_user.following.remove(selected_user)
-                selected_user.followers.remove(current_user)
-                print(current_user.following.filter(id=selected_user.id).exists())
-            else:
-                current_user.following.add(selected_user)
-                selected_user.followers.add(current_user)
-
-        # On user image update request delete previous file
         if self.request.data.get("image"):
             self.request.user.image.delete()
 

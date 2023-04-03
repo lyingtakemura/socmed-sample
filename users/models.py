@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -24,3 +26,18 @@ class User(AbstractUser):
         "self", related_name="followers_set", symmetrical=False, blank=True
     )
     image = models.ImageField(upload_to="users/", blank=True, null=True)
+
+    @abstractmethod
+    def follow(request):
+        """
+        - Follow/Unfollow PATCH /users/<int:current_user_id> {"follow": int}
+        """
+        current_user = request.user
+        selected_user = User.objects.get(id=request.data.get("follow"))
+
+        if current_user.following.filter(id=selected_user.id).exists():
+            current_user.following.remove(selected_user)
+            selected_user.followers.remove(current_user)
+        else:
+            current_user.following.add(selected_user)
+            selected_user.followers.add(current_user)
