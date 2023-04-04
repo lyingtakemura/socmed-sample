@@ -1,6 +1,6 @@
 import factory
 
-from messenger.models import Message, Thread
+from messenger.models import Message, Room
 from posts.models import Post
 from users.models import User
 
@@ -29,29 +29,30 @@ class PostFactory(factory.django.DjangoModelFactory):
     created_at = factory.Faker("date_time")
 
 
-class ThreadFactory(factory.django.DjangoModelFactory):
+class RoomFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Thread
+        model = Room
 
-    type = "personal"
+    # @factory.post_generation
+    # def groups(self, create, extracted, **kwargs):
+    #     if not create:
+    #         # Simple build, do nothing.
+    #         return
 
-    @factory.post_generation
-    def groups(self, create, extracted, **kwargs):
-        if not create:
-            # Simple build, do nothing.
-            return
+    #     if extracted:
+    #         # A list of users were passed in, use them
+    #         for users in extracted:
+    #             self.users.add(users)
 
-        if extracted:
-            # A list of users were passed in, use them
-            for users in extracted:
-                self.users.add(users)
+
+RoomFactory.create()
 
 
 class MessageFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Message
 
-    thread = factory.SubFactory(ThreadFactory)
+    thread = factory.SubFactory(RoomFactory)
     sender = factory.SubFactory(UserFactory)
     body = factory.Faker("sentence")
     created_at = factory.Faker("date_time")
