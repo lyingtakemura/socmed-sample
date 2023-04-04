@@ -3,14 +3,16 @@ import factory
 from messenger.models import Message, Room
 from posts.models import Post
 from users.models import User
+from django.contrib.auth.hashers import make_password
 
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
-    email = factory.Faker("email")
-    username = "testuser"
+    email = factory.Sequence(lambda i: "test{}@test.com".format(i))
+    username = factory.Sequence(lambda i: "test{}".format(i))
+    password = make_password('0')
     is_superuser = False
     is_staff = False
 

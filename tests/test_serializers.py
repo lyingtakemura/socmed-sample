@@ -1,9 +1,9 @@
 import factory
-import pytest
-from factories import MessageFactory, PostFactory, ThreadFactory, UserFactory
-from messenger.models import Message, Thread
-from messenger.serializers import MessageSerializer, ThreadSerializer
+
+from messenger.models import Message
+from messenger.serializers import MessageSerializer
 from posts.serializers import PostSerializer
+from utils.factories import MessageFactory, PostFactory, UserFactory
 
 
 class TestPostSerializer:
