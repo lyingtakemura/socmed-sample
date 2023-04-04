@@ -9,4 +9,6 @@ poetry install
 black . --verbose --diff --exclude /migrations/
 flake8 .
 bandit .
+
+manage.py seed
 ```

@@ -9,10 +9,11 @@ from django.contrib.auth.hashers import make_password
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
+        django_get_or_create = ("username",)
 
     email = factory.Sequence(lambda i: "test{}@test.com".format(i))
     username = factory.Sequence(lambda i: "test{}".format(i))
-    password = make_password('0')
+    password = make_password("0")
     is_superuser = False
     is_staff = False
 
@@ -26,8 +27,9 @@ class PostFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Post
 
+    factory.Faker._DEFAULT_LOCALE = 'la'
     user = factory.SubFactory(UserFactory)
-    body = factory.Faker("sentence")
+    body = factory.Faker("paragraph", nb_sentences=3, variable_nb_sentences=False)
     created_at = factory.Faker("date_time")
 
 
