@@ -4,8 +4,8 @@ from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
 
-from posts.models import Comment, Post
-from posts.serializers import CommentSerializer, PostSerializer
+from posts.models import Post
+from posts.serializers import PostSerializer
 
 
 class PostViewSet(
@@ -42,25 +42,3 @@ class PostViewSet(
         They may also perform any custom pre-save or post-save behavior.
         """
         serializer.save(user=self.request.user)
-
-
-class CommentViewSet(
-    viewsets.GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-    def list(self, request):
-        """
-        To serialize a queryset or list of objects instead of a single object
-        instance, you should set many=True flag when instantiating serializer.
-        """
-        queryset = Comment.objects.filter(post=request.GET["post"])
-        serializer = CommentSerializer(queryset, many=True)
-        return Response(serializer.data)

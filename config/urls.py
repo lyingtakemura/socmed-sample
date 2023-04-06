@@ -18,14 +18,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
 from messenger.views import RoomViewSet
-from posts.views import CommentViewSet, PostViewSet
+from posts.views import PostViewSet
 from rest_framework import routers
 from users.views import UserViewSet
 
 router = routers.SimpleRouter()
 router.register(r"posts", PostViewSet)
-router.register(r"comments", CommentViewSet)
-# router.register(r"messages", MessageViewSet)
 router.register(r"rooms", RoomViewSet)
 router.register(r"users", UserViewSet)
 
