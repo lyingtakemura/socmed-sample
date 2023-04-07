@@ -14,3 +14,4 @@ exclude =
     tests.py,
     migrations,
     config,
+    settings.py,

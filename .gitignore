@@ -131,3 +131,6 @@ dmypy.json
 media/
 static/
 .vscode
+
+# Docker
+volumes/
