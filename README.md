@@ -18,7 +18,7 @@ manage.py seed
 ###### DOCKER
 ```
 pip freeze > requirements.txt (dependency list for docker)
-rm -rf volumes (previous docker image state will block compose up on rebuild)
+rm -rf volumes (previous docker image state will block compose up)
 docker compose up
 ```
 
