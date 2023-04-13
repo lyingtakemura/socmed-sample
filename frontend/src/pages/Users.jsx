@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Search = () => {
+const Users = () => {
     let navigate = useNavigate();
     let authenticated = useSelector((state) => state.users.currentUser);
     let [users, set_users] = useState("");
@@ -123,4 +123,4 @@ const Search = () => {
     );
 };
 
-export default Search;
+export default Users;

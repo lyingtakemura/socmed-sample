@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Messenger from "./pages/Messenger";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Search from "./pages/Search";
+import Users from "./pages/Users";
 import User from "./pages/User";
 
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
@@ -67,9 +67,9 @@ const App = () => {
                     }
                 />
                 <Route
-                    path="search"
+                    path="users"
                     element={
-                        !authenticated ? <Navigate to="/login" /> : <Search />
+                        !authenticated ? <Navigate to="/login" /> : <Users />
                     }
                 />
                 <Route

@@ -8,7 +8,7 @@ import Home from "../pages/Home";
 import Messenger from "../pages/Messenger";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import Search from "../pages/Search";
+import Users from "../pages/Users";
 import User from "../pages/User";
 
 export function NavbarComponent() {
@@ -68,12 +68,12 @@ export function NavbarComponent() {
                             Messenger
                         </Link>
                         <Link
-                            to="/search"
-                            element={<Search />}
+                            to="/users"
+                            element={<Users />}
                             className="text-black hover:text-green-500/20 hover:no-underline
                              focus:text-green-500/20 focus:no-underline"
                         >
-                            Search
+                            Users
                         </Link>
                     </div>
 
