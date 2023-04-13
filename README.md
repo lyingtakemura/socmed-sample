@@ -18,10 +18,10 @@ pip freeze > requirements.txt (dependency list for docker)
 sudo rm -rf volumes (remove previous docker images state on rebuild, will block compose up otherwise)
 docker compose up
 
-![login](screenshots/00_login.png)
-![posts](screenshots/01_posts.png)
-![messenger](screenshots/02_messenger.png)
-![users](screenshots/03_users.png)
-![drf_posts](screenshots/04_drf_posts.png)
-![drf_rooms](screenshots/05_drf_rooms.png)
+![](docs/images/00_login.png)
+![](docs/images/01_posts.png)
+![](docs/images/02_messenger.png)
+![](docs/images/03_users.png)
+![](docs/images/04_drf_posts.png)
+![](docs/images/05_drf_rooms.png)
 ```
