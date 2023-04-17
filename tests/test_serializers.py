@@ -46,13 +46,3 @@ class TestMessageSerializer:
 
         assert serializer.is_valid()
         assert serializer.errors == {}
-
-
-# class TestThreadSerializer: # RecursionError
-#     class Meta:
-#         model = Thread
-
-#     def test_serialize_model(self):
-#         thread = ThreadFactory.build()
-#         serializer = ThreadSerializer(thread)
-#         assert serializer.data
