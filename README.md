@@ -1,6 +1,21 @@
 [![main](https://github.com/lyingtakemura/socmed-sample/actions/workflows/main.yaml/badge.svg)](https://github.com/lyingtakemura/socmed-sample/actions/workflows/main.yaml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+
+###### SUMMARY
+```
+Social media project with  ability to follow users,
+make posts and send personal messages.
+
+Django, DRF, Websocket, ReactJS.
+Signup with djoser, one-to-one chat using django-channels.
+Ability to follow users.
+Views - genericViewSet with mixins.
+Filtering, pagination.
+Custom manage.py command to seed db with faker.
+Linter – flake8, formatter - black.
+Docker compose.
+```
 ###### LOCALHOST
 ```
 poetry shell
