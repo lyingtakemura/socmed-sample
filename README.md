@@ -10,7 +10,7 @@ Social media project with ability to send personal messages, make posts and foll
 ### BUILT WITH
 ```
 - Backend:
-django/drf/django-channels
+django, django-rest-framework
 signup with djoser
 one-to-one chat - django-channels
 views - genericViewSet with mixins
@@ -18,6 +18,7 @@ filtering, pagination
 custom manage.py command to seed db with faker
 linter – flake8, formatter - black
 docker compose
+
 - Frontend:
 reactjs, react router, redux, redux-persist, axios, tailwind css
 ```
