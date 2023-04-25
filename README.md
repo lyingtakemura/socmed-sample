@@ -17,7 +17,7 @@ custom manage.py command to seed db with faker
 linter – flake8, formatter - black
 docker compose
 - Frontend:
-reactjs, tailwind css, axios, redux, redux-persist
+reactjs, react router, redux, redux-persist, axios, tailwind css
 ```
 ### SETUP
 ```
