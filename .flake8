@@ -2,16 +2,4 @@
 max-line-length = 88
 extend-ignore = E203
 exclude =
-    .git,
-    .gitignore,
-    *.pot,
-    *.py[co],
-    __pycache__,
-    venv,
-    .env,
-    frontend,
-    tests,
-    tests.py,
-    migrations,
-    config,
     settings.py,

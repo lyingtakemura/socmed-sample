@@ -158,7 +158,6 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             # "hosts": [("redis", 6379)],
             "hosts": [("localhost", 6379)],
-
         },
     },
 }
