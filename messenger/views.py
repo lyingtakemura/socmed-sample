@@ -18,7 +18,9 @@ class RoomViewSet(
         """
         GET /rooms
         """
-        queryset = Room.objects.filter(users__in=[self.request.user])
+        queryset = Room.objects.filter(users__in=[self.request.user]).prefetch_related(
+            "users__followers", "users__following"
+        )
         serializer = RoomSerializer(queryset, many=True)
         return Response(serializer.data)
 

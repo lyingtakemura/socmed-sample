@@ -7,7 +7,7 @@ from users.serializers import UserSerializer
 class UserViewSet(
     viewsets.GenericViewSet, mixins.ListModelMixin, mixins.UpdateModelMixin
 ):
-    queryset = User.objects.all()
+    queryset = User.objects.prefetch_related("followers", "following")
     serializer_class = UserSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["username"]
