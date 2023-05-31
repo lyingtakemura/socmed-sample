@@ -1,7 +1,8 @@
-from django.db.models import Q
+# from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, viewsets
-from rest_framework.response import Response
+
+# from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
 
 from posts.models import Post
@@ -14,7 +15,7 @@ class PostViewSet(
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
 ):
-    queryset = Post.objects.all().order_by("-created_at")
+    queryset = Post.objects.order_by("-created_at").select_related("user")
     serializer_class = PostSerializer
     throttle_classes = [UserRateThrottle]
     filter_backends = [DjangoFilterBackend]
