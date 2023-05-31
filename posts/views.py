@@ -7,6 +7,8 @@ from rest_framework.throttling import UserRateThrottle
 
 from posts.models import Post
 from posts.serializers import PostSerializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 
 class PostViewSet(
@@ -20,6 +22,10 @@ class PostViewSet(
     throttle_classes = [UserRateThrottle]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["user"]
+
+    @method_decorator(cache_page(20))
+    def dispatch(self, *args, **kwargs):
+        return super(PostViewSet, self).dispatch(*args, **kwargs)
 
     # def list(self, request):
     #     """
