@@ -64,6 +64,26 @@ const Home = () => {
         set_input("");
     };
 
+    const delete_post = (event, id) => {
+        console.log(id);
+        axios
+            .delete(
+                `${window.location.protocol}//${window.location.hostname}:8000/posts/${id}`,
+                {
+                    headers: {
+                        Authorization: "Token " + authenticated.token,
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response.data);
+                console.log(posts);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     return (
         <div className="mx-1 md:m-auto md:w-1/2 sm:w-full font-bold h-[calc(100%-10%)] overflow-y-scroll">
             <div className="max-h-screen my-1">
@@ -90,9 +110,21 @@ const Home = () => {
                             key={post.id}
                         >
                             <div>{post.body}</div>
-                            <div className="text-center">
-                                {post.user.username} at:{" "}
-                                {format_timestamp(post.created_at)}
+                            <div className="flex justify-between text-xs text-black/50">
+                                <div className="text-center">
+                                    {post.user.username} at:{" "}
+                                    {format_timestamp(post.created_at)}
+                                </div>
+                                {authenticated.id === post.user.id && (
+                                    <div
+                                        className="hover:text-black"
+                                        onClick={(event) =>
+                                            delete_post(event, post.id)
+                                        }
+                                    >
+                                        delete
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}
