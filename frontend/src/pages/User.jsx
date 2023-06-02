@@ -144,6 +144,39 @@ const User = () => {
             });
     };
 
+    const delete_post = (event, id) => {
+        console.log(id);
+        axios
+            .delete(
+                `${window.location.protocol}//${window.location.hostname}:8000/posts/${id}`,
+                {
+                    headers: {
+                        Authorization: "Token " + authenticated.token,
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response.data);
+                console.log(posts);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const format_timestamp = (input) => {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+            year: "2-digit",
+            month: "2-digit",
+            day: "2-digit",
+            minute: "2-digit",
+            hour: "2-digit",
+        });
+        const date = new Date(input);
+        const result = formatter.format(date);
+        return result;
+    };
+
     return (
         <div className="mx-1 md:m-auto md:w-1/2 sm:w-full font-bold h-[calc(100%-10%)] overflow-y-scroll">
             <div className="max-h-screen">
@@ -159,7 +192,7 @@ const User = () => {
                                     : "https://via.placeholder.com/400"
                             }
                             alt="?"
-                            className="h-auto rounded-lg w-1/3 object-cover object-center"
+                            className="h-auto rounded-lg w-1/3 object-cover object-center border-2 border-gray-400"
                         />
                         <div className="w-2/3 grid grid-cols-1 place-content-evenly">
                             <div className="w-auto flex justify-between">
@@ -230,6 +263,22 @@ const User = () => {
                                     key={post.id}
                                 >
                                     {post.body}
+                                    <div className="flex justify-between text-xs text-black/50">
+                                        <div className="text-center">
+                                            {post.user.username} at:{" "}
+                                            {format_timestamp(post.created_at)}
+                                        </div>
+                                        {authenticated.id === post.user.id && (
+                                            <div
+                                                className="hover:text-black"
+                                                onClick={(event) =>
+                                                    delete_post(event, post.id)
+                                                }
+                                            >
+                                                delete
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                     </div>
