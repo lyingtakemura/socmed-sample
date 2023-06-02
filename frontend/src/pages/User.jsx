@@ -78,27 +78,27 @@ const User = () => {
             });
     };
 
-    const delete_image = (e) => {
-        axios
-            .patch(
-                `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
-                {
-                    image: null,
-                },
-                {
-                    headers: {
-                        Authorization: "Token " + authenticated.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            )
-            .then((response) => {
-                dispatch(update(null));
-            })
-            .catch((error) => {
-                console.log(error.response);
-            });
-    };
+    // const delete_image = (e) => {
+    //     axios
+    //         .patch(
+    //             `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
+    //             {
+    //                 image: null,
+    //             },
+    //             {
+    //                 headers: {
+    //                     Authorization: "Token " + authenticated.token,
+    //                     "Content-Type": "multipart/form-data",
+    //                 },
+    //             }
+    //         )
+    //         .then((response) => {
+    //             dispatch(update(null));
+    //         })
+    //         .catch((error) => {
+    //             console.log(error.response);
+    //         });
+    // };
 
     const change_image = (e) => {
         e.preventDefault();
@@ -185,72 +185,82 @@ const User = () => {
                         className="flex justify-between w-full p-2 bg-gray-300 rounded-lg
                         h-1/3 my-1 space-x-4 border-2 border-gray-400"
                     >
-                        <img
-                            src={
-                                user.image
-                                    ? user.image
-                                    : "https://via.placeholder.com/400"
-                            }
-                            alt="?"
-                            className="h-auto rounded-lg w-1/3 object-cover object-center border-2 border-gray-400"
-                        />
+                        <div className="h-auto w-1/3">
+                            <img
+                                src={
+                                    user.image
+                                        ? user.image
+                                        : "https://via.placeholder.com/400"
+                                }
+                                alt="?"
+                                className="rounded-lg object-cover object-center border-2 border-gray-400"
+                            />
+                            {user.id === authenticated.id && (
+                                <div>
+                                    {/* <button
+                                        size="sm"
+                                        onClick={(e) => {
+                                            delete_image(e);
+                                        }}
+                                        className="p-2 rounded-lg bg-green-500/20 text-xs w-full"
+                                    >
+                                        Delete
+                                    </button> */}
+                                    <input
+                                        type="file"
+                                        onChange={change_image}
+                                        accept="image/*"
+                                        className="bg-green-500/20 p-2 rounded-lg file:hidden
+                                                text-xs w-full mt-1 border-2 border-gray-400"
+                                    />
+                                </div>
+                            )}
+                        </div>
+
                         <div className="w-2/3 grid grid-cols-1 place-content-evenly">
-                            <div className="w-auto flex justify-between">
-                                <div className="text-2xl">{user.username}</div>
-                                <div className="w-auto">
-                                    {user.id === authenticated.id && (
-                                        <div className="overflow-x-hidden space-x-1">
-                                            <button
-                                                size="sm"
-                                                onClick={(e) => {
-                                                    delete_image(e);
-                                                }}
-                                                className="p-2 rounded-lg bg-green-500/20 text-xs"
-                                            >
-                                                Delete
-                                            </button>
-                                            <input
-                                                type="file"
-                                                onChange={change_image}
-                                                accept="image/*"
-                                                className="file:p-2 file:rounded-lg file:bg-green-500/20
-                                                 file:text-xs file:border-0"
-                                            />
-                                        </div>
-                                    )}
-                                    {user.id !== authenticated.id && (
-                                        <div className="space-x-1">
-                                            <button
-                                                className="p-2 rounded-lg bg-green-500/20 text-xs"
-                                                onClick={(event) =>
-                                                    follow(event, user.id)
-                                                }
-                                            >
-                                                {user.followers.includes(
-                                                    authenticated.id
-                                                )
-                                                    ? "Following"
-                                                    : "Follow"}
-                                            </button>
-                                            <button
-                                                className="p-2 rounded-lg bg-green-500/20 text-xs"
-                                                onClick={(event) =>
-                                                    send_message(event, user.id)
-                                                }
-                                            >
-                                                Message
-                                            </button>
-                                        </div>
-                                    )}
+                            <div className="text-center flex justify-left">
+                                <div className="text-2xl mr-4">
+                                    {user.username}
+                                </div>
+
+                                {user.id !== authenticated.id && (
+                                    <div className="space-x-1 flex">
+                                        <button
+                                            className="p-2 rounded-lg bg-green-500/20 text-xs border-2 border-gray-400"
+                                            onClick={(event) =>
+                                                send_message(event, user.id)
+                                            }
+                                        >
+                                            Message
+                                        </button>
+                                        <button
+                                            className="p-2 rounded-lg bg-green-500/20 text-xs border-2 border-gray-400"
+                                            onClick={(event) =>
+                                                follow(event, user.id)
+                                            }
+                                        >
+                                            {user.followers.includes(
+                                                authenticated.id
+                                            )
+                                                ? "Following"
+                                                : "Follow"}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="flex justify-evenly">
+                                <div className="w-full">
+                                    Posts: {posts.length}
+                                </div>
+                                <div className="w-full">
+                                    Followers: {user.followers.length}
+                                </div>
+                                <div className="w-full">
+                                    Following: {user.following.length}
                                 </div>
                             </div>
-                            <div className="w-auto flex justify-between">
-                                <div>Posts: {posts.length}</div>
-                                <div>Followers: {user.followers.length}</div>
-                                <div>Following: {user.following.length}</div>
-                            </div>
+                            <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta tenetur rem a unde perferendis repellendus earum qui quam animi quae est amet ad, voluptates illum, reprehenderit fugit voluptatem aliquam debitis!</div>
                         </div>
-                        <div></div>
                     </div>
                 )}
                 {!user && "NOT_FOUND"}
