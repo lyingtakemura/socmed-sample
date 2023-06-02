@@ -49,6 +49,9 @@ const Messenger = (props) => {
         const formatter = new Intl.DateTimeFormat("en-GB", {
             minute: "2-digit",
             hour: "2-digit",
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
         });
         const date = new Date(message_body);
         const result = formatter.format(date);
@@ -138,7 +141,9 @@ const Messenger = (props) => {
                                         )
                                         .map((user) => user.username)}
                                     <br />
-                                    {last_message_preview(room)}
+                                    <div className="text-xs text-black/50">
+                                        {last_message_preview(room)}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -149,11 +154,13 @@ const Messenger = (props) => {
               max-h-screen border-2 border-gray-400"
             >
                 <div className="text-center m-1 p-2 bg-green-500/20 rounded-lg border-2 border-gray-400">
-                    {selected_room
-                        ? selected_room.users
-                              .filter((user) => user.id !== authenticated.id)
-                              .map((user) => user.username)
-                        : "SELECT_CHAT"}
+                    {selected_room ? (
+                        selected_room.users
+                            .filter((user) => user.id !== authenticated.id)
+                            .map((user) => user.username)
+                    ) : (
+                        <br />
+                    )}
                 </div>
                 <div className="mx-1 min-h-screen max-h-screen overflow-y-scroll border-t-2 border-gray-400">
                     <div className="mt-1">
@@ -164,7 +171,7 @@ const Messenger = (props) => {
                                         message.sender === authenticated.id
                                             ? "flex-row-reverse"
                                             : ""
-                                    } last:mb-48 `}
+                                    } last:mb-48`}
                                     key={message.id}
                                 >
                                     <div
@@ -173,7 +180,7 @@ const Messenger = (props) => {
                                         key={message.id}
                                     >
                                         <div>{message.body}</div>
-                                        <div className="text-xs">
+                                        <div className="text-xs text-black/50">
                                             {format_message_timestamp(
                                                 message.created_at
                                             )}
