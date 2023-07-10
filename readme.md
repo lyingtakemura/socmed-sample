@@ -10,30 +10,33 @@ Social media project with ability to send personal messages, make posts and foll
 ### BUILT WITH
 ```
 - Backend:
-django, django-rest-framework
-signup with djoser
-one-to-one chat - django-channels
-views - genericViewSet with mixins
-filtering, pagination
-custom manage.py command to seed db with faker
-linter – flake8, formatter - black
-docker compose
+Django, Django REST Framework
+Signup with Djoser
+Django Channels for one-to-one chats
+Views - genericViewSet with mixins
+Filtering, pagination
+Custom manage.py command to seed db with faker
+Linter – flake8, formatter - black
+Docker compose
 
 - Frontend:
-reactjs, react router, redux, redux-persist, axios, tailwind css
+ReactJS, React Router, Redux, Redux Persist, Axios, Tailwind CSS
 ```
 ### SETUP
 ```
 cp .example.env .env && nano .env
 
-poetry shell
-poetry install && ./manage.py seed && ./manage.py runserver
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+./manage.py seed
+./manage.py runserver
 
 cd frontend && npm install && npm start
 ```
 ### META
 ```
-pip freeze > requirements.txt (dependency list for docker)
+pip freeze > requirements.txt
 rm -rf volumes (previous docker image state will block compose up)
 
 black . --verbose --diff --exclude /migrations/
