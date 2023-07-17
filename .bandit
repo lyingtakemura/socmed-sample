@@ -1,3 +1,2 @@
 [bandit]
-exclude = /tests,/venv,/frontend
-skips: B101
+exclude = tests.py,/tests,/venv,/frontend
