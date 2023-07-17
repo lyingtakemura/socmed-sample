@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from utils.factories import UserFactory, PostFactory
+from config.factories import UserFactory, PostFactory
 from users.models import User
 
 

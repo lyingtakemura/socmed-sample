@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "users",
     "posts",
     "messenger",
-    "utils",
+    "config",
 ]
 
 MIDDLEWARE = [
