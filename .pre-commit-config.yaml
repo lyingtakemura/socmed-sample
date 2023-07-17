@@ -1,4 +1,4 @@
-exclude: ^frontend/|tests/|migrations/|config/
+exclude: ^frontend/|tests/|migrations/|config/|tests.py
 repos:
   - repo: https://github.com/psf/black
     rev: 23.1.0

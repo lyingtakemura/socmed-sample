@@ -1,2 +1,3 @@
 [bandit]
 exclude = /tests,/venv,/frontend
+skips: B101
