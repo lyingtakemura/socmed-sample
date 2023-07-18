@@ -1,4 +1,4 @@
-FROM node:20-bookworm-slim
+FROM node:18.16-alpine3.18
 
 WORKDIR /project/frontend
 
