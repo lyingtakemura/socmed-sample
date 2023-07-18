@@ -1,10 +1,10 @@
-FROM node:19.8.1-bullseye
+FROM node:20-bookworm-slim
 
-WORKDIR /code/frontend/
+WORKDIR /project/frontend
 
-COPY package*.json /code/frontend/
+COPY package.json .
 RUN npm install
 
-COPY . /code/frontend/
+COPY . .
 
 CMD ["npm", "start"]

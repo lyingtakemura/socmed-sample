@@ -89,10 +89,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-# read os.environ['DATABASE_URL'] and raises
-# ImproperlyConfigured exception if not found
 DATABASES = {
-    "default": env.db(),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("SQL_DATABASE"),
+        "USER": env("SQL_USER"),
+        "PASSWORD": env("SQL_PASSWORD"),
+        "HOST": env("SQL_HOST"),
+        "PORT": "5432",
+    }
 }
 
 # Password validation
@@ -156,8 +161,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            # "hosts": [("redis", 6379)],
-            "hosts": [("localhost", 6379)],
+            "hosts": [(env("REDIS_HOST"), 6379)],
         },
     },
 }
@@ -196,6 +200,6 @@ INTERNAL_IPS = [
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": "redis://" + env("REDIS_HOST") + ":6379",
     }
 }
