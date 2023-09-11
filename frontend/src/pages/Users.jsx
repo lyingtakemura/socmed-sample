@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Users = () => {
+export function Users() {
     let navigate = useNavigate();
     let authenticated = useSelector((state) => state.users.currentUser);
     let [users, set_users] = useState("");
@@ -16,7 +16,7 @@ const Users = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 set_users(response.data);
@@ -41,7 +41,7 @@ const Users = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 get_users();
@@ -62,7 +62,7 @@ const Users = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 navigate("/messenger");
@@ -121,6 +121,4 @@ const Users = () => {
                 ))}
         </div>
     );
-};
-
-export default Users;
+}

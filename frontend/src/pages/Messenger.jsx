@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-const Messenger = (props) => {
+export function Messenger(props) {
     let [message_body, set_message_body] = useState("");
     let [rooms, set_rooms] = useState("");
     let [selected_room, set_selected_room] = useState("");
@@ -12,7 +12,7 @@ const Messenger = (props) => {
     useEffect(() => {
         if (selected_room) {
             let ws_messenger = new WebSocket(
-                `ws://${window.location.hostname}:8000/ws/chat/${selected_room.id}?token=${authenticated.token}`
+                `ws://${window.location.hostname}:8000/ws/chat/${selected_room.id}?token=${authenticated.token}`,
             );
             set_ws_messenger(ws_messenger);
 
@@ -68,7 +68,7 @@ const Messenger = (props) => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 set_rooms(response.data);
@@ -85,7 +85,7 @@ const Messenger = (props) => {
                 body: message_body,
                 room: selected_room.id,
                 sender: authenticated.id,
-            })
+            }),
         );
         set_message_body("");
     };
@@ -98,7 +98,7 @@ const Messenger = (props) => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 set_selected_room(response.data);
@@ -137,7 +137,7 @@ const Messenger = (props) => {
                                     {room.users
                                         .filter(
                                             (user) =>
-                                                user.id !== authenticated.id
+                                                user.id !== authenticated.id,
                                         )
                                         .map((user) => user.username)}
                                     <br />
@@ -182,7 +182,7 @@ const Messenger = (props) => {
                                         <div>{message.body}</div>
                                         <div className="text-xs text-black/50">
                                             {format_message_timestamp(
-                                                message.created_at
+                                                message.created_at,
                                             )}
                                         </div>
                                     </div>
@@ -217,6 +217,4 @@ const Messenger = (props) => {
             </div>
         </div>
     );
-};
-
-export default Messenger;
+}

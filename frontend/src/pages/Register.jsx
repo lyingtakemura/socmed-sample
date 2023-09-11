@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+export function Register() {
     let [username, set_username] = useState("");
     let [email, set_email] = useState("");
     let [password, set_password] = useState("");
@@ -20,7 +20,7 @@ const Register = () => {
                     username: username,
                     password: password,
                     re_password: re_password,
-                }
+                },
             )
             .then((response) => {
                 console.log(response.data);
@@ -104,6 +104,4 @@ const Register = () => {
             </div>
         </>
     );
-};
-
-export default Register;
+}

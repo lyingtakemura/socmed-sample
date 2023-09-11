@@ -2,17 +2,17 @@ import React, { useEffect } from "react";
 import "./css/App.css";
 import "./css/index.css";
 
-import Home from "./pages/Home";
-import Messenger from "./pages/Messenger";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Users from "./pages/Users";
-import User from "./pages/User";
+import { Home } from "./pages/Home";
+import { Messenger } from "./pages/Messenger";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { Users } from "./pages/Users";
+import { User } from "./pages/User";
 
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import NavbarComponent from "./components/NavbarComponent";
+import { NavbarComponent } from "./components/NavbarComponent";
 
 const App = () => {
     let authenticated = useSelector((state) => state.users.currentUser);
@@ -23,7 +23,7 @@ const App = () => {
             "ws://" +
                 window.location.hostname +
                 ":8000/ws/notifications/?token=" +
-                authenticated.token
+                authenticated.token,
         );
     }
 

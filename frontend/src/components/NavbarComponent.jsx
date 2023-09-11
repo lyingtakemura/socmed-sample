@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { logout } from "../redux/usersSlice";
 
-import Home from "../pages/Home";
-import Messenger from "../pages/Messenger";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import Users from "../pages/Users";
-import User from "../pages/User";
+import { Home } from "../pages/Home";
+import { Messenger } from "../pages/Messenger";
+import { Login } from "../pages/Login";
+import { Register } from "../pages/Register";
+import { Users } from "../pages/Users";
+import { User } from "../pages/User";
 
 export function NavbarComponent() {
     let currentUser = useSelector((state) => state.users.currentUser);
@@ -100,5 +100,3 @@ export function NavbarComponent() {
         </div>
     );
 }
-
-export default NavbarComponent;

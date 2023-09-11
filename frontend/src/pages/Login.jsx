@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../redux/usersSlice";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+export function Login() {
     const [username, set_username] = useState("");
     const [password, set_password] = useState("");
     const [alert, set_alert] = useState("");
@@ -19,7 +19,7 @@ const Login = () => {
                 {
                     username: username,
                     password: password,
-                }
+                },
             )
             .then((response) => {
                 const token = response.data["auth_token"];
@@ -32,7 +32,7 @@ const Login = () => {
                             headers: {
                                 Authorization: "Token " + token,
                             },
-                        }
+                        },
                     )
                     .then((response) => {
                         details = response.data;
@@ -99,6 +99,4 @@ const Login = () => {
             </div>
         </>
     );
-};
-
-export default Login;
+}

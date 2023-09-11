@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const Home = () => {
+export function Home() {
     let authenticated = useSelector((state) => state.users.currentUser);
     const [posts, set_posts] = useState("");
     const [input, set_input] = useState("");
@@ -15,7 +15,7 @@ const Home = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 set_posts(response.data);
@@ -50,7 +50,7 @@ const Home = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 console.log(response.data);
@@ -73,7 +73,7 @@ const Home = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 console.log(response.data);
@@ -131,6 +131,4 @@ const Home = () => {
             </div>
         </div>
     );
-};
-
-export default Home;
+}

@@ -6,7 +6,7 @@ import { update } from "../redux/usersSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const User = () => {
+export function User() {
     let params = useParams();
     let dispatch = useDispatch();
     let navigate = useNavigate();
@@ -22,7 +22,7 @@ const User = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 if (response.data[0]) {
@@ -36,7 +36,7 @@ const User = () => {
                                     Authorization:
                                         "Token " + authenticated.token,
                                 },
-                            }
+                            },
                         )
                         .then((response) => {
                             if (response.data) {
@@ -68,7 +68,7 @@ const User = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 navigate("/messenger");
@@ -113,7 +113,7 @@ const User = () => {
                         Authorization: "Token " + authenticated.token,
                         "Content-Type": "multipart/form-data",
                     },
-                }
+                },
             )
             .then((response) => {
                 dispatch(update(response["image"]));
@@ -134,7 +134,7 @@ const User = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 get_user(user.id);
@@ -153,7 +153,7 @@ const User = () => {
                     headers: {
                         Authorization: "Token " + authenticated.token,
                     },
-                }
+                },
             )
             .then((response) => {
                 console.log(response.data);
@@ -240,7 +240,7 @@ const User = () => {
                                             }
                                         >
                                             {user.followers.includes(
-                                                authenticated.id
+                                                authenticated.id,
                                             )
                                                 ? "Following"
                                                 : "Follow"}
@@ -259,7 +259,13 @@ const User = () => {
                                     Following: {user.following.length}
                                 </div>
                             </div>
-                            <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta tenetur rem a unde perferendis repellendus earum qui quam animi quae est amet ad, voluptates illum, reprehenderit fugit voluptatem aliquam debitis!</div>
+                            <div>
+                                Lorem ipsum dolor sit, amet consectetur
+                                adipisicing elit. Dicta tenetur rem a unde
+                                perferendis repellendus earum qui quam animi
+                                quae est amet ad, voluptates illum,
+                                reprehenderit fugit voluptatem aliquam debitis!
+                            </div>
                         </div>
                     </div>
                 )}
@@ -301,6 +307,4 @@ const User = () => {
             </div>
         </div>
     );
-};
-
-export default User;
+}
