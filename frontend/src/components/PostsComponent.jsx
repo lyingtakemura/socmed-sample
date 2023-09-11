@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-export function Home() {
+export function PostsComponent() {
     const authenticated = useSelector((state) => state.authenticated.user);
     const [posts, setPosts] = useState("");
     const [input, setInput] = useState("");
@@ -115,9 +115,7 @@ export function Home() {
                                 {authenticated.id === post.user.id && (
                                     <div
                                         className="hover:text-black"
-                                        onClick={(event) =>
-                                            deletePost(event, post.id)
-                                        }
+                                        onClick={(event) => deletePost(event, post.id)}
                                     >
                                         delete
                                     </div>

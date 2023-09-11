@@ -6,7 +6,7 @@ import { updateAction } from "../redux/authenticatedSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export function User() {
+export function UserComponent() {
     const params = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,8 +33,7 @@ export function User() {
                             `${window.location.protocol}//${window.location.hostname}:8000/posts/?user=${id}`,
                             {
                                 headers: {
-                                    Authorization:
-                                        "Token " + authenticated.token,
+                                    Authorization: "Token " + authenticated.token,
                                 },
                             },
                         )
@@ -215,9 +214,7 @@ export function User() {
 
                         <div className="w-2/3 grid grid-cols-1 place-content-evenly">
                             <div className="text-center flex justify-left">
-                                <div className="text-2xl mr-4">
-                                    {user.username}
-                                </div>
+                                <div className="text-2xl mr-4">{user.username}</div>
 
                                 {user.id !== authenticated.id && (
                                     <div className="space-x-1 flex">
@@ -231,13 +228,9 @@ export function User() {
                                         </button>
                                         <button
                                             className="p-2 rounded-lg bg-green-500/20 text-xs border-2 border-gray-400"
-                                            onClick={(event) =>
-                                                follow(event, user.id)
-                                            }
+                                            onClick={(event) => follow(event, user.id)}
                                         >
-                                            {user.followers.includes(
-                                                authenticated.id,
-                                            )
+                                            {user.followers.includes(authenticated.id)
                                                 ? "Following"
                                                 : "Follow"}
                                         </button>
@@ -245,9 +238,7 @@ export function User() {
                                 )}
                             </div>
                             <div className="flex justify-evenly">
-                                <div className="w-full">
-                                    Posts: {posts.length}
-                                </div>
+                                <div className="w-full">Posts: {posts.length}</div>
                                 <div className="w-full">
                                     Followers: {user.followers.length}
                                 </div>
@@ -256,10 +247,9 @@ export function User() {
                                 </div>
                             </div>
                             <div>
-                                Lorem ipsum dolor sit, amet consectetur
-                                adipisicing elit. Dicta tenetur rem a unde
-                                perferendis repellendus earum qui quam animi
-                                quae est amet ad, voluptates illum,
+                                Lorem ipsum dolor sit, amet consectetur adipisicing
+                                elit. Dicta tenetur rem a unde perferendis repellendus
+                                earum qui quam animi quae est amet ad, voluptates illum,
                                 reprehenderit fugit voluptatem aliquam debitis!
                             </div>
                         </div>
@@ -278,9 +268,7 @@ export function User() {
                                     <div className="flex justify-between text-xs text-black/50">
                                         <div className="text-center">
                                             {post.user.username} at:{" "}
-                                            {formatPostDatetime(
-                                                post.created_at,
-                                            )}
+                                            {formatPostDatetime(post.created_at)}
                                         </div>
                                         {authenticated.id === post.user.id && (
                                             <div

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { loginAction } from "../redux/authenticatedSlice";
 import { useNavigate } from "react-router-dom";
 
-export function Login() {
+export function LoginComponent() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [alert, setAlert] = useState("");

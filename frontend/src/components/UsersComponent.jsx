@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export function Users() {
+export function UsersComponent() {
     const navigate = useNavigate();
     const authenticated = useSelector((state) => state.authenticated.user);
     const [users, setUsers] = useState("");

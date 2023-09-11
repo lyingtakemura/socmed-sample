@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { logoutAction } from "../redux/authenticatedSlice";
 
-import { Home } from "../pages/Home";
-import { Messenger } from "../pages/Messenger";
-import { Login } from "../pages/Login";
-import { Register } from "../pages/Register";
-import { Users } from "../pages/Users";
-import { User } from "../pages/User";
+import { PostsComponent } from "./PostsComponent";
+import { MessengerComponent } from "./MessengerComponent";
+import { LoginComponent } from "./LoginComponent";
+import { RegisterComponent } from "./RegisterComponent";
+import { UsersComponent } from "./UsersComponent";
+import { UserComponent } from "./UserComponent";
 
 export function NavbarComponent() {
     const authenticated = useSelector((state) => state.authenticated.user);
@@ -31,7 +31,7 @@ export function NavbarComponent() {
                 <div className="space-x-2">
                     <Link
                         to="/login"
-                        element={<Login />}
+                        element={<LoginComponent />}
                         className="text-black hover:text-green-500/20 hover:no-underline
                          focus:text-green-500/20 focus:no-underline"
                     >
@@ -39,7 +39,7 @@ export function NavbarComponent() {
                     </Link>
                     <Link
                         to="/register"
-                        element={<Register />}
+                        element={<RegisterComponent />}
                         className="text-black hover:text-green-500/20 hover:no-underline
                          focus:text-green-500/20 focus:no-underline"
                     >
@@ -53,34 +53,34 @@ export function NavbarComponent() {
                     <div className="space-x-2">
                         <Link
                             to="/"
-                            element={<Home />}
+                            element={<PostsComponent />}
                             className="text-black hover:text-green-500/20 hover:no-underline
                             focus:text-green-500/20 focus:no-underline"
                         >
-                            Home
-                        </Link>
-                        <Link
-                            to="/messenger"
-                            element={<Messenger />}
-                            className="text-black hover:text-green-500/20 hover:no-underline
-                            focus:text-green-500/20 focus:no-underline"
-                        >
-                            Messenger
+                            Posts
                         </Link>
                         <Link
                             to="/users"
-                            element={<Users />}
+                            element={<UsersComponent />}
                             className="text-black hover:text-green-500/20 hover:no-underline
                              focus:text-green-500/20 focus:no-underline"
                         >
                             Users
+                        </Link>
+                        <Link
+                            to="/messenger"
+                            element={<MessengerComponent />}
+                            className="text-black hover:text-green-500/20 hover:no-underline
+                            focus:text-green-500/20 focus:no-underline"
+                        >
+                            Messenger
                         </Link>
                     </div>
 
                     <div className="space-x-2">
                         <Link
                             to={"/" + authenticated.username}
-                            element={<User />}
+                            element={<UserComponent />}
                             className="text-black hover:text-green-500/20 hover:no-underline
                              focus:text-green-500/20 focus:no-underline"
                         >

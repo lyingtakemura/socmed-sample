@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import "./css/App.css";
 import "./css/index.css";
 
-import { Home } from "./pages/Home";
-import { Messenger } from "./pages/Messenger";
-import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
-import { Users } from "./pages/Users";
-import { User } from "./pages/User";
+import { PostsComponent } from "./components/PostsComponent";
+import { MessengerComponent } from "./components/MessengerComponent";
+import { LoginComponent } from "./components/LoginComponent";
+import { RegisterComponent } from "./components/RegisterComponent";
+import { UsersComponent } from "./components/UsersComponent";
+import { UserComponent } from "./components/UserComponent";
 
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -17,7 +17,6 @@ import { NavbarComponent } from "./components/NavbarComponent";
 export function App() {
     let authenticated = useSelector((state) => state.authenticated.user);
     let ws;
-    // console.log(window.location.hostname);
     if (authenticated) {
         ws = new WebSocket(
             "ws://" +
@@ -32,20 +31,8 @@ export function App() {
             ws.onopen = () => {
                 console.log("WS_NOTIFICATIONS_INIT");
             };
-
-            // ws.onmessage = (e) => {
-            //     console.log(e.data);
-            // };
-
-            // ws.onerror = (e) => {
-            //     console.log(e);
-            // };
-
-            // ws.onclose = (e) => {
-            //     console.log(e);
-            // };
         }
-    }, [authenticated, ws]); // without second param useEffect will stuck in update loop
+    }, [authenticated, ws]);
 
     return (
         <Routes>
@@ -53,7 +40,7 @@ export function App() {
                 <Route
                     path="/"
                     element={
-                        !authenticated ? <Navigate to="/login" /> : <Home />
+                        !authenticated ? <Navigate to="/login" /> : <PostsComponent />
                     }
                 />
                 <Route
@@ -62,30 +49,30 @@ export function App() {
                         !authenticated ? (
                             <Navigate to="/login" />
                         ) : (
-                            <Messenger ws={ws} />
+                            <MessengerComponent />
                         )
                     }
                 />
                 <Route
                     path="users"
                     element={
-                        !authenticated ? <Navigate to="/login" /> : <Users />
+                        !authenticated ? <Navigate to="/login" /> : <UsersComponent />
                     }
                 />
                 <Route
                     path="login"
-                    element={!authenticated ? <Login /> : <Navigate to="/" />}
+                    element={!authenticated ? <LoginComponent /> : <Navigate to="/" />}
                 />
                 <Route
                     path="register"
                     element={
-                        !authenticated ? <Register /> : <Navigate to="/" />
+                        !authenticated ? <RegisterComponent /> : <Navigate to="/" />
                     }
                 />
 
                 <Route
                     path=":username"
-                    element={authenticated ? <User /> : <Navigate to="/" />}
+                    element={authenticated ? <UserComponent /> : <Navigate to="/" />}
                 />
 
                 <Route path="*" element={<h1>404</h1>} />

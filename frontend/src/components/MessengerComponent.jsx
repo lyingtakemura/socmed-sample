@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-export function Messenger(props) {
+export function MessengerComponent(props) {
     const [input, setInput] = useState("");
     const [rooms, setRooms] = useState("");
     const [selectedRoom, setSelectedRoom] = useState("");
@@ -121,10 +121,7 @@ export function Messenger(props) {
                                 /> */}
                                 <div>
                                     {room.users
-                                        .filter(
-                                            (user) =>
-                                                user.id !== authenticated.id,
-                                        )
+                                        .filter((user) => user.id !== authenticated.id)
                                         .map((user) => user.username)}
                                     <br />
                                     <div className="text-xs text-black/50">
@@ -167,9 +164,7 @@ export function Messenger(props) {
                                     >
                                         <div>{message.body}</div>
                                         <div className="text-xs text-black/50">
-                                            {formatMessageDatetime(
-                                                message.created_at,
-                                            )}
+                                            {formatMessageDatetime(message.created_at)}
                                         </div>
                                     </div>
                                 </div>
@@ -186,9 +181,7 @@ export function Messenger(props) {
                                 className="w-5/6 p-2 rounded-lg bg-green-500/20 focus:outline-none
                                  border-2 border-gray-400"
                                 value={input}
-                                onChange={(event) =>
-                                    setInput(event.target.value)
-                                }
+                                onChange={(event) => setInput(event.target.value)}
                                 required
                             />
                             <button
