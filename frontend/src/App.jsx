@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 
 import { NavbarComponent } from "./components/NavbarComponent";
 
-const App = () => {
+export function App() {
     let authenticated = useSelector((state) => state.users.currentUser);
     let ws;
     // console.log(window.location.hostname);
@@ -92,7 +92,7 @@ const App = () => {
             </Route>
         </Routes>
     );
-};
+}
 
 function LayoutsWithNavbar() {
     return (
@@ -104,5 +104,3 @@ function LayoutsWithNavbar() {
         </div>
     );
 }
-
-export default App;
