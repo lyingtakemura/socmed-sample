@@ -60,14 +60,6 @@ export function NavbarComponent() {
                             Posts
                         </Link>
                         <Link
-                            to="/users"
-                            element={<UsersComponent />}
-                            className="text-black hover:text-green-500/20 hover:no-underline
-                             focus:text-green-500/20 focus:no-underline"
-                        >
-                            Users
-                        </Link>
-                        <Link
                             to="/messenger"
                             element={<MessengerComponent />}
                             className="text-black hover:text-green-500/20 hover:no-underline
@@ -75,8 +67,15 @@ export function NavbarComponent() {
                         >
                             Messenger
                         </Link>
+                        <Link
+                            to="/users"
+                            element={<UsersComponent />}
+                            className="text-black hover:text-green-500/20 hover:no-underline
+                             focus:text-green-500/20 focus:no-underline"
+                        >
+                            Users
+                        </Link>
                     </div>
-
                     <div className="space-x-2">
                         <Link
                             to={"/" + authenticated.username}
