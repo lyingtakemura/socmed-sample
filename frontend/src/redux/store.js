@@ -11,10 +11,10 @@ import {
     REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import usersReducer from "./usersSlice";
+import authenticatedReducer from "./authenticatedSlice";
 
 const reducers = combineReducers({
-    users: usersReducer,
+    authenticated: authenticatedReducer,
 });
 
 const persistConfig = {

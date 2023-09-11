@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 export function Home() {
-    let authenticated = useSelector((state) => state.users.currentUser);
-    let [posts, setPosts] = useState("");
-    let [input, setInput] = useState("");
+    const authenticated = useSelector((state) => state.authenticated.user);
+    const [posts, setPosts] = useState("");
+    const [input, setInput] = useState("");
 
     const getPosts = useCallback(() => {
         axios

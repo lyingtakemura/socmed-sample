@@ -3,29 +3,29 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 export function Messenger(props) {
-    let [message_body, set_message_body] = useState("");
-    let [rooms, set_rooms] = useState("");
-    let [selected_room, set_selected_room] = useState("");
-    let [ws_messenger, set_ws_messenger] = useState("");
-    let authenticated = useSelector((state) => state.users.currentUser);
+    const [messageBody, setMessageBody] = useState("");
+    const [rooms, setRooms] = useState("");
+    const [selectedRoom, setSelectedRoom] = useState("");
+    const [wsMessenger, setWsMessenger] = useState("");
+    const authenticated = useSelector((state) => state.authenticated.user);
 
     useEffect(() => {
-        if (selected_room) {
-            let ws_messenger = new WebSocket(
-                `ws://${window.location.hostname}:8000/ws/chat/${selected_room.id}?token=${authenticated.token}`,
+        if (selectedRoom) {
+            let wsMessenger = new WebSocket(
+                `ws://${window.location.hostname}:8000/ws/chat/${selectedRoom.id}?token=${authenticated.token}`,
             );
-            set_ws_messenger(ws_messenger);
+            setWsMessenger(wsMessenger);
 
-            ws_messenger.onmessage = (e) => {
+            wsMessenger.onmessage = (e) => {
                 /*
                 create messages copy array and push new message
                 replace local state with updated copy
                 */
                 let event = JSON.parse(e.data);
-                if (event.room === selected_room.id) {
-                    let room = { ...selected_room };
+                if (event.room === selectedRoom.id) {
+                    let room = { ...selectedRoom };
                     room.messages = [...room.messages, event];
-                    set_selected_room(room);
+                    setSelectedRoom(room);
                 }
             };
             // ws.onerror = (e) => {
@@ -35,7 +35,7 @@ export function Messenger(props) {
             //     console.log(e);
             // };
         }
-    }, [authenticated, selected_room]); // without second param useEffect will stuck in update loop
+    }, [authenticated, selectedRoom]); // without second param useEffect will stuck in update loop
 
     const last_message_preview = (room) => {
         if (room.messages.length >= 1) {
@@ -45,7 +45,7 @@ export function Messenger(props) {
         }
     };
 
-    const format_message_timestamp = (message_body) => {
+    const format_message_timestamp = (messageBody) => {
         const formatter = new Intl.DateTimeFormat("en-GB", {
             minute: "2-digit",
             hour: "2-digit",
@@ -53,7 +53,7 @@ export function Messenger(props) {
             month: "numeric",
             day: "numeric",
         });
-        const date = new Date(message_body);
+        const date = new Date(messageBody);
         const result = formatter.format(date);
         return result;
     };
@@ -71,7 +71,7 @@ export function Messenger(props) {
                 },
             )
             .then((response) => {
-                set_rooms(response.data);
+                setRooms(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -80,14 +80,14 @@ export function Messenger(props) {
 
     const send_message = (event) => {
         event.preventDefault();
-        ws_messenger.send(
+        wsMessenger.send(
             JSON.stringify({
-                body: message_body,
-                room: selected_room.id,
+                body: messageBody,
+                room: selectedRoom.id,
                 sender: authenticated.id,
             }),
         );
-        set_message_body("");
+        setMessageBody("");
     };
 
     const select_room = (event, room) => {
@@ -101,7 +101,7 @@ export function Messenger(props) {
                 },
             )
             .then((response) => {
-                set_selected_room(response.data);
+                setSelectedRoom(response.data);
             });
     };
 
@@ -117,7 +117,7 @@ export function Messenger(props) {
                             key={room.id}
                             onClick={(event) => select_room(event, room)}
                             className={`border-2 ${
-                                selected_room.id === room.id
+                                selectedRoom.id === room.id
                                     ? "bg-green-500/20 border-gray-400"
                                     : "border-gray-300"
                             } mb-1 p-2 rounded-lg hover:bg-green-500/20`}
@@ -154,8 +154,8 @@ export function Messenger(props) {
               max-h-screen border-2 border-gray-400"
             >
                 <div className="text-center m-1 p-2 bg-green-500/20 rounded-lg border-2 border-gray-400">
-                    {selected_room ? (
-                        selected_room.users
+                    {selectedRoom ? (
+                        selectedRoom.users
                             .filter((user) => user.id !== authenticated.id)
                             .map((user) => user.username)
                     ) : (
@@ -164,8 +164,8 @@ export function Messenger(props) {
                 </div>
                 <div className="mx-1 min-h-screen max-h-screen overflow-y-scroll border-t-2 border-gray-400">
                     <div className="mt-1">
-                        {selected_room["messages"] &&
-                            selected_room["messages"].map((message) => (
+                        {selectedRoom["messages"] &&
+                            selectedRoom["messages"].map((message) => (
                                 <div
                                     className={`flex ${
                                         message.sender === authenticated.id
@@ -190,7 +190,7 @@ export function Messenger(props) {
                             ))}
                     </div>
                 </div>
-                {selected_room && (
+                {selectedRoom && (
                     <div className="sticky bottom-0 w-full bg-gray-300">
                         <form
                             onSubmit={send_message}
@@ -199,9 +199,9 @@ export function Messenger(props) {
                             <input
                                 className="w-5/6 p-2 rounded-lg bg-green-500/20 focus:outline-none
                                  border-2 border-gray-400"
-                                value={message_body}
+                                value={messageBody}
                                 onChange={(event) =>
-                                    set_message_body(event.target.value)
+                                    setMessageBody(event.target.value)
                                 }
                                 required
                             />

@@ -2,19 +2,19 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { update } from "../redux/usersSlice";
+import { updateAction } from "../redux/authenticatedSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export function User() {
-    let params = useParams();
-    let dispatch = useDispatch();
-    let navigate = useNavigate();
-    let authenticated = useSelector((state) => state.users.currentUser);
-    let [user, set_user] = useState("");
-    let [posts, set_posts] = useState("");
+    const params = useParams();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const authenticated = useSelector((state) => state.authenticated.user);
+    const [user, setUser] = useState("");
+    const [posts, setPosts] = useState("");
 
-    const get_user = useCallback(() => {
+    const getUser = useCallback(() => {
         axios
             .get(
                 `${window.location.protocol}//${window.location.hostname}:8000/users?search=${params.username}`,
@@ -26,7 +26,7 @@ export function User() {
             )
             .then((response) => {
                 if (response.data[0]) {
-                    set_user(response.data[0]);
+                    setUser(response.data[0]);
                     let id = response.data[0].id;
                     axios
                         .get(
@@ -40,7 +40,7 @@ export function User() {
                         )
                         .then((response) => {
                             if (response.data) {
-                                set_posts(response.data);
+                                setPosts(response.data);
                             }
                         })
                         .catch((error) => {
@@ -54,8 +54,8 @@ export function User() {
     }, [authenticated, params]);
 
     useEffect(() => {
-        get_user();
-    }, [get_user]);
+        getUser();
+    }, [getUser]);
 
     const send_message = (event, id) => {
         axios
@@ -100,7 +100,7 @@ export function User() {
     //         });
     // };
 
-    const change_image = (e) => {
+    const updateImage = (e) => {
         e.preventDefault();
         axios
             .patch(
@@ -116,7 +116,7 @@ export function User() {
                 },
             )
             .then((response) => {
-                dispatch(update(response["image"]));
+                dispatch(updateAction(response["image"]));
             })
             .catch((error) => {
                 console.log(error.response);
@@ -137,14 +137,14 @@ export function User() {
                 },
             )
             .then((response) => {
-                get_user(user.id);
+                getUser(user.id);
             })
             .catch((error) => {
                 console.log(error.response);
             });
     };
 
-    const delete_post = (event, id) => {
+    const deletePost = (event, id) => {
         console.log(id);
         axios
             .delete(
@@ -164,7 +164,7 @@ export function User() {
             });
     };
 
-    const format_timestamp = (input) => {
+    const formatPostDatetime = (input) => {
         const formatter = new Intl.DateTimeFormat("en-GB", {
             year: "2-digit",
             month: "2-digit",
@@ -172,9 +172,7 @@ export function User() {
             minute: "2-digit",
             hour: "2-digit",
         });
-        const date = new Date(input);
-        const result = formatter.format(date);
-        return result;
+        return formatter.format(new Date(input));
     };
 
     return (
@@ -208,7 +206,7 @@ export function User() {
                                     </button> */}
                                     <input
                                         type="file"
-                                        onChange={change_image}
+                                        onChange={updateImage}
                                         accept="image/*"
                                         className="bg-green-500/20 p-2 rounded-lg file:hidden
                                                 text-xs w-full mt-1 border-2 border-gray-400"
@@ -282,13 +280,15 @@ export function User() {
                                     <div className="flex justify-between text-xs text-black/50">
                                         <div className="text-center">
                                             {post.user.username} at:{" "}
-                                            {format_timestamp(post.created_at)}
+                                            {formatPostDatetime(
+                                                post.created_at,
+                                            )}
                                         </div>
                                         {authenticated.id === post.user.id && (
                                             <div
                                                 className="hover:text-black"
                                                 onClick={(event) =>
-                                                    delete_post(event, post.id)
+                                                    deletePost(event, post.id)
                                                 }
                                             >
                                                 delete

@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export function Users() {
-    let navigate = useNavigate();
-    let authenticated = useSelector((state) => state.users.currentUser);
-    let [users, set_users] = useState("");
+    const navigate = useNavigate();
+    const authenticated = useSelector((state) => state.authenticated.user);
+    const [users, setUsers] = useState("");
 
-    const get_users = useCallback(() => {
+    const getUsers = useCallback(() => {
         axios
             .get(
                 `${window.location.protocol}//${window.location.hostname}:8000/users/`,
@@ -19,7 +19,7 @@ export function Users() {
                 },
             )
             .then((response) => {
-                set_users(response.data);
+                setUsers(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -27,8 +27,8 @@ export function Users() {
     }, [authenticated]); //  useCallback lets you cache a function definition between re-renders
 
     useEffect(() => {
-        get_users();
-    }, [get_users]);
+        getUsers();
+    }, [getUsers]);
 
     const follow = (event, id) => {
         axios
@@ -44,14 +44,14 @@ export function Users() {
                 },
             )
             .then((response) => {
-                get_users();
+                getUsers();
             })
             .catch((error) => {
                 console.log(error.response);
             });
     };
 
-    const send_message = (event, id) => {
+    const sendMessage = (event, id) => {
         axios
             .post(
                 `${window.location.protocol}//${window.location.hostname}:8000/rooms/`,
@@ -110,9 +110,7 @@ export function Users() {
                             </button>
                             <button
                                 className="rounded-lg bg-green-500/20 w-full border-2 border-gray-400 p-1"
-                                onClick={(event) =>
-                                    send_message(event, user.id)
-                                }
+                                onClick={(event) => sendMessage(event, user.id)}
                             >
                                 Message
                             </button>

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/usersSlice";
+import { loginAction } from "../redux/authenticatedSlice";
 import { useNavigate } from "react-router-dom";
 
 export function Login() {
-    const [username, set_username] = useState("");
-    const [password, set_password] = useState("");
-    const [alert, set_alert] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [alert, setAlert] = useState("");
     const dispatch = useDispatch();
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const submit = (event) => {
         event.preventDefault();
@@ -23,7 +23,6 @@ export function Login() {
             )
             .then((response) => {
                 const token = response.data["auth_token"];
-                let details;
 
                 axios
                     .get(
@@ -35,23 +34,23 @@ export function Login() {
                         },
                     )
                     .then((response) => {
-                        details = response.data;
-                        const currentUser = {
-                            id: details.id,
-                            token: token,
-                            username: details.username,
-                            email: details.email,
-                            image: details.image,
-                        };
-                        dispatch(login(currentUser));
-                        set_username("");
-                        set_password("");
+                        dispatch(
+                            loginAction({
+                                id: response.data.id,
+                                token: token,
+                                username: response.data.username,
+                                email: response.data.email,
+                                image: response.data.image,
+                            }),
+                        );
+                        setUsername("");
+                        setPassword("");
                         navigate("/");
                     });
             })
             .catch((error) => {
                 console.log(error.response);
-                set_alert({
+                setAlert({
                     type: "error",
                     body: error.response.data["non_field_errors"],
                 });
@@ -62,7 +61,7 @@ export function Login() {
         <>
             {alert && (
                 <div
-                    onClick={(event) => set_alert("")}
+                    onClick={(event) => setAlert("")}
                     className="mx-auto mb-1 p-2 w-1/2 font-bold text-center rounded-lg bg-gray-300"
                 >
                     {alert.body}
@@ -74,7 +73,7 @@ export function Login() {
                         type="text"
                         name="name"
                         value={username}
-                        onChange={(event) => set_username(event.target.value)}
+                        onChange={(event) => setUsername(event.target.value)}
                         required
                         placeholder="USERNAME"
                         className="p-2 rounded-lg bg-gray-300 w-full mb-1 focus:outline-none"
@@ -84,7 +83,7 @@ export function Login() {
                         name="password"
                         value={password}
                         autoComplete="off"
-                        onChange={(event) => set_password(event.target.value)}
+                        onChange={(event) => setPassword(event.target.value)}
                         required
                         placeholder="PASSWORD"
                         className="p-2 rounded-lg bg-gray-300 w-full mb-1 focus:outline-none"

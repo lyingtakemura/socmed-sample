@@ -2,7 +2,7 @@ import { React } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { logout } from "../redux/usersSlice";
+import { logoutAction } from "../redux/authenticatedSlice";
 
 import { Home } from "../pages/Home";
 import { Messenger } from "../pages/Messenger";
@@ -12,7 +12,7 @@ import { Users } from "../pages/Users";
 import { User } from "../pages/User";
 
 export function NavbarComponent() {
-    let currentUser = useSelector((state) => state.users.currentUser);
+    const authenticated = useSelector((state) => state.authenticated.user);
     const dispatch = useDispatch();
 
     return (
@@ -27,7 +27,7 @@ export function NavbarComponent() {
             >
                 SOCMED-SAMPLE
             </a>
-            {!currentUser && (
+            {!authenticated && (
                 <div className="space-x-2">
                     <Link
                         to="/login"
@@ -48,7 +48,7 @@ export function NavbarComponent() {
                 </div>
             )}
 
-            {currentUser && (
+            {authenticated && (
                 <>
                     <div className="space-x-2">
                         <Link
@@ -79,16 +79,16 @@ export function NavbarComponent() {
 
                     <div className="space-x-2">
                         <Link
-                            to={"/" + currentUser.username}
+                            to={"/" + authenticated.username}
                             element={<User />}
                             className="text-black hover:text-green-500/20 hover:no-underline
                              focus:text-green-500/20 focus:no-underline"
                         >
-                            {currentUser.username}
+                            {authenticated.username}
                         </Link>
                         <Link
                             href="#"
-                            onClick={() => dispatch(logout())}
+                            onClick={() => dispatch(logoutAction())}
                             className="text-black hover:text-green-500/20 hover:no-underline
                              focus:text-green-500/20 focus:no-underline"
                         >

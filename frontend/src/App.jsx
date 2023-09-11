@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { NavbarComponent } from "./components/NavbarComponent";
 
 export function App() {
-    let authenticated = useSelector((state) => state.users.currentUser);
+    let authenticated = useSelector((state) => state.authenticated.user);
     let ws;
     // console.log(window.location.hostname);
     if (authenticated) {

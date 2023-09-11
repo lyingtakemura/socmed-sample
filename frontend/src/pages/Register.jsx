@@ -3,12 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export function Register() {
-    let [username, set_username] = useState("");
-    let [email, set_email] = useState("");
-    let [password, set_password] = useState("");
-    let [re_password, set_re_password] = useState("");
-    let [alert, set_alert] = useState("");
-    let navigate = useNavigate();
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [rePassword, setRePassword] = useState("");
+    const [alert, setAlert] = useState("");
+    const navigate = useNavigate();
 
     const submit = (event) => {
         event.preventDefault();
@@ -19,16 +19,16 @@ export function Register() {
                     email: email,
                     username: username,
                     password: password,
-                    re_password: re_password,
+                    rePassword: rePassword,
                 },
             )
             .then((response) => {
                 console.log(response.data);
-                set_email("");
-                set_username("");
-                set_password("");
-                set_re_password("");
-                set_alert({
+                setEmail("");
+                setUsername("");
+                setPassword("");
+                setRePassword("");
+                setAlert({
                     type: "success",
                     body: "Registration complete! You'll be redirected to login page now.",
                 });
@@ -39,7 +39,7 @@ export function Register() {
             })
             .catch((error) => {
                 console.log(error.response);
-                set_alert({
+                setAlert({
                     type: "error",
                     body: "Something wrong with provided data. Try again.",
                 });
@@ -50,7 +50,7 @@ export function Register() {
         <>
             {alert && (
                 <div
-                    onClick={(event) => set_alert("")}
+                    onClick={(event) => setAlert("")}
                     className="mx-auto mb-1 p-2 bg-gray-300 w-1/2 font-bold text-center rounded-lg"
                 >
                     {alert.body}
@@ -61,7 +61,7 @@ export function Register() {
                     <input
                         type="text"
                         value={username}
-                        onChange={(event) => set_username(event.target.value)}
+                        onChange={(event) => setUsername(event.target.value)}
                         required
                         placeholder="USERNAME"
                         className="p-2 rounded-lg w-full mb-1 bg-gray-300 focus:outline-none"
@@ -69,7 +69,7 @@ export function Register() {
                     <input
                         type="email"
                         value={email}
-                        onChange={(event) => set_email(event.target.value)}
+                        onChange={(event) => setEmail(event.target.value)}
                         required
                         placeholder="EMAIL"
                         className="p-2 rounded-lg w-full mb-1 bg-gray-300 focus:outline-none"
@@ -78,18 +78,16 @@ export function Register() {
                         type="password"
                         value={password}
                         autoComplete="off"
-                        onChange={(event) => set_password(event.target.value)}
+                        onChange={(event) => setPassword(event.target.value)}
                         required
                         placeholder="PASSWORD"
                         className="p-2 rounded-lg w-full mb-1 bg-gray-300 focus:outline-none"
                     />
                     <input
                         type="password"
-                        value={re_password}
+                        value={rePassword}
                         autoComplete="off"
-                        onChange={(event) =>
-                            set_re_password(event.target.value)
-                        }
+                        onChange={(event) => setRePassword(event.target.value)}
                         required
                         placeholder="CONFIRM PASSWORD"
                         className="p-2 rounded-lg w-full mb-1 bg-gray-300 focus:outline-none"
