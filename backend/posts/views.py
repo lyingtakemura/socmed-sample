@@ -1,11 +1,10 @@
 from django.core.cache import cache
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import mixins, viewsets
-from rest_framework.response import Response
-from rest_framework.throttling import UserRateThrottle
-
 from posts.models import Post
 from posts.serializers import PostSerializer
+from rest_framework import mixins, status, viewsets
+from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle
 
 
 class PostViewSet(
@@ -40,14 +39,19 @@ class PostViewSet(
             cache.set("posts", serializer.data, timeout=3600)
             return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        """
-        The pre_save and post_save hooks no longer exist, but are replaced with
-        perform_create(self, serializer) and perform_update(self, serializer).
-        These methods should save the object instance by calling
-        serializer.save(), adding in any additional arguments as required.
-        They may also perform any custom pre-save or post-save behavior.
-        """
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
         cache.delete("posts")
-        print("CACHE_DROP")
-        serializer.save(user=self.request.user)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.validated_data["user"] = self.request.user
+        self.perform_create(serializer)
+        cache.delete("posts")
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
