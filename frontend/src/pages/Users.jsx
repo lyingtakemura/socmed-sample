@@ -30,7 +30,7 @@ export function Users() {
         getUsers();
     }, [getUsers]);
 
-    const follow = (event, id) => {
+    function follow(event, id) {
         axios
             .patch(
                 `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
@@ -49,9 +49,9 @@ export function Users() {
             .catch((error) => {
                 console.log(error.response);
             });
-    };
+    }
 
-    const sendMessage = (event, id) => {
+    function sendMessage(event, id) {
         axios
             .post(
                 `${window.location.protocol}//${window.location.hostname}:8000/rooms/`,
@@ -70,7 +70,7 @@ export function Users() {
             .catch((error) => {
                 console.log(error.response);
             });
-    };
+    }
 
     return (
         <div className="m-auto md:w-1/2 sm:w-full grid md:grid-cols-2 sm:grid-cols-1">

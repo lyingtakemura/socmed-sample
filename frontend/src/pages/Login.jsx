@@ -11,7 +11,7 @@ export function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const submit = (event) => {
+    function submit(event) {
         event.preventDefault();
         axios
             .post(
@@ -55,7 +55,7 @@ export function Login() {
                     body: error.response.data["non_field_errors"],
                 });
             });
-    };
+    }
 
     return (
         <>

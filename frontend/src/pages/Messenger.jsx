@@ -3,64 +3,13 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 export function Messenger(props) {
-    const [messageBody, setMessageBody] = useState("");
+    const [input, setInput] = useState("");
     const [rooms, setRooms] = useState("");
     const [selectedRoom, setSelectedRoom] = useState("");
-    const [wsMessenger, setWsMessenger] = useState("");
+    const [websocket, setWebsocket] = useState("");
     const authenticated = useSelector((state) => state.authenticated.user);
 
     useEffect(() => {
-        if (selectedRoom) {
-            let wsMessenger = new WebSocket(
-                `ws://${window.location.hostname}:8000/ws/chat/${selectedRoom.id}?token=${authenticated.token}`,
-            );
-            setWsMessenger(wsMessenger);
-
-            wsMessenger.onmessage = (e) => {
-                /*
-                create messages copy array and push new message
-                replace local state with updated copy
-                */
-                let event = JSON.parse(e.data);
-                if (event.room === selectedRoom.id) {
-                    let room = { ...selectedRoom };
-                    room.messages = [...room.messages, event];
-                    setSelectedRoom(room);
-                }
-            };
-            // ws.onerror = (e) => {
-            //     console.log(e);
-            // };
-            // ws.onclose = (e) => {
-            //     console.log(e);
-            // };
-        }
-    }, [authenticated, selectedRoom]); // without second param useEffect will stuck in update loop
-
-    const last_message_preview = (room) => {
-        if (room.messages.length >= 1) {
-            return room.messages[room.messages.length - 1].body.slice(0, 30);
-        } else {
-            return "No Messages";
-        }
-    };
-
-    const format_message_timestamp = (messageBody) => {
-        const formatter = new Intl.DateTimeFormat("en-GB", {
-            minute: "2-digit",
-            hour: "2-digit",
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-        });
-        const date = new Date(messageBody);
-        const result = formatter.format(date);
-        return result;
-    };
-
-    useEffect(() => {
-        // console.log(Object.keys(window.location));
-        // console.log(window.location.protocol)
         axios
             .get(
                 `${window.location.protocol}//${window.location.hostname}:8000/rooms/`,
@@ -76,21 +25,58 @@ export function Messenger(props) {
             .catch((error) => {
                 console.log(error);
             });
-    }, [authenticated]); // useEffect will re-run whenever object in it's dependency array changes
 
-    const send_message = (event) => {
+        if (selectedRoom) {
+            let websocket = new WebSocket(
+                `ws://${window.location.hostname}:8000/ws/chat/${selectedRoom.id}?token=${authenticated.token}`,
+            );
+            setWebsocket(websocket);
+
+            websocket.onmessage = (e) => {
+                let event = JSON.parse(e.data);
+                if (event.room === selectedRoom.id) {
+                    let room = { ...selectedRoom };
+                    room.messages = [...room.messages, event];
+                    setSelectedRoom(room);
+                }
+            };
+        }
+    }, [authenticated, selectedRoom]); // without second param useEffect will stuck in update loop
+
+    function lastMessagePreview(room) {
+        if (room.messages.length >= 1) {
+            return room.messages[room.messages.length - 1].body.slice(0, 30);
+        } else {
+            return "No Messages";
+        }
+    }
+
+    function formatMessageDatetime(input) {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+            minute: "2-digit",
+            hour: "2-digit",
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+        });
+        const date = new Date(input);
+        const result = formatter.format(date);
+        return result;
+    }
+
+    function sendMessage(event) {
         event.preventDefault();
-        wsMessenger.send(
+        websocket.send(
             JSON.stringify({
-                body: messageBody,
+                body: input,
                 room: selectedRoom.id,
                 sender: authenticated.id,
             }),
         );
-        setMessageBody("");
-    };
+        setInput("");
+    }
 
-    const select_room = (event, room) => {
+    function selectRoom(event, room) {
         axios
             .get(
                 `${window.location.protocol}//${window.location.hostname}:8000/rooms/${room.id}`,
@@ -103,7 +89,7 @@ export function Messenger(props) {
             .then((response) => {
                 setSelectedRoom(response.data);
             });
-    };
+    }
 
     return (
         <div className="flex font-bold w-1/2 mx-auto space-x-1 h-[calc(100%-10%)] mt-1">
@@ -115,7 +101,7 @@ export function Messenger(props) {
                     rooms.map((room) => (
                         <div
                             key={room.id}
-                            onClick={(event) => select_room(event, room)}
+                            onClick={(event) => selectRoom(event, room)}
                             className={`border-2 ${
                                 selectedRoom.id === room.id
                                     ? "bg-green-500/20 border-gray-400"
@@ -142,7 +128,7 @@ export function Messenger(props) {
                                         .map((user) => user.username)}
                                     <br />
                                     <div className="text-xs text-black/50">
-                                        {last_message_preview(room)}
+                                        {lastMessagePreview(room)}
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +167,7 @@ export function Messenger(props) {
                                     >
                                         <div>{message.body}</div>
                                         <div className="text-xs text-black/50">
-                                            {format_message_timestamp(
+                                            {formatMessageDatetime(
                                                 message.created_at,
                                             )}
                                         </div>
@@ -193,15 +179,15 @@ export function Messenger(props) {
                 {selectedRoom && (
                     <div className="sticky bottom-0 w-full bg-gray-300">
                         <form
-                            onSubmit={send_message}
+                            onSubmit={sendMessage}
                             className="flex space-x-1 py-1 border-t-2 border-gray-400 mx-1"
                         >
                             <input
                                 className="w-5/6 p-2 rounded-lg bg-green-500/20 focus:outline-none
                                  border-2 border-gray-400"
-                                value={messageBody}
+                                value={input}
                                 onChange={(event) =>
-                                    setMessageBody(event.target.value)
+                                    setInput(event.target.value)
                                 }
                                 required
                             />

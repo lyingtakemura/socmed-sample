@@ -10,7 +10,7 @@ export function Register() {
     const [alert, setAlert] = useState("");
     const navigate = useNavigate();
 
-    const submit = (event) => {
+    function submit(event) {
         event.preventDefault();
         axios
             .post(
@@ -44,7 +44,7 @@ export function Register() {
                     body: "Something wrong with provided data. Try again.",
                 });
             });
-    };
+    }
 
     return (
         <>

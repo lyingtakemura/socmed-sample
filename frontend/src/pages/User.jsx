@@ -57,7 +57,7 @@ export function User() {
         getUser();
     }, [getUser]);
 
-    const send_message = (event, id) => {
+    function sendMessage(event, id) {
         axios
             .post(
                 `${window.location.protocol}//${window.location.hostname}:8000/rooms/`,
@@ -76,7 +76,7 @@ export function User() {
             .catch((error) => {
                 console.log(error.response);
             });
-    };
+    }
 
     // const delete_image = (e) => {
     //     axios
@@ -100,13 +100,13 @@ export function User() {
     //         });
     // };
 
-    const updateImage = (e) => {
-        e.preventDefault();
+    function updateImage(event) {
+        event.preventDefault();
         axios
             .patch(
                 `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
                 {
-                    image: e.target.files[0],
+                    image: event.target.files[0],
                 },
                 {
                     headers: {
@@ -121,9 +121,9 @@ export function User() {
             .catch((error) => {
                 console.log(error.response);
             });
-    };
+    }
 
-    const follow = (event, id) => {
+    function follow(event, id) {
         axios
             .patch(
                 `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
@@ -142,10 +142,9 @@ export function User() {
             .catch((error) => {
                 console.log(error.response);
             });
-    };
+    }
 
-    const deletePost = (event, id) => {
-        console.log(id);
+    function deletePost(event, id) {
         axios
             .delete(
                 `${window.location.protocol}//${window.location.hostname}:8000/posts/${id}`,
@@ -157,14 +156,13 @@ export function User() {
             )
             .then((response) => {
                 console.log(response.data);
-                console.log(posts);
             })
             .catch((error) => {
                 console.log(error);
             });
-    };
+    }
 
-    const formatPostDatetime = (input) => {
+    function formatPostDatetime(input) {
         const formatter = new Intl.DateTimeFormat("en-GB", {
             year: "2-digit",
             month: "2-digit",
@@ -173,7 +171,7 @@ export function User() {
             hour: "2-digit",
         });
         return formatter.format(new Date(input));
-    };
+    }
 
     return (
         <div className="mx-1 md:m-auto md:w-1/2 sm:w-full font-bold h-[calc(100%-10%)] overflow-y-scroll">
@@ -226,7 +224,7 @@ export function User() {
                                         <button
                                             className="p-2 rounded-lg bg-green-500/20 text-xs border-2 border-gray-400"
                                             onClick={(event) =>
-                                                send_message(event, user.id)
+                                                sendMessage(event, user.id)
                                             }
                                         >
                                             Message
