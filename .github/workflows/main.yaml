@@ -52,7 +52,7 @@ jobs:
 
       - name: manage.py migrate
         working-directory: ./backend
-        run: ./manage.py migrate
+        run: python3 manage.py migrate
 
       - name: Run Tests
         working-directory: ./backend
