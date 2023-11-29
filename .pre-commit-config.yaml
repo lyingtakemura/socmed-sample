@@ -1,4 +1,4 @@
-exclude: ^frontend/|tests/|migrations/|/config|tests.py
+exclude: ^/frontend/|/tests/|/migrations/|/config/|tests.py
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
