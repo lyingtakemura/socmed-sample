@@ -18,6 +18,8 @@ jobs:
     services:
       postgres:
         image: postgres:16.1-alpine3.18
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.SQL_PASSWORD }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -38,3 +40,4 @@ jobs:
       - name: Run Tests
         working-directory: ./backend
         run: poetry run pytest
+
