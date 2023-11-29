@@ -8,9 +8,9 @@ env:
   SQL_DATABASE: ${{ secrets.SQL_DATABASE }}
   SQL_USER: ${{ secrets.SQL_DATABASE }}
   SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-  SQL_HOST: localhost
+  SQL_HOST: postgres
   SQL_PORT: 5432
-  REDIS_HOST: localhost
+  REDIS_HOST: redis
 
 jobs:
   build:
