@@ -11,9 +11,10 @@ jobs:
         with:
           python-version: '3.11'
       - run: |
+          pip install --upgrade pip
           pip install pipx
+          pipx ensurepath
           pipx install poetry
-          cd backend
           poetry shell
           poetry install
           pytest .
