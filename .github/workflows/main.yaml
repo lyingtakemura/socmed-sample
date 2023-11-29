@@ -19,7 +19,6 @@ jobs:
       - name: Install Dependencies
         working-directory: ./backend
         run: |
-          poetry shell
           poetry install
       - name: Run Tests
         run: |
