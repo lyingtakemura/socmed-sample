@@ -37,15 +37,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Install Poetry
         run: pipx install poetry
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
           cache: poetry
+
       - name: Install Dependencies
         working-directory: ./backend
         run: poetry install --no-root
+
+      - name: manage.py migrate
+        working-directory: ./backend
+        run: ./manage.py migrate
+
       - name: Run Tests
         working-directory: ./backend
         run: poetry run pytest
