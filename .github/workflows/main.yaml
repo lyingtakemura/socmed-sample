@@ -5,9 +5,9 @@ on: [push, pull_request]
 env:
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
   SQL_ENGINE: django.db.backends.postgresql
-  SQL_DATABASE: ${{ secrets.SQL_DATABASE }}
-  SQL_USER: ${{ secrets.SQL_DATABASE }}
-  SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+  SQL_DATABASE: socmed-sample
+  SQL_USER: postgres
+  SQL_PASSWORD: postgres
   SQL_HOST: localhost
   SQL_PORT: 5432
   REDIS_HOST: localhost
