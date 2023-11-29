@@ -30,6 +30,7 @@ requests = "^2.31.0"
 faker = "^20.1.0"
 factory-boy = "^3.3.0"
 channels-redis = "^4.1.0"
+bandit = {extras = ["toml"], version = "^1.7.5"}
 
 
 [build-system]
@@ -39,3 +40,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "fixtures"]
+exclude = "tests.py"
