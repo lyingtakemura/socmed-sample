@@ -12,7 +12,6 @@ jobs:
           python-version: '3.11'
       - run: |
           pip install pipx
-          pip install --upgrade pip
           pipx install poetry
           cd backend
           poetry shell
