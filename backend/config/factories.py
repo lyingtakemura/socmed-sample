@@ -1,9 +1,8 @@
 import factory
-
+from django.contrib.auth.hashers import make_password
 from messenger.models import Message, Room
 from posts.models import Post
 from users.models import User
-from django.contrib.auth.hashers import make_password
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -27,7 +26,7 @@ class PostFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Post
 
-    factory.Faker._DEFAULT_LOCALE = 'la'
+    factory.Faker._DEFAULT_LOCALE = "la"
     user = factory.SubFactory(UserFactory)
     body = factory.Faker("paragraph", nb_sentences=3, variable_nb_sentences=False)
     created_at = factory.Faker("date_time")
