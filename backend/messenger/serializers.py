@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from messenger.models import Message, Room
+from rest_framework import serializers
 from users.serializers import UserSerializer
 
 

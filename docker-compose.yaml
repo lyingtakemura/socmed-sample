@@ -3,8 +3,8 @@
 
 version: "3.8"
 services:
-  db:
-    image: postgres:15.3-alpine3.18
+  postgres:
+    image: postgres:16.1-alpine3.18
     restart: always
     environment:
       - POSTGRES_PASSWORD=postgres
@@ -12,34 +12,38 @@ services:
       - '5432:5432'
 
   redis:
-    image: redis:7.0.12-alpine
+    image: redis:7.2.3-alpine3.18
     restart: always
     ports:
       - '6379:6379'
 
-  frontend:
-    build: ./frontend
-    ports:
-      - '3000:3000'
-    depends_on:
-      - backend
-
   backend:
     build: ./backend
     command: >
-            bash -c "python manage.py migrate
+            sh -c "python manage.py migrate
             && python manage.py seed
-            && python manage.py runserver 0.0.0.0:8000"
+            && python manage.py collectstatic
+            && daphne -b 0.0.0.0 -p 8000 config.asgi:application"
     ports:
       - '8000:8000'
     environment:
       - DEBUG=True
       - SECRET_KEY=q
-      - SQL_DATABASE=postgres
-      - SQL_USER=postgres
-      - SQL_PASSWORD=postgres
-      - SQL_HOST=socmed-sample-db-1
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=socmed-sample-postgres-1
       - REDIS_HOST=socmed-sample-redis-1
     depends_on:
-      - db
+      - postgres
       - redis
+
+  frontend:
+    build: ./frontend
+    command: >
+            sh -c "npm install -g serve
+            && serve -s build"
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend

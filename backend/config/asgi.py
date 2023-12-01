@@ -9,21 +9,21 @@ https://docs.djangoproject.com/en/4.1/howto/deployment/asgi/
 
 import os
 
-# from channels.auth import AuthMiddlewareStack
-from channels.routing import ProtocolTypeRouter, URLRouter
-from config.middleware import TokenAuthMiddleware
-from django.core.asgi import get_asgi_application
-from messenger.routing import ws_urlpatterns
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-# Initialize Django ASGI application early to ensure the AppRegistry
-# is populated before importing code that may import ORM models.
+
+from channels.routing import ProtocolTypeRouter, URLRouter
+from django.core.asgi import get_asgi_application
+
+# get_asgi_application should me imported before middleware
+# for "daphne config.asgi:application" to run
 django_asgi_app = get_asgi_application()
 
+from config.middleware import TokenAuthMiddleware
+from messenger.routing import ws_urlpatterns
 
 application = ProtocolTypeRouter(
     {
-        "http": get_asgi_application(),
+        "http": django_asgi_app,
         "websocket": TokenAuthMiddleware(URLRouter(ws_urlpatterns)),
     }
 )

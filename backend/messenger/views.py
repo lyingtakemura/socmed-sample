@@ -1,8 +1,8 @@
-from rest_framework import mixins, viewsets
-from rest_framework.response import Response
-
 from messenger.models import Room
 from messenger.serializers import RoomSerializer
+from rest_framework import mixins, viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 
 class RoomViewSet(
@@ -13,6 +13,7 @@ class RoomViewSet(
 ):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request):
         """

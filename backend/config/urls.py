@@ -22,7 +22,7 @@ from posts.views import PostViewSet
 from rest_framework import routers
 from users.views import UserViewSet
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register(r"posts", PostViewSet)
 router.register(r"rooms", RoomViewSet)
 router.register(r"users", UserViewSet)
@@ -34,6 +34,6 @@ urlpatterns = [
     re_path(r"^auth/", include("djoser.urls")),
     re_path(r"^auth/", include("djoser.urls.authtoken")),
     path("__debug__/", include("debug_toolbar.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += router.urls

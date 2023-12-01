@@ -1,6 +1,4 @@
-# chat/routing.py
 from django.urls import path
-
 from messenger.consumers import MessengerConsumer, NotificationConsumer
 
 ws_urlpatterns = [
