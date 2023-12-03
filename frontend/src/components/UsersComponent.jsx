@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,7 @@ export function UsersComponent() {
     const navigate = useNavigate();
     const authenticated = useSelector((state) => state.authenticated.user);
     const [users, setUsers] = useState("");
+    const [input, setInput] = useState("");
 
     const getUsers = useCallback(() => {
         axios
@@ -73,50 +74,58 @@ export function UsersComponent() {
     }
 
     return (
-        <div className="m-auto md:w-1/2 sm:w-full grid md:grid-cols-2 sm:grid-cols-1">
-            {users &&
-                users.map((user) => (
-                    <div
-                        className="p-2 bg-gray-300 rounded-lg m-1 flex font-bold border-2 border-gray-400"
-                        key={user.id}
-                    >
-                        <img
-                            className="w-12 rounded-lg"
-                            src={
-                                user.image
-                                    ? user.image
-                                    : "https://via.placeholder.com/100"
-                            }
-                            alt="..."
-                        />
+        <div className="full-h-scrollable scrollbar-hide">
+            <div className="max-h-screen my-1">
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    required
+                    className="input"
+                    placeholder="SEARCH"
+                />
+                {users &&
+                    users
+                        .filter((user) => input === "" || user.username.includes(input))
+                        .map((user) => (
+                            <div className="container flex space-x-2" key={user.id}>
+                                <img
+                                    className="w-12 rounded-lg"
+                                    src={
+                                        user.image
+                                            ? user.image
+                                            : "https://placehold.co/100x100"
+                                    }
+                                    alt="..."
+                                />
 
-                        <div className="flex-auto p-1">
-                            <div
-                                className="hover:text-green-500/20"
-                                onClick={() => navigate(`/${user.username}`)}
-                            >
-                                {user.username}
+                                <div className="flex-auto m-auto">
+                                    <div
+                                        className="link"
+                                        onClick={() => navigate(`/${user.username}`)}
+                                    >
+                                        {user.username}
+                                    </div>
+                                </div>
+                                <div className="flex space-x-2 text-xs">
+                                    <button
+                                        className={`button`}
+                                        onClick={(event) => follow(event, user.id)}
+                                    >
+                                        {user.followers.includes(authenticated.id)
+                                            ? "FOLLOWING"
+                                            : "FOLLOW"}
+                                    </button>
+                                    <button
+                                        className="button"
+                                        onClick={(event) => sendMessage(event, user.id)}
+                                    >
+                                        MESSAGE
+                                    </button>
+                                </div>
                             </div>
-                            <div>Followers: {user.followers.length}</div>
-                        </div>
-                        <div className="grid grid-cols-1 space-y-1 text-xs">
-                            <button
-                                className={`rounded-lg bg-gray-300 w-full border-2 border-gray-400 p-1`}
-                                onClick={(event) => follow(event, user.id)}
-                            >
-                                {user.followers.includes(authenticated.id)
-                                    ? "Following"
-                                    : "Follow"}
-                            </button>
-                            <button
-                                className="rounded-lg bg-green-500/20 w-full border-2 border-gray-400 p-1"
-                                onClick={(event) => sendMessage(event, user.id)}
-                            >
-                                Message
-                            </button>
-                        </div>
-                    </div>
-                ))}
+                        ))}
+            </div>
         </div>
     );
 }

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginAction } from "../redux/authenticatedSlice";
 import { useNavigate } from "react-router-dom";
+import { loginAction } from "../redux/authenticatedSlice";
 
 export function LoginComponent() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [alert, setAlert] = useState("");
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     function submit(event) {
         event.preventDefault();
@@ -60,14 +60,11 @@ export function LoginComponent() {
     return (
         <>
             {alert && (
-                <div
-                    onClick={(event) => setAlert("")}
-                    className="mx-auto mb-1 p-2 w-1/2 font-bold text-center rounded-lg bg-gray-300"
-                >
+                <div onClick={(event) => setAlert("")} className="alert">
                     {alert.body}
                 </div>
             )}
-            <div className="m-auto w-1/2 absolute top-1/3 left-0 right-0 font-bold">
+            <div className="container-auth">
                 <form onSubmit={submit}>
                     <input
                         type="text"
@@ -76,7 +73,7 @@ export function LoginComponent() {
                         onChange={(event) => setUsername(event.target.value)}
                         required
                         placeholder="USERNAME"
-                        className="p-2 rounded-lg bg-gray-300 w-full mb-1 focus:outline-none"
+                        className="input"
                     />
                     <input
                         type="password"
@@ -86,12 +83,9 @@ export function LoginComponent() {
                         onChange={(event) => setPassword(event.target.value)}
                         required
                         placeholder="PASSWORD"
-                        className="p-2 rounded-lg bg-gray-300 w-full mb-1 focus:outline-none"
+                        className="input"
                     />
-                    <button
-                        type="submit"
-                        className="p-2 rounded-lg w-full bg-green-500/20"
-                    >
+                    <button type="submit" className="button">
                         LOGIN
                     </button>
                 </form>

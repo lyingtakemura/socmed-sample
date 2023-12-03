@@ -1,19 +1,19 @@
 import { React } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 
 import { logoutAction } from "../redux/authenticatedSlice";
 
-import { PostsComponent } from "./PostsComponent";
-import { MessengerComponent } from "./MessengerComponent";
 import { LoginComponent } from "./LoginComponent";
+import { MessengerComponent } from "./MessengerComponent";
+import { PostsComponent } from "./PostsComponent";
 import { RegisterComponent } from "./RegisterComponent";
-import { UsersComponent } from "./UsersComponent";
 import { UserComponent } from "./UserComponent";
+import { UsersComponent } from "./UsersComponent";
 
 export function NavbarComponent() {
-    const authenticated = useSelector((state) => state.authenticated.user);
     const dispatch = useDispatch();
+    const authenticated = useSelector((state) => state.authenticated.user);
 
     return (
         <div
@@ -23,27 +23,21 @@ export function NavbarComponent() {
             <a
                 href="https://github.com/lyingtakemura/socmed-sample"
                 target="_"
-                className="text-black hover:text-green-500/20"
+                className="link"
             >
                 SOCMED-SAMPLE
             </a>
             {!authenticated && (
                 <div className="space-x-2">
-                    <Link
-                        to="/login"
-                        element={<LoginComponent />}
-                        className="text-black hover:text-green-500/20 hover:no-underline
-                         focus:text-green-500/20 focus:no-underline"
-                    >
-                        Login
+                    <Link to="/login" element={<LoginComponent />} className="link">
+                        LOGIN
                     </Link>
                     <Link
                         to="/register"
                         element={<RegisterComponent />}
-                        className="text-black hover:text-green-500/20 hover:no-underline
-                         focus:text-green-500/20 focus:no-underline"
+                        className="link"
                     >
-                        Register
+                        REGISTER
                     </Link>
                 </div>
             )}
@@ -51,47 +45,34 @@ export function NavbarComponent() {
             {authenticated && (
                 <>
                     <div className="space-x-2">
-                        <Link
-                            to="/"
-                            element={<PostsComponent />}
-                            className="text-black hover:text-green-500/20 hover:no-underline
-                            focus:text-green-500/20 focus:no-underline"
-                        >
-                            Posts
+                        <Link to="/" element={<PostsComponent />} className="link">
+                            POSTS
                         </Link>
                         <Link
                             to="/messenger"
                             element={<MessengerComponent />}
-                            className="text-black hover:text-green-500/20 hover:no-underline
-                            focus:text-green-500/20 focus:no-underline"
+                            className="link"
                         >
-                            Messenger
+                            MESSENGER
                         </Link>
-                        <Link
-                            to="/users"
-                            element={<UsersComponent />}
-                            className="text-black hover:text-green-500/20 hover:no-underline
-                             focus:text-green-500/20 focus:no-underline"
-                        >
-                            Users
+                        <Link to="/users" element={<UsersComponent />} className="link">
+                            USERS
                         </Link>
                     </div>
                     <div className="space-x-2">
                         <Link
                             to={"/" + authenticated.username}
                             element={<UserComponent />}
-                            className="text-black hover:text-green-500/20 hover:no-underline
-                             focus:text-green-500/20 focus:no-underline"
+                            className="link"
                         >
                             {authenticated.username}
                         </Link>
                         <Link
                             href="#"
                             onClick={() => dispatch(logoutAction())}
-                            className="text-black hover:text-green-500/20 hover:no-underline
-                             focus:text-green-500/20 focus:no-underline"
+                            className="link"
                         >
-                            Logout
+                            LOGOUT
                         </Link>
                     </div>
                 </>

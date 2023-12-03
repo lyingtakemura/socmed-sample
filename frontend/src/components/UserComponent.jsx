@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { updateAction } from "../redux/authenticatedSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 export function UserComponent() {
     const params = useParams();
@@ -76,28 +74,6 @@ export function UserComponent() {
                 console.log(error.response);
             });
     }
-
-    // const delete_image = (e) => {
-    //     axios
-    //         .patch(
-    //             `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
-    //             {
-    //                 image: null,
-    //             },
-    //             {
-    //                 headers: {
-    //                     Authorization: "Token " + authenticated.token,
-    //                     "Content-Type": "multipart/form-data",
-    //                 },
-    //             }
-    //         )
-    //         .then((response) => {
-    //             dispatch(update(null));
-    //         })
-    //         .catch((error) => {
-    //             console.log(error.response);
-    //         });
-    // };
 
     function updateImage(event) {
         event.preventDefault();
@@ -173,7 +149,7 @@ export function UserComponent() {
     }
 
     return (
-        <div className="mx-1 md:m-auto md:w-1/2 sm:w-full font-bold h-[calc(100%-10%)] overflow-y-scroll">
+        <div className="full-h-scrollable scrollbar-hide">
             <div className="max-h-screen">
                 {user && (
                     <div
@@ -185,28 +161,18 @@ export function UserComponent() {
                                 src={
                                     user.image
                                         ? user.image
-                                        : "https://via.placeholder.com/400"
+                                        : "https://placehold.co/400x400"
                                 }
                                 alt="?"
                                 className="rounded-lg object-cover object-center border-2 border-gray-400"
                             />
                             {user.id === authenticated.id && (
                                 <div>
-                                    {/* <button
-                                        size="sm"
-                                        onClick={(e) => {
-                                            delete_image(e);
-                                        }}
-                                        className="p-2 rounded-lg bg-green-500/20 text-xs w-full"
-                                    >
-                                        Delete
-                                    </button> */}
                                     <input
                                         type="file"
                                         onChange={updateImage}
                                         accept="image/*"
-                                        className="bg-green-500/20 p-2 rounded-lg file:hidden
-                                                text-xs w-full mt-1 border-2 border-gray-400"
+                                        className="input-file"
                                     />
                                 </div>
                             )}
@@ -219,7 +185,7 @@ export function UserComponent() {
                                 {user.id !== authenticated.id && (
                                     <div className="space-x-1 flex">
                                         <button
-                                            className="p-2 rounded-lg bg-green-500/20 text-xs border-2 border-gray-400"
+                                            className="button"
                                             onClick={(event) =>
                                                 sendMessage(event, user.id)
                                             }
@@ -227,7 +193,7 @@ export function UserComponent() {
                                             Message
                                         </button>
                                         <button
-                                            className="p-2 rounded-lg bg-green-500/20 text-xs border-2 border-gray-400"
+                                            className="button"
                                             onClick={(event) => follow(event, user.id)}
                                         >
                                             {user.followers.includes(authenticated.id)
@@ -260,10 +226,7 @@ export function UserComponent() {
                     <div className="w-auto space-y-1">
                         {posts &&
                             posts.map((post) => (
-                                <div
-                                    className="p-2 bg-gray-300 rounded-lg border-2 border-gray-400"
-                                    key={post.id}
-                                >
+                                <div className="container" key={post.id}>
                                     {post.body}
                                     <div className="flex justify-between text-xs text-black/50">
                                         <div className="text-center">
@@ -286,9 +249,7 @@ export function UserComponent() {
                     </div>
                 )}
                 {posts.length < 1 && (
-                    <div className=" p-2 bg-gray-300 rounded-lg border-2 border-gray-400">
-                        User hasn't posted anything yet
-                    </div>
+                    <div className="container">User hasn't posted anything yet</div>
                 )}
             </div>
         </div>

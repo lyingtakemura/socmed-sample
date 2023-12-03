@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
 import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export function PostsComponent() {
     const authenticated = useSelector((state) => state.authenticated.user);
@@ -82,7 +82,7 @@ export function PostsComponent() {
     }
 
     return (
-        <div className="mx-1 md:m-auto md:w-1/2 sm:w-full font-bold h-[calc(100%-10%)] overflow-y-scroll">
+        <div className="full-h-scrollable scrollbar-hide">
             <div className="max-h-screen my-1">
                 <form onSubmit={submitPost} className="mb-1 flex space-x-1">
                     <input
@@ -90,22 +90,15 @@ export function PostsComponent() {
                         value={input}
                         onChange={(event) => setInput(event.target.value)}
                         required
-                        className="p-2 rounded-lg bg-gray-300 border-2 border-gray-400
-                         focus:border-green-500/20 focus:outline-none w-full"
+                        className="input"
                     />
-                    <button
-                        type="submit"
-                        className="p-2 rounded-lg bg-green-500/20 w-1/6 border-2 border-gray-400"
-                    >
-                        Add
+                    <button type="submit" className="button w-1/6">
+                        ADD
                     </button>
                 </form>
                 {posts && // check if posts array have been loaded from axios request to state before render
                     posts.map((post) => (
-                        <div
-                            className="p-2 rounded-lg bg-gray-300 w-full mb-1 border-2 border-gray-400"
-                            key={post.id}
-                        >
+                        <div className="container" key={post.id}>
                             <div>{post.body}</div>
                             <div className="flex justify-between text-xs text-black/50">
                                 <div className="text-center">
