@@ -9,23 +9,23 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
     ports:
-      - '5432:5432'
+      - "5432:5432"
 
   redis:
     image: redis:7.2.3-alpine3.18
     restart: always
     ports:
-      - '6379:6379'
+      - "6379:6379"
 
   backend:
     build: ./backend
     command: >
-            sh -c "python manage.py migrate
-            && python manage.py seed
-            && python manage.py collectstatic
-            && daphne -b 0.0.0.0 -p 8000 config.asgi:application"
+      sh -c "python manage.py migrate
+      && python manage.py seed
+      && python manage.py collectstatic
+      && daphne -b 0.0.0.0 -p 8000 config.asgi:application"
     ports:
-      - '8000:8000'
+      - "8000:8000"
     environment:
       - DEBUG=True
       - SECRET_KEY=q
@@ -41,9 +41,9 @@ services:
   frontend:
     build: ./frontend
     command: >
-            sh -c "npm install -g serve
-            && serve -s build"
+      sh -c "npm install -g serve
+      && serve -s build"
     ports:
-      - '3000:3000'
+      - "3000:3000"
     depends_on:
       - backend
