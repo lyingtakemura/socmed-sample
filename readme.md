@@ -55,4 +55,6 @@ bandit .
 docker compose up
 
 psql://username:password@host:port/db
+
+pytest --cov=.
 ```
