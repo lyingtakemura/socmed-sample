@@ -13,7 +13,6 @@ class Room(models.Model):
         room = Room.objects.filter(users__in=[request.data.get("user")]).filter(
             users__in=[request.user.id]
         )
-        print(room.exists())
         if room.exists():
             return room
         else:

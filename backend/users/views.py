@@ -1,40 +1,32 @@
-from rest_framework import filters, mixins, viewsets
-
+from rest_framework import filters, mixins, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
 
 
-class UserViewSet(
-    viewsets.GenericViewSet, mixins.ListModelMixin, mixins.UpdateModelMixin
-):
+class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = User.objects.prefetch_related("followers", "following")
     serializer_class = UserSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["username"]
 
-    # def list(self, request):
-    #     """
-    #     To serialize a queryset or list of objects instead of a single object
-    #     instance, you should set many=True flag when instantiating serializer.
+    @action(detail=True, methods=["get"])
+    def follow(self, request, pk=None):
+        # GET /users/pk/follow
+        current_user = request.user
+        selected_user = self.get_object()
 
-    #     If you need to execute more complex queries (for example, queries with OR
-    #     statements), you can use Q objects.
-    #     """
-    #     queryset = User.objects.filter(
-    #         ~Q(id=self.request.user.id)
-    #     )  # exclude self from response query
-    #     serializer = UserSerializer(queryset, many=True)
-    #     return Response(serializer.data)
+        current_user.following.add(selected_user)
+        selected_user.followers.add(current_user)
+        return Response(status=status.HTTP_200_OK)
 
-    def perform_update(self, serializer):
-        """
-        - Remove user image PATCH /users/<int:current_user_id> {"image": ""}
-        - On user image update request delete previous file
-        """
-        if self.request.data.get("follow"):
-            User.follow(request=self.request)
+    @action(detail=True, methods=["get"])
+    def unfollow(self, request, pk=None):
+        # GET /users/pk/unfollow
+        current_user = request.user
+        selected_user = self.get_object()
 
-        if self.request.data.get("image"):
-            self.request.user.image.delete()
-
-        serializer.save()
+        current_user.following.remove(selected_user)
+        selected_user.followers.remove(current_user)
+        return Response(status=status.HTTP_200_OK)

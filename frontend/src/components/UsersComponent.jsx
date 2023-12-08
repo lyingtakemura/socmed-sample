@@ -33,11 +33,26 @@ export function UsersComponent() {
 
     function follow(event, id) {
         axios
-            .patch(
-                `${window.location.protocol}//${window.location.hostname}:8000/users/${authenticated.id}/`,
+            .get(
+                `${window.location.protocol}//${window.location.hostname}:8000/users/${id}/follow/`,
                 {
-                    follow: id,
+                    headers: {
+                        Authorization: "Token " + authenticated.token,
+                    },
                 },
+            )
+            .then((response) => {
+                getUsers();
+            })
+            .catch((error) => {
+                console.log(error.response);
+            });
+    }
+
+    function unfollow(event, id) {
+        axios
+            .get(
+                `${window.location.protocol}//${window.location.hostname}:8000/users/${id}/unfollow/`,
                 {
                     headers: {
                         Authorization: "Token " + authenticated.token,
@@ -108,14 +123,24 @@ export function UsersComponent() {
                                     </div>
                                 </div>
                                 <div className="flex space-x-2 text-xs">
-                                    <button
-                                        className={`button`}
-                                        onClick={(event) => follow(event, user.id)}
-                                    >
-                                        {user.followers.includes(authenticated.id)
-                                            ? "FOLLOWING"
-                                            : "FOLLOW"}
-                                    </button>
+                                    {!user.followers.includes(authenticated.id) ? (
+                                        <button
+                                            className={`button`}
+                                            onClick={(event) => follow(event, user.id)}
+                                        >
+                                            FOLLOW
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className={`button`}
+                                            onClick={(event) =>
+                                                unfollow(event, user.id)
+                                            }
+                                        >
+                                            FOLLOWING
+                                        </button>
+                                    )}
+
                                     <button
                                         className="button"
                                         onClick={(event) => sendMessage(event, user.id)}
