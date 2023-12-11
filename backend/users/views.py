@@ -11,7 +11,7 @@ class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     filter_backends = [filters.SearchFilter]
     search_fields = ["username"]
 
-    @action(detail=True, methods=["get"])
+    @action(methods=["get"], detail=True)
     def follow(self, request, pk=None):
         # GET /users/pk/follow
         current_user = request.user
@@ -21,7 +21,7 @@ class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         selected_user.followers.add(current_user)
         return Response(status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=["get"])
+    @action(methods=["get"], detail=True)
     def unfollow(self, request, pk=None):
         # GET /users/pk/unfollow
         current_user = request.user

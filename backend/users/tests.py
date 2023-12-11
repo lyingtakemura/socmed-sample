@@ -32,7 +32,7 @@ def api_client(current_user_fixture):
 
 @pytest.mark.django_db
 def test_get_user(api_client, current_user_fixture):
-    response = api_client.get("http://127.0.0.1:8000/users/")
+    response = api_client.get("/users/")
     assert response.status_code == 200
     response_user = response.json()[0]
     assert current_user_fixture.username == response_user["username"]
@@ -43,7 +43,7 @@ def test_get_user(api_client, current_user_fixture):
 @pytest.mark.django_db
 def test_follow_user(api_client, current_user_fixture, user_to_follow_fixture):
     follow_response = api_client.get(
-        "http://127.0.0.1:8000/users/{}/follow/".format(user_to_follow_fixture.id)
+        "/users/{}/follow/".format(user_to_follow_fixture.id)
     )
     assert follow_response.status_code == 200
     assert current_user_fixture in user_to_follow_fixture.followers.all()
@@ -57,7 +57,7 @@ def test_unfollow_user(api_client, current_user_fixture, user_to_follow_fixture)
     assert current_user_fixture in user_to_follow_fixture.followers.all()
     assert user_to_follow_fixture in current_user_fixture.following.all()
 
-    response = api_client.get("http://127.0.0.1:8000/users/2/unfollow/")
+    response = api_client.get("/users/2/unfollow/")
     assert response.status_code == 200
     assert not current_user_fixture in user_to_follow_fixture.followers.all()
     assert not user_to_follow_fixture in current_user_fixture.following.all()
