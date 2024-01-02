@@ -33,9 +33,8 @@ ReactJS, React Router, Redux, Redux Persist, Axios, Tailwind CSS
 ```
 cp .example.env .env && nano .env
 
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+poetry shell
+poetry install
 ./manage.py seed
 ./manage.py runserver
 
@@ -45,11 +44,9 @@ cd frontend && npm install && npm start
 ### META
 
 ```
-pip freeze > requirements.txt
 rm -rf volumes (previous docker image state will block compose up)
 
 black . --verbose --diff --exclude /migrations/
-flake8 .
 bandit .
 
 docker compose up
