@@ -35,6 +35,7 @@ cp .example.env .env && nano .env
 
 poetry shell
 poetry install
+./manage.py migrate
 ./manage.py seed
 ./manage.py runserver
 
